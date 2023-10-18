@@ -1,51 +1,48 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class SphereKeyboardController : MonoBehaviour
 {
-    // Start is called before the first frame update
-
-
-    //x = r* sin(Theta) * cos(phi);
-    //y = r* sin(Theta) * sin(phi);
-    //z = r* cos(Theta);
-
-    public KeyController A;
-    public KeyController B;
-    public KeyController C;
-    public KeyController D;
-    public KeyController E;
-    public KeyController F;
-    public KeyController G;
-    public KeyController H;
-    public KeyController I;
-    public KeyController J;
-    public KeyController K;
-    public KeyController L;
-    public KeyController M;
-    public KeyController N;
-    public KeyController O;
-    public KeyController P;
-    public KeyController Q;
-    public KeyController R;
-    public KeyController S;
-    public KeyController T;
-    public KeyController U;
-    public KeyController V;
-    public KeyController W;
-    public KeyController X;
-    public KeyController Y;
-    public KeyController Z;
-
     public KeyController[] keyControllers = new KeyController[26];
 
-    public float keyHorizontalSpaceAngle = 0.1f;
-    public float keyVerticalSpaceAngle = 0.1f;
+    public float keySpacings = 1.1f;
+    public float rowOffset = -0.5f;
+    public float horizontalOffset = -2.5f;
+
+
+    public GameObject letterPrefab;
+    GameSettings gameSettings;
+
+    List<GameObject> keys = new List<GameObject>();
 
     void Start()
     {
-        
+
+        gameSettings = GameObject.Find("GameSettings").GetComponent<GameSettings>();
+
+        // Instantiate the letters and put them in the right positions.
+        for (int i = 0; i < Params.LetterOrders.Count; i ++)
+        {
+            float vertical_pos = keySpacings * i;
+
+            for(int j = 0; j < Params.LetterOrders[i].Count; j ++)
+            {
+                // Instantiate and position the letter using the prefab.
+                Vector3 position = new Vector3(keySpacings * j + rowOffset * i + horizontalOffset, vertical_pos, gameSettings.distToPlayer);
+                GameObject letterObject = Instantiate(letterPrefab, position, Quaternion.identity);
+                letterObject.GetComponent<KeyController>().SetChar(Params.LetterOrders[i][j]);
+                letterObject.name = Params.LetterOrders[i][j];
+
+                // rotate to face the center, but flip so the letters are facing the camera.
+                letterObject.transform.rotation = Quaternion.LookRotation(letterObject.transform.position);
+
+                keys.Add(letterObject);
+            }
+        }
     }
 
     // Update is called once per frame

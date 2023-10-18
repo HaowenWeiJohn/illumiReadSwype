@@ -226,7 +226,8 @@ public class EyeTrackingExample : MonoBehaviour
                 // Direction from VR camera towards fixation point
                 direction = (fixationPointTransform.position - xrCamera.transform.position).normalized;
 
-            } else
+            }
+            else
             {
                 gazeData = VarjoEyeTracking.GetGaze();
 
@@ -278,10 +279,10 @@ public class EyeTrackingExample : MonoBehaviour
                 rotateWithGaze.RayHit();
             }
 
-            // Alternative way to check if you hit object with tag
-            if (hit.transform.CompareTag("FreeRotating"))
+            KeyController keyController = hit.collider.gameObject.GetComponent<KeyController>();
+            if (keyController != null)
             {
-                AddForceAtHitPosition();
+                keyController.HasGaze();
             }
         }
         else
@@ -372,9 +373,9 @@ public class EyeTrackingExample : MonoBehaviour
 
         // Focus
         logData[21] = invalid ? "" : data.focusDistance.ToString();
-            logData[22] = invalid ? "" : data.focusStability.ToString();
+        logData[22] = invalid ? "" : data.focusStability.ToString();
 
-            Log(logData);
+        Log(logData);
     }
 
     // Write given values in the log file
