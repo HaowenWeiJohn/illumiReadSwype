@@ -990,7 +990,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gazeDataSource: 0
   gazeCalibrationMode: 0
-  calibrationRequestKey: 32
+  calibrationRequestKey: 256
   gazeOutputFilterType: 1
   setOutputFilterTypeKey: 303
   frequency: 0
