@@ -6,13 +6,10 @@ using System.IO;
 public static class Presets
 {
 
-
-
-
     public static string EventMarkerLSLOutletStreamName = "illumiReadSwypeLSL";
     public static string EventMarkerLSLOutletStreamType = "EventMarker";
     public static string EventMarkerLSLOutletStreamID = "1";
-    public static int EventMarkerChannelNum = 4; // block marker index 0
+    public static int EventMarkerChannelNum = 3; // block marker index 0
     public static float EventMarkerNominalSamplingRate = 1;
 
 
