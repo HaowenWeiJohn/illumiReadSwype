@@ -111,8 +111,9 @@ public static class Presets
         StartBlock = 1,
         IntroductionBlock = 2,
         PracticeBlock = 3,
-        TestBlock = 4,
-        EndBlock = 5,
+        TrainBlock= 4,
+        TestBlock = 5,
+        EndBlock = 6,
     }
 
     public static List<ExperimentState> StartBlock = new List<ExperimentState> {

@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InitStateController : StateController
+public class KeyboardIllumiReadSwypeStateController : StateController
 {
 
 
 
 
-    public InitStateGUIController initStateGUIController;
+    public KeyboardIllumiReadSwypeStateGUIController keyboardIllumiReadSwypeStateGUIController;
 
 
     // Start is called before the first frame update
@@ -27,14 +27,14 @@ public class InitStateController : StateController
 
     public override void enterState()
     {
-        initStateGUIController.EnableSelf();
+        keyboardIllumiReadSwypeStateGUIController.EnableSelf();
         base.enterState();
 
     }
 
     public override void exitState()
     {
-        initStateGUIController.DisableSelf();
+        keyboardIllumiReadSwypeStateGUIController.DisableSelf();
         base.exitState();
 
     }

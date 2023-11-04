@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InitStateController : StateController
+public class StartStateController : StateController
 {
 
 
 
 
-    public InitStateGUIController initStateGUIController;
+    public StartStateGUIController startStateGUIController;
 
 
     // Start is called before the first frame update
@@ -27,14 +27,14 @@ public class InitStateController : StateController
 
     public override void enterState()
     {
-        initStateGUIController.EnableSelf();
+        startStateGUIController.EnableSelf();
         base.enterState();
 
     }
 
     public override void exitState()
     {
-        initStateGUIController.DisableSelf();
+        startStateGUIController.DisableSelf();
         base.exitState();
 
     }
