@@ -6,7 +6,7 @@ using System.IO;
 public static class Presets
 {
 
-    public static string EventMarkerLSLOutletStreamName = "illumiReadSwypeLSL";
+    public static string EventMarkerLSLOutletStreamName = "illumiReadSwypeEventMarkerLSL";
     public static string EventMarkerLSLOutletStreamType = "EventMarker";
     public static string EventMarkerLSLOutletStreamID = "1";
     public static int EventMarkerChannelNum = 3; // block marker index 0
@@ -26,10 +26,10 @@ public static class Presets
     /// <summary>
     /// Varjo gaze data lsl outlet stream
     /// </summary>
-    public static string GazeDataLSLOutletStreamName = "Varjo";
+    public static string GazeDataLSLOutletStreamName = "VarjoEyeTrackingLSL";
     public static string GazeDataLSLOutletStreamType = "GazeData";
     public static string GazeDataLSLOutletStreamID = "2";
-    public static int GazeDataChannelNum = 21;
+    public static int GazeDataChannelNum = 35;
     public static float GazeDataNominalSamplingRate = 200;
 
 

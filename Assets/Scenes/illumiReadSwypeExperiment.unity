@@ -1656,12 +1656,12 @@ GameObject:
   - component: {fileID: 1399761346}
   - component: {fileID: 1399761347}
   m_Layer: 0
-  m_Name: VarGazeDataLSLOutletController
+  m_Name: VarjoGazeDataLSLOutletController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1399761346
 Transform:
   m_ObjectHideFlags: 0
