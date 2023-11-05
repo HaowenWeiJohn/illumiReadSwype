@@ -213,7 +213,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   experimentStates: 
   experimentBlock: 5
-  gameManager: {fileID: 0}
+  gameManager: {fileID: 306419105}
   blockState: 0
 --- !u!1 &111635539
 GameObject:
