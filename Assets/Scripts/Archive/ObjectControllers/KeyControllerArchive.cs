@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Interactions;
 using UnityEngine.UI;
 using UnityEngine.VFX;
 
-public class KeyController : MonoBehaviour
+public class KeyControllerArchive : MonoBehaviour
 {
     // TPM text field
     public TextMeshProUGUI textMesh;
@@ -20,7 +20,7 @@ public class KeyController : MonoBehaviour
     InputFieldController inputFieldController;
     bool selected = false;
 
-    Params.InteractionMode prevInteractionMode;
+    ParamsArchive.InteractionMode prevInteractionMode;
 
     // Start is called before the first frame update
     void Start()
@@ -43,16 +43,16 @@ public class KeyController : MonoBehaviour
         }
 
         // check the interaction mode
-        if (gameSettings.interactionMode == Params.InteractionMode.button)
+        if (gameSettings.interactionMode == ParamsArchive.InteractionMode.button)
         {
             ButtonInteraction();
         }
 
-        else if (gameSettings.interactionMode == Params.InteractionMode.dwellTime)
+        else if (gameSettings.interactionMode == ParamsArchive.InteractionMode.dwellTime)
         {
             DwellTimeInteraction();
         }
-        else if (gameSettings.interactionMode == Params.InteractionMode.VEP)
+        else if (gameSettings.interactionMode == ParamsArchive.InteractionMode.VEP)
         {
             VEPInteraction();
         }

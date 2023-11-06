@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting.Antlr3.Runtime;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.GraphicsBuffer;
 
-public class SphereKeyboardController : MonoBehaviour
+public class KeyBoardController : MonoBehaviour
 {
     public KeyControllerArchive[] keyControllers = new KeyControllerArchive[26];
 
@@ -25,11 +22,11 @@ public class SphereKeyboardController : MonoBehaviour
         gameSettings = GameObject.Find("GameSettings").GetComponent<GameSettings>();
 
         // Instantiate the letters and put them in the right positions.
-        for (int i = 0; i < ParamsArchive.LetterOrders.Count; i ++)
+        for (int i = 0; i < ParamsArchive.LetterOrders.Count; i++)
         {
             float vertical_pos = keySpacings * i;
 
-            for(int j = 0; j < ParamsArchive.LetterOrders[i].Count; j ++)
+            for (int j = 0; j < ParamsArchive.LetterOrders[i].Count; j++)
             {
                 // Instantiate and position the letter using the prefab.
                 Vector3 position = new Vector3(keySpacings * j + rowOffset * i + horizontalOffset, vertical_pos, gameSettings.distToPlayer);
@@ -48,6 +45,6 @@ public class SphereKeyboardController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

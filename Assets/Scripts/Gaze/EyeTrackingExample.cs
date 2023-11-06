@@ -279,10 +279,10 @@ public class EyeTrackingExample : MonoBehaviour
                 rotateWithGaze.RayHit();
             }
 
-            KeyController keyController = hit.collider.gameObject.GetComponent<KeyController>();
-            if (keyController != null)
+            // Alternative way to check if you hit object with tag
+            if (hit.transform.CompareTag("FreeRotating"))
             {
-                keyController.HasGaze();
+                AddForceAtHitPosition();
             }
         }
         else

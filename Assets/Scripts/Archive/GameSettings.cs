@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameSettings : MonoBehaviour
 {
-    public Params.InteractionMode interactionMode = Params.InteractionMode.dwellTime;
+    public ParamsArchive.InteractionMode interactionMode = ParamsArchive.InteractionMode.dwellTime;
     public float dwellActivateTime = 1.0f;
     public float distToPlayer = 10f;
 
