@@ -155,6 +155,10 @@ public class KeyController : MonoBehaviour
     public List<KeyController> keyControllers = new List<KeyController>();
 
 
+    public Params.Keys key;
+    
+    public TextMeshProUGUI keyText;
+
 
     void Start()
     {
@@ -172,6 +176,13 @@ public class KeyController : MonoBehaviour
 
     }
 
+
+    public void setKey(Params.Keys key)
+    {
+        this.key = key;
+        keyText.text = Params.KeysString[key];
+        //Debug.Log(Params.KeysString[key]);
+    }
 
 
 }

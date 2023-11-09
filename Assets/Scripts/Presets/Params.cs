@@ -48,11 +48,24 @@ public static class Params
     new List<Keys> { Keys.Z, Keys.X, Keys.C, Keys.V, Keys.B, Keys.N, Keys.M }
     };
 
+
+    public static float KeyHorizontalSpace = 0.1f;
+    public static float KeyVirticalSpace = 0.1f;
+
+    public static float KeyWidth = 0.1f;
+    public static float KeyHeight = 0.1f;
+
+
+
+
     public static Vector2[] CharOffset = new Vector2[]
     {
-            new Vector2(0.0f, 0.0f),
-            new Vector2(0.25f, -1.0f),
-            new Vector2(0.8f, -2.0f)
+        new Vector2(KeyWidth/2.0f, KeyHeight*0.5f + 2*KeyVirticalSpace),
+        new Vector2(KeyWidth/2.0f+0.02f, KeyHeight*0.5f + KeyVirticalSpace),
+        new Vector2(KeyWidth/2.0f+0.08f, KeyHeight*0.5f)
+            //new Vector2(0.5f, 2.5f),
+            //new Vector2(0.75f, 1.5f),
+            //new Vector2(0.8f, 0.5f)
     };
 
 

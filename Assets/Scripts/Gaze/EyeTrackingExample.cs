@@ -279,12 +279,15 @@ public class EyeTrackingExample : MonoBehaviour
                 rotateWithGaze.RayHit();
             }
 
-            // Alternative way to check if you hit object with tag
-            if (hit.transform.CompareTag("FreeRotating"))
-            {
-                AddForceAtHitPosition();
-            }
-        }
+
+            
+
+        //    // Alternative way to check if you hit object with tag
+        //    if (hit.transform.CompareTag("FreeRotating"))
+        //    {
+        //        AddForceAtHitPosition();
+        //    }
+        //}
         else
         {
             // If gaze ray didn't hit anything, the gaze target is shown at fixed distance
