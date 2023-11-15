@@ -75,6 +75,11 @@ public class KeyControllerArchive : MonoBehaviour
         hasGazeThisFrame = true;
     }
 
+    public void clearGaze()
+    {
+        hasGazeThisFrame = false;
+    }
+
     void ButtonInteraction()
     {
         if (hasGazeThisFrame)

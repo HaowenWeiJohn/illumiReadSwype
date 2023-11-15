@@ -51,30 +51,59 @@ public class KeyBoardController : MonoBehaviour
 
 
     public GameObject keyPrefab;
-    public Dictionary<Params.Keys, KeyController> keyControllers = new Dictionary<Params.Keys, KeyController>();
-    
+    public Dictionary<KeyParams.Keys, KeyController> keyControllers = new Dictionary<KeyParams.Keys, KeyController>();
+
+    public Presets.InteractionMode interactionMode;
+
+
+    public KeyController gazeKeyController;
+
+
 
     void Start()
     {
-        initKeyBoard();
+        InitKeyBoard();
 
 
     }
 
     void Update()
     {
+        switch (interactionMode)
+        {
+            case Presets.InteractionMode.DwellTime:
+                KeyboardDwellTimeCallback();
+                break;
+            case Presets.InteractionMode.ButtonClick:
+                KeyboardButtonClickCallback();
+                break;
+            case Presets.InteractionMode.IllumiReadSwype:
+                KeyboardIllumiReadSwypeCallback();
+                break;
+            case Presets.InteractionMode.FreeSwitch:
+                KeyboardFreeSwitchCallback();
+                break;
+
+        }
+
+
         
+        
+
+
+
+
     }
 
-    public void initKeyBoard()
+    public void InitKeyBoard()
     {
         // init chars
-        for (int i = 0; i< Params.CharsOrders.Count; i++)
+        for (int i = 0; i< KeyParams.CharsOrders.Count; i++)
         {
-            for(int j = 0; j < Params.CharsOrders[i].Count; j ++) {
+            for(int j = 0; j < KeyParams.CharsOrders[i].Count; j ++) {
 
-                float x = Params.CharOffset[i].x + j * Params.KeyHorizontalSpace;
-                float y = Params.CharOffset[i].y;
+                float x = KeyParams.CharOffset[i].x + j * KeyParams.KeyHorizontalSpace;
+                float y = KeyParams.CharOffset[i].y;
 
                 Vector3 position = new Vector3(x, y, 0);
                 
@@ -82,11 +111,63 @@ public class KeyBoardController : MonoBehaviour
                 GameObject keyObject = Instantiate(keyPrefab, position, Quaternion.identity);
                 keyObject.transform.SetParent(transform, false);
                 KeyController thisKeyController = keyObject.GetComponent<KeyController>();
-                thisKeyController.setKey(Params.CharsOrders[i][j]);
-                keyControllers.Add(Params.CharsOrders[i][j], thisKeyController);
+                thisKeyController.keyboardController = gameObject.GetComponent<KeyBoardController>();
+                thisKeyController.SetKey(KeyParams.CharsOrders[i][j]);
+                thisKeyController.ClearGaze();
+                keyControllers.Add(KeyParams.CharsOrders[i][j], thisKeyController);
             }
         }
     }
+
+    public void MoveKeyBoard()
+    {
+        // controll with WASD
+
+
+    }
+
+
+    public void SetInteractionMode(Presets.InteractionMode interactionMode)
+    {
+        this.interactionMode = interactionMode;
+    }
+
+
+
+    public void SetGazeKey(KeyParams.Keys gazeKey)
+    {
+        gazeKeyController = keyControllers[gazeKey];
+    }
+
+    public void ClearGazeKey()
+    {
+        gazeKeyController = null;
+    }
+
+
+    // callback functions
+    public void KeyboardDwellTimeCallback()
+    {
+
+    }
+
+    public void KeyboardButtonClickCallback()
+    {
+
+    }
+
+    public void KeyboardIllumiReadSwypeCallback()
+    {
+
+    }
+
+    public void KeyboardFreeSwitchCallback()
+    {
+
+    }
+
+
+
 
 
 

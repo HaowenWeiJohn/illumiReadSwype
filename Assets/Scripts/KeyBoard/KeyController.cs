@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +8,7 @@ using UnityEngine.UI;
 public class KeyController : MonoBehaviour
 {
 
-    
+
 
     //// TPM text field
     //public TextMeshProUGUI textMesh;
@@ -151,13 +152,20 @@ public class KeyController : MonoBehaviour
     //    }
     //}
 
+    public Image keyImage;
+    public TextMeshProUGUI keyText;
 
     public List<KeyController> keyControllers = new List<KeyController>();
+    public KeyBoardController keyboardController;
 
-
-    public Params.Keys key;
+    public KeyParams.Keys key;
     
-    public TextMeshProUGUI keyText;
+
+
+
+    public bool hasGazeThisFrame = false;
+    public bool selected = false;
+
 
 
     void Start()
@@ -168,20 +176,113 @@ public class KeyController : MonoBehaviour
 
     void Update()
     {
-        
+
+        switch(keyboardController.interactionMode)
+        {
+            case Presets.InteractionMode.DwellTime:
+                KeyDwellTimeCallback();
+                break;
+            case Presets.InteractionMode.ButtonClick:
+                KeyButtonClickCallback();
+                break;
+            case Presets.InteractionMode.IllumiReadSwype:
+                KeyIllumiReadSwypeCallback();
+                break;
+            case Presets.InteractionMode.FreeSwitch:
+                KeyFreeSwitchCallback();
+                break;
+
+        }
+
+
+
+        // reset the flag
+        ClearGaze();
+
+
+
     }
 
-    public void initChars()
-    {
-
-    }
 
 
-    public void setKey(Params.Keys key)
+    public void SetKey(KeyParams.Keys key)
     {
         this.key = key;
-        keyText.text = Params.KeysString[key];
+        keyText.text = KeyParams.KeysString[key];
         //Debug.Log(Params.KeysString[key]);
+    }
+
+
+    public void HasGaze()
+    {
+        hasGazeThisFrame = true;
+    }
+
+    public void ClearGaze()
+    {
+        hasGazeThisFrame = false;
+    }
+
+
+    // callback functions
+    public void KeyDwellTimeCallback()
+    {
+
+
+
+
+    }
+
+    public void KeyButtonClickCallback()
+    {
+
+        if (hasGazeThisFrame)
+        {
+            if (!selected)
+            {
+                // first time one this key
+            }
+            selected = true;
+            keyImage.color = KeyParams.KeyActiveColor;
+
+            // watch the input
+            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            {
+                Debug.Log(key);
+
+            }
+
+
+        }
+        else
+        {
+            selected = false;
+            // set color to regular color
+            keyImage.color = KeyParams.KeyInactiveColor;
+
+        }
+
+
+
+
+        // if keypad enter is pressed, we evoke key stroke
+        
+
+
+
+
+    }
+
+    public void KeyIllumiReadSwypeCallback()
+    {
+
+
+
+    }
+
+    public void KeyFreeSwitchCallback()
+    {
+
     }
 
 

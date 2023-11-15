@@ -280,14 +280,33 @@ public class EyeTrackingExample : MonoBehaviour
             }
 
 
+            // check the hit object type
+            KeyController keyController = hit.collider.gameObject.GetComponent<KeyController>();
+            if (keyController != null)
+            {
+                // hit on key
+                //keyController.setGaze();
+                //Vector3 pointOnKey = keyController.transform.InverseTransformDirection(hit.point);
+                keyController.HasGaze();
+                keyController.keyboardController.SetGazeKey(keyController.key);
+                
+                
+            }
+            else
+            {
+                keyController.keyboardController.ClearGazeKey();
+
+            }
+
+
             
 
-        //    // Alternative way to check if you hit object with tag
-        //    if (hit.transform.CompareTag("FreeRotating"))
-        //    {
-        //        AddForceAtHitPosition();
-        //    }
-        //}
+            //// Alternative way to check if you hit object with tag
+            //if (hit.transform.CompareTag("FreeRotating"))
+            //{
+            //    AddForceAtHitPosition();
+            //}
+        }
         else
         {
             // If gaze ray didn't hit anything, the gaze target is shown at fixed distance

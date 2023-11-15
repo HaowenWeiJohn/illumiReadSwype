@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Params
+public static class KeyParams
 {
 
 
@@ -54,6 +54,8 @@ public static class Params
 
     public static float KeyWidth = 0.1f;
     public static float KeyHeight = 0.1f;
+
+
 
 
 
@@ -133,13 +135,12 @@ public static class Params
 
 
     // define an enum for different interaction modes
-    public enum InteractionMode
-    {
-        DwellTime = 1,
-        ButtonClick = 2,
-        IllumiReadSwype = 3,
-        FreeSwitch = 4
-    }
+    public static Color KeyInactiveColor = Color.white;
+    public static Color KeyActiveColor = Color.red;
+
+
+
+
 
 
 }

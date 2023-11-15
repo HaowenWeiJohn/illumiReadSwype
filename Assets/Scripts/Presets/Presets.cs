@@ -43,6 +43,9 @@ public static class Presets
     public static KeyCode NextStateKey = KeyCode.KeypadEnter;
     public static KeyCode InterruptKey = KeyCode.Escape;
 
+    public static KeyCode KeyBoardClickKey = KeyCode.Space;
+
+
 
     public enum UserInputTypes
     {
@@ -76,6 +79,16 @@ public static class Presets
         RunningState = 1,
         EndingState = 2,
         InterruptState = 3
+    }
+
+
+    public enum InteractionMode
+    {
+        None = 0,
+        DwellTime = 1,
+        ButtonClick = 2,
+        IllumiReadSwype = 3,
+        FreeSwitch = 4
     }
 
 

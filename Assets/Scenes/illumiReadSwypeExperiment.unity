@@ -2598,6 +2598,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1524785907}
+  - component: {fileID: 1524785908}
   m_Layer: 0
   m_Name: GUI
   m_TagString: Untagged
@@ -2623,6 +2624,18 @@ Transform:
   - {fileID: 872554291}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1524785908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1524785906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 873f1488012dbc14aa51d67f11422402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1540273235
 GameObject:
   m_ObjectHideFlags: 0
@@ -3104,7 +3117,7 @@ Transform:
   m_GameObject: {fileID: 1796401154}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: -0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3123,6 +3136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keyPrefab: {fileID: 1907472305210011484, guid: c9a3a149d3e75984e8e650cc403250e1, type: 3}
+  interactionMode: 2
+  gazeKeyController: {fileID: 0}
 --- !u!1 &1833677729
 GameObject:
   m_ObjectHideFlags: 0
@@ -3179,7 +3194,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1836257017
 Transform:
   m_ObjectHideFlags: 0

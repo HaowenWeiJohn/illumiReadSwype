@@ -48,9 +48,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb07a48255d7b134c9f19d7b33e03654, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keyControllers: []
-  key: 0
+  keyImage: {fileID: 5002939845488551787}
   keyText: {fileID: 1033987595181690781}
+  keyControllers: []
+  keyboardController: {fileID: 0}
+  key: 0
+  hasGazeThisFrame: 0
+  selected: 0
 --- !u!33 &2448184202995501712
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -443,7 +447,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7460278612091133421}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
