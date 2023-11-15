@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -166,6 +167,9 @@ public class KeyController : MonoBehaviour
     public bool hasGazeThisFrame = false;
     public bool selected = false;
 
+    // dwell timee params
+    public float keyDwellTimeCounter = 0;
+
 
 
     void Start()
@@ -228,7 +232,39 @@ public class KeyController : MonoBehaviour
     public void KeyDwellTimeCallback()
     {
 
+        if (hasGazeThisFrame)
+        {
+            if(!selected)
+            {
+                // first time one this key
+                // play the audio clip    
+            }
 
+            
+            keyDwellTimeCounter += Time.deltaTime;
+
+
+            keyImage.color = Color.Lerp(KeyParams.KeyInactiveColor, KeyParams.KeyActiveColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+
+
+            if (keyDwellTimeCounter >= KeyParams.KeyboardDwellActivateTime)
+            {
+                // reset the counter
+                keyDwellTimeCounter = 0;
+                // reset the color
+                keyImage.color = KeyParams.KeyInactiveColor;
+                // evoke key stroke
+                Debug.Log(key);
+            }
+
+
+        }
+        else
+        {
+            keyDwellTimeCounter = 0;
+            keyImage.color = KeyParams.KeyInactiveColor;
+            selected = false;
+        }
 
 
     }

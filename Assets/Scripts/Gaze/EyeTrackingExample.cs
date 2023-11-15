@@ -71,6 +71,10 @@ public class EyeTrackingExample : MonoBehaviour
     [Header("Print gaze data framerate while logging.")]
     public bool printFramerate = false;
 
+
+    [Header("Stream gaze data to LSL")]
+    public bool streamGazeData = true;
+
     private List<InputDevice> devices = new List<InputDevice>();
     private InputDevice device;
     private Eyes eyes;
@@ -337,6 +341,111 @@ public class EyeTrackingExample : MonoBehaviour
                 LogGazeData(dataSinceLastUpdate[i], eyeMeasurementsSinceLastUpdate[i]);
             }
         }
+
+        if (streamGazeData)
+        {
+            int dataCount = VarjoEyeTracking.GetGazeList(out dataSinceLastUpdate, out eyeMeasurementsSinceLastUpdate);
+            for (int i = 0; i < dataCount; i++)
+            {
+                float[] varjoGazeData = new float[39];
+
+
+
+
+
+
+                //# Gaze data frame number
+                //GazeDataFrameNumber = 0
+
+                //# Gaze data capture time (nanoseconds)
+                //GazeCaptureTime = 1
+
+                //# Log time (milliseconds)
+                //LogTime = 2
+
+                //# HMD
+                //HMDLocalPositionX = 3
+                //HMDLocalPositionY = 4
+                //HMDLocalPositionZ = 5
+
+                //HMDLocalRotationX = 6
+                //HMDLocalRotationY = 7
+                //HMDLocalRotationZ = 8
+
+                //# Combined gaze
+                //CombinedGazeValid = 9
+
+                //CombinedGazeForwardX = 10
+                //CombinedGazeForwardY = 11
+                //CombinedGazeForwardZ = 12
+
+                //CombinedGazeOriginX = 13
+                //CombinedGazeOriginY = 14
+                //CombinedGazeOriginZ = 15
+
+                //# IDP
+                //InterPupillaryDistanceInMM = 16
+
+                //# Left eye
+                //LeftEyeGazeValid = 17
+
+                //LeftGazeForwardX = 18
+                //LeftGazeForwardY = 19
+                //LeftGazeForwardZ = 20
+
+                //LeftGazeOriginX = 21
+                //LeftGazeOriginY = 22
+                //LeftGazeOriginZ = 23
+
+                //LeftPupilIrisDiameterRatio = 24
+                //LeftPupilDiameterInMM = 25
+                //LeftIrisDiameterInMM = 26
+
+                //# Right eye
+                //RightEyeGazeValid = 27
+
+                //RightGazeForwardX = 28
+                //RightGazeForwardY = 29
+                //RightGazeForwardZ = 30
+
+                //RightGazeOriginX = 31
+                //RightGazeOriginY = 32
+                //RightGazeOriginZ = 33
+
+                //RightPupilIrisDiameterRatio = 34
+                //RightPupilDiameterInMM = 35
+                //RightIrisDiameterInMM = 36
+
+                //# focus
+                //FocusDistance = 37
+                //FocusStability = 38
+
+
+
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].gaze.forward.ToString("F3"));
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].gaze.origin.ToString("F3"));
+                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].leftPupilDiameterInMM.ToString("F3"));
+                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].rightPupilDiameterInMM.ToString("F3"));
+                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].leftIrisDiameterInMM.ToString("F3"));
+                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].rightIrisDiameterInMM.ToString("F3"));
+                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].leftPupilIrisDiameterRatio.ToString("F3"));
+                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].rightPupilIrisDiameterRatio.ToString("F3"));
+                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].interPupillaryDistanceInMM.ToString("F3"));
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].focusDistance.ToString("F3"));
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].focusStability.ToString("F3"));
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].frameNumber.ToString("F3"));
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].captureTime.ToString("F3"));
+                //Debug.Log("Gaze data: " + (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString("F3"));
+                //Debug.Log("Gaze data: " + xrCamera.transform.localPosition.ToString("F3"));
+                //Debug.Log("Gaze data: " + xrCamera.transform.localRotation.ToString("F3"));
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].status.ToString("F3"));
+                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].leftStatus.ToString("F3"));  
+            }
+
+        }
+
+
+
     }
 
     void AddForceAtHitPosition()

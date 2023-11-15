@@ -138,7 +138,7 @@ public static class KeyParams
     public static Color KeyInactiveColor = Color.white;
     public static Color KeyActiveColor = Color.red;
 
-
+    public static float KeyboardDwellActivateTime = 1.0f;
 
 
 
