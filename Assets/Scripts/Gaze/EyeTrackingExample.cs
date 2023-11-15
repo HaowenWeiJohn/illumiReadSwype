@@ -72,8 +72,11 @@ public class EyeTrackingExample : MonoBehaviour
     public bool printFramerate = false;
 
 
-    [Header("Stream gaze data to LSL")]
+    [Header("Lab Streaming Layer (LSL)")]
     public bool streamGazeData = true;
+    public VarjoGazeDataLSLOutletController varjoGazeDataLSLOutletController;
+
+
 
     private List<InputDevice> devices = new List<InputDevice>();
     private InputDevice device;
@@ -349,98 +352,77 @@ public class EyeTrackingExample : MonoBehaviour
             {
                 float[] varjoGazeData = new float[39];
 
+                //Gaze data frame number
+                varjoGazeData[0] = dataSinceLastUpdate[i].frameNumber;
+
+                //Gaze data capture time (nanoseconds)
+                varjoGazeData[1] = dataSinceLastUpdate[i].captureTime;
+
+                //Log time (milliseconds)
+                varjoGazeData[2] = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+
+                //HMD
+                varjoGazeData[3] = xrCamera.transform.localPosition.x;
+                varjoGazeData[4] = xrCamera.transform.localPosition.y;
+                varjoGazeData[5] = xrCamera.transform.localPosition.z;
+
+                varjoGazeData[6] = xrCamera.transform.localRotation.x;
+                varjoGazeData[7] = xrCamera.transform.localRotation.y;
+                varjoGazeData[8] = xrCamera.transform.localRotation.z;
+
+                //Combined gaze
+                bool invalid = dataSinceLastUpdate[i].status == VarjoEyeTracking.GazeStatus.Invalid;
+                varjoGazeData[9] = invalid ? 0 : 1;
+                varjoGazeData[10] = invalid ? 0 : dataSinceLastUpdate[i].gaze.forward.x;
+                varjoGazeData[11] = invalid ? 0 : dataSinceLastUpdate[i].gaze.forward.y;
+                varjoGazeData[12] = invalid ? 0 : dataSinceLastUpdate[i].gaze.forward.z;
+
+                varjoGazeData[13] = invalid ? 0 : dataSinceLastUpdate[i].gaze.origin.x;
+                varjoGazeData[14] = invalid ? 0 : dataSinceLastUpdate[i].gaze.origin.y;
+                varjoGazeData[15] = invalid ? 0 : dataSinceLastUpdate[i].gaze.origin.z;
+
+                //IDP
+                varjoGazeData[16] = invalid ? 0 : eyeMeasurementsSinceLastUpdate[i].interPupillaryDistanceInMM;
+
+                //Left eye
+                bool leftInvalid = dataSinceLastUpdate[i].leftStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
+                varjoGazeData[17] = leftInvalid ? 0 : 1;
+                varjoGazeData[18] = leftInvalid ? 0 : dataSinceLastUpdate[i].left.forward.x;
+                varjoGazeData[19] = leftInvalid ? 0 : dataSinceLastUpdate[i].left.forward.y;
+                varjoGazeData[20] = leftInvalid ? 0 : dataSinceLastUpdate[i].left.forward.z;
+
+                varjoGazeData[21] = leftInvalid ? 0 : dataSinceLastUpdate[i].left.origin.x;
+                varjoGazeData[22] = leftInvalid ? 0 : dataSinceLastUpdate[i].left.origin.y;
+                varjoGazeData[23] = leftInvalid ? 0 : dataSinceLastUpdate[i].left.origin.z;
+
+                varjoGazeData[24] = leftInvalid ? 0 : eyeMeasurementsSinceLastUpdate[i].leftPupilIrisDiameterRatio;
+                varjoGazeData[25] = leftInvalid ? 0 : eyeMeasurementsSinceLastUpdate[i].leftPupilDiameterInMM;
+                varjoGazeData[26] = leftInvalid ? 0 : eyeMeasurementsSinceLastUpdate[i].leftIrisDiameterInMM;
+
+                //Right eye
+                bool rightInvalid = dataSinceLastUpdate[i].rightStatus == VarjoEyeTracking.GazeEyeStatus.Invalid;
+                varjoGazeData[27] = rightInvalid ? 0 : 1;
+                varjoGazeData[28] = rightInvalid ? 0 : dataSinceLastUpdate[i].right.forward.x;
+                varjoGazeData[29] = rightInvalid ? 0 : dataSinceLastUpdate[i].right.forward.y;
+                varjoGazeData[30] = rightInvalid ? 0 : dataSinceLastUpdate[i].right.forward.z;
+
+                varjoGazeData[31] = rightInvalid ? 0 : dataSinceLastUpdate[i].right.origin.x;
+                varjoGazeData[32] = rightInvalid ? 0 : dataSinceLastUpdate[i].right.origin.y;
+                varjoGazeData[33] = rightInvalid ? 0 : dataSinceLastUpdate[i].right.origin.z;
+
+                varjoGazeData[34] = rightInvalid ? 0 : eyeMeasurementsSinceLastUpdate[i].rightPupilIrisDiameterRatio;
+                varjoGazeData[35] = rightInvalid ? 0 : eyeMeasurementsSinceLastUpdate[i].rightPupilDiameterInMM;
+                varjoGazeData[36] = rightInvalid ? 0 : eyeMeasurementsSinceLastUpdate[i].rightIrisDiameterInMM;
 
 
+                //Focus
+                varjoGazeData[37] = invalid ? 0 : dataSinceLastUpdate[i].focusDistance;
+                varjoGazeData[38] = invalid ? 0 : dataSinceLastUpdate[i].focusStability;
 
 
+                varjoGazeDataLSLOutletController.pushVarjoGazeData(varjoGazeData);
 
-                //# Gaze data frame number
-                //GazeDataFrameNumber = 0
-
-                //# Gaze data capture time (nanoseconds)
-                //GazeCaptureTime = 1
-
-                //# Log time (milliseconds)
-                //LogTime = 2
-
-                //# HMD
-                //HMDLocalPositionX = 3
-                //HMDLocalPositionY = 4
-                //HMDLocalPositionZ = 5
-
-                //HMDLocalRotationX = 6
-                //HMDLocalRotationY = 7
-                //HMDLocalRotationZ = 8
-
-                //# Combined gaze
-                //CombinedGazeValid = 9
-
-                //CombinedGazeForwardX = 10
-                //CombinedGazeForwardY = 11
-                //CombinedGazeForwardZ = 12
-
-                //CombinedGazeOriginX = 13
-                //CombinedGazeOriginY = 14
-                //CombinedGazeOriginZ = 15
-
-                //# IDP
-                //InterPupillaryDistanceInMM = 16
-
-                //# Left eye
-                //LeftEyeGazeValid = 17
-
-                //LeftGazeForwardX = 18
-                //LeftGazeForwardY = 19
-                //LeftGazeForwardZ = 20
-
-                //LeftGazeOriginX = 21
-                //LeftGazeOriginY = 22
-                //LeftGazeOriginZ = 23
-
-                //LeftPupilIrisDiameterRatio = 24
-                //LeftPupilDiameterInMM = 25
-                //LeftIrisDiameterInMM = 26
-
-                //# Right eye
-                //RightEyeGazeValid = 27
-
-                //RightGazeForwardX = 28
-                //RightGazeForwardY = 29
-                //RightGazeForwardZ = 30
-
-                //RightGazeOriginX = 31
-                //RightGazeOriginY = 32
-                //RightGazeOriginZ = 33
-
-                //RightPupilIrisDiameterRatio = 34
-                //RightPupilDiameterInMM = 35
-                //RightIrisDiameterInMM = 36
-
-                //# focus
-                //FocusDistance = 37
-                //FocusStability = 38
-
-
-
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].gaze.forward.ToString("F3"));
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].gaze.origin.ToString("F3"));
-                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].leftPupilDiameterInMM.ToString("F3"));
-                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].rightPupilDiameterInMM.ToString("F3"));
-                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].leftIrisDiameterInMM.ToString("F3"));
-                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].rightIrisDiameterInMM.ToString("F3"));
-                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].leftPupilIrisDiameterRatio.ToString("F3"));
-                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].rightPupilIrisDiameterRatio.ToString("F3"));
-                //Debug.Log("Gaze data: " + eyeMeasurementsSinceLastUpdate[i].interPupillaryDistanceInMM.ToString("F3"));
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].focusDistance.ToString("F3"));
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].focusStability.ToString("F3"));
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].frameNumber.ToString("F3"));
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].captureTime.ToString("F3"));
-                //Debug.Log("Gaze data: " + (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond).ToString("F3"));
-                //Debug.Log("Gaze data: " + xrCamera.transform.localPosition.ToString("F3"));
-                //Debug.Log("Gaze data: " + xrCamera.transform.localRotation.ToString("F3"));
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].status.ToString("F3"));
-                //Debug.Log("Gaze data: " + dataSinceLastUpdate[i].leftStatus.ToString("F3"));  
-            }
+              }
 
         }
 

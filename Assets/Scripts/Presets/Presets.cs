@@ -29,7 +29,7 @@ public static class Presets
     public static string GazeDataLSLOutletStreamName = "VarjoEyeTrackingLSL";
     public static string GazeDataLSLOutletStreamType = "GazeData";
     public static string GazeDataLSLOutletStreamID = "2";
-    public static int GazeDataChannelNum = 35;
+    public static int GazeDataChannelNum = 39;
     public static float GazeDataNominalSamplingRate = 200;
 
 
