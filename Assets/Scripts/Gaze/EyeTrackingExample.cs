@@ -305,9 +305,6 @@ public class EyeTrackingExample : MonoBehaviour
 
             }
 
-
-            
-
             //// Alternative way to check if you hit object with tag
             //if (hit.transform.CompareTag("FreeRotating"))
             //{
