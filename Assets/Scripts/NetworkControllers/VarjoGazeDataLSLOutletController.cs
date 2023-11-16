@@ -12,7 +12,7 @@ public class VarjoGazeDataLSLOutletController : LSLOutletInterface
             Presets.GazeDataLSLOutletStreamType,
             Presets.GazeDataChannelNum,
             Presets.GazeDataNominalSamplingRate,
-            LSL.channel_format_t.cf_float32
+            LSL.channel_format_t.cf_double64
         );
     }
 
@@ -22,7 +22,7 @@ public class VarjoGazeDataLSLOutletController : LSLOutletInterface
         
     }
 
-    public void pushVarjoGazeData(float[] varjoGazeData)
+    public void pushVarjoGazeData(double[] varjoGazeData)
     {
         // varjo gaze data is a 39-dim vector
         streamOutlet.push_sample(varjoGazeData);

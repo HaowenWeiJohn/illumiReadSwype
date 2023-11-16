@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 using Varjo.XR;
+using LSL;
 
 public enum GazeDataSource
 {
@@ -342,21 +343,33 @@ public class EyeTrackingExample : MonoBehaviour
             }
         }
 
+
         if (streamGazeData)
         {
             int dataCount = VarjoEyeTracking.GetGazeList(out dataSinceLastUpdate, out eyeMeasurementsSinceLastUpdate);
+
             for (int i = 0; i < dataCount; i++)
             {
-                float[] varjoGazeData = new float[39];
+                double[] varjoGazeData = new double[39];
 
                 //Gaze data frame number
                 varjoGazeData[0] = dataSinceLastUpdate[i].frameNumber;
 
                 //Gaze data capture time (nanoseconds)
-                varjoGazeData[1] = dataSinceLastUpdate[i].captureTime;
+                //varjoGazeData[1] = dataSinceLastUpdate[i].captureTime;
+                // convert to Unix time
+
+                //long diff = VarjoTime.
+
+                
+                
+                
+
+
 
                 //Log time (milliseconds)
                 varjoGazeData[2] = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+                
 
                 //HMD
                 varjoGazeData[3] = xrCamera.transform.localPosition.x;
@@ -418,6 +431,9 @@ public class EyeTrackingExample : MonoBehaviour
 
 
                 varjoGazeDataLSLOutletController.pushVarjoGazeData(varjoGazeData);
+                
+
+
 
               }
 
