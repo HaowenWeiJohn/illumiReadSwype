@@ -7,6 +7,8 @@ using UnityEngine.XR;
 using Varjo.XR;
 using LSL;
 
+
+
 public enum GazeDataSource
 {
     InputSubsystem,
@@ -361,10 +363,15 @@ public class EyeTrackingExample : MonoBehaviour
 
                 //long diff = VarjoTime.
 
-                
-                
+                long timeDifference = VarjoTime.GetVarjoTimestamp() - dataSinceLastUpdate[i].captureTime;
                 
 
+                double lsl_local_clock = LSL.LSL.local_clock();
+                double frame_in_lsl_local_clock = lsl_local_clock - (double)timeDifference / 1000000000.0;
+
+                Debug.Log(frame_in_lsl_local_clock);
+
+                varjoGazeData[1] = frame_in_lsl_local_clock;
 
 
                 //Log time (milliseconds)
