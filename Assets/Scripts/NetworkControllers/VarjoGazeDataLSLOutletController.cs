@@ -28,6 +28,12 @@ public class VarjoGazeDataLSLOutletController : LSLOutletInterface
         streamOutlet.push_sample(varjoGazeData);
     }
 
+    public void pushVarjoGazeData(double[] varjoGazeData, double timestamps)
+    {
+        // varjo gaze data is a 39-dim vector
+        streamOutlet.push_sample(varjoGazeData, timestamps);
+
+    }
 
 
 }

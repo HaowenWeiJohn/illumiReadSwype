@@ -79,6 +79,8 @@ public class EyeTrackingExample : MonoBehaviour
     public bool streamGazeData = true;
     public VarjoGazeDataLSLOutletController varjoGazeDataLSLOutletController;
 
+    public bool printGazeDataTimestamp = false;
+
 
 
     private List<InputDevice> devices = new List<InputDevice>();
@@ -357,25 +359,10 @@ public class EyeTrackingExample : MonoBehaviour
                 //Gaze data frame number
                 varjoGazeData[0] = dataSinceLastUpdate[i].frameNumber;
 
-                //Gaze data capture time (nanoseconds)
-                //varjoGazeData[1] = dataSinceLastUpdate[i].captureTime;
-                // convert to Unix time
-
-                //long diff = VarjoTime.
-
-                long timeDifference = VarjoTime.GetVarjoTimestamp() - dataSinceLastUpdate[i].captureTime;
-                
-
-                double lsl_local_clock = LSL.LSL.local_clock();
-                double frame_in_lsl_local_clock = lsl_local_clock - (double)timeDifference / 1000000000.0;
-
-                Debug.Log(frame_in_lsl_local_clock);
-
-                varjoGazeData[1] = frame_in_lsl_local_clock;
 
 
-                //Log time (milliseconds)
-                varjoGazeData[2] = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
+                //Log time (nanoseconds)
+                varjoGazeData[2] = dataSinceLastUpdate[i].captureTime;
                 
 
                 //HMD
@@ -437,7 +424,15 @@ public class EyeTrackingExample : MonoBehaviour
                 varjoGazeData[38] = invalid ? 0 : dataSinceLastUpdate[i].focusStability;
 
 
-                varjoGazeDataLSLOutletController.pushVarjoGazeData(varjoGazeData);
+
+                long timeDifference = VarjoTime.GetVarjoTimestamp() - dataSinceLastUpdate[i].captureTime;
+                double lsl_local_clock = LSL.LSL.local_clock();
+                double timestamp_in_lsl_local_clock = lsl_local_clock - (double)timeDifference / 1000000000.0;
+                
+                if(printGazeDataTimestamp)
+                    Debug.Log(timestamp_in_lsl_local_clock);
+
+                varjoGazeDataLSLOutletController.pushVarjoGazeData(varjoGazeData, timestamp_in_lsl_local_clock);
                 
 
 
