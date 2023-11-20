@@ -9,6 +9,12 @@ public class UserInterfaceController: MonoBehaviour
 
     GameManager gameManager;
 
+    public KeyboardController keyBoardController;
+    public KeyboardInputFieldCanvasController keyboardInputFieldCanvasController;
+
+
+
+
 
     void Start()
     {
@@ -19,7 +25,20 @@ public class UserInterfaceController: MonoBehaviour
     void Update()
     {
         
+
+
+
+
     }
+
+    
+
+    public void UpdateKeyInput(KeyParams.Keys key)
+    {
+        keyboardInputFieldCanvasController.UpdateKeyInput(key);
+    }
+
+
 
 
     public virtual void EnableSelf()

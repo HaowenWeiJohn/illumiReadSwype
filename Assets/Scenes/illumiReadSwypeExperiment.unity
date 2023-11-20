@@ -1614,8 +1614,9 @@ GameObject:
   - component: {fileID: 872554294}
   - component: {fileID: 872554293}
   - component: {fileID: 872554292}
+  - component: {fileID: 872554295}
   m_Layer: 5
-  m_Name: InputCanvas
+  m_Name: KeyboardInputFieldCanvasController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1704,6 +1705,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &872554295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 872554290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc9bef6f4734e4b4cb9822642576087c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputField: {fileID: 2038019808}
 --- !u!1 &878740424
 GameObject:
   m_ObjectHideFlags: 0
@@ -2671,6 +2685,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 873f1488012dbc14aa51d67f11422402, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keyBoardController: {fileID: 1796401156}
+  keyboardInputFieldCanvasController: {fileID: 872554295}
 --- !u!1 &1540273235
 GameObject:
   m_ObjectHideFlags: 0
@@ -3173,6 +3189,7 @@ MonoBehaviour:
   keyPrefab: {fileID: 1907472305210011484, guid: c9a3a149d3e75984e8e650cc403250e1, type: 3}
   interactionMode: 2
   gazeKeyController: {fileID: 0}
+  userInterfaceController: {fileID: 0}
 --- !u!1 &1833677729
 GameObject:
   m_ObjectHideFlags: 0

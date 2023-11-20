@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class KeyBoardController : MonoBehaviour
+public class KeyboardController : MonoBehaviour
 {
     //public KeyControllerArchive[] keyControllers = new KeyControllerArchive[26];
 
@@ -58,6 +58,9 @@ public class KeyBoardController : MonoBehaviour
 
     public KeyController gazeKeyController;
 
+    public UserInterfaceController userInterfaceController;
+
+
 
 
     void Start()
@@ -111,7 +114,7 @@ public class KeyBoardController : MonoBehaviour
                 GameObject keyObject = Instantiate(keyPrefab, position, Quaternion.identity);
                 keyObject.transform.SetParent(transform, false);
                 KeyController thisKeyController = keyObject.GetComponent<KeyController>();
-                thisKeyController.keyboardController = gameObject.GetComponent<KeyBoardController>();
+                thisKeyController.keyboardController = gameObject.GetComponent<KeyboardController>();
                 thisKeyController.SetKey(KeyParams.CharsOrders[i][j]);
                 thisKeyController.ClearGaze();
                 keyControllers.Add(KeyParams.CharsOrders[i][j], thisKeyController);
@@ -145,6 +148,12 @@ public class KeyBoardController : MonoBehaviour
     }
 
 
+    public void UpdateKeyInput(KeyParams.Keys key)
+    {
+        userInterfaceController.UpdateKeyInput(key);
+    }
+
+
     // callback functions
     public void KeyboardDwellTimeCallback()
     {
@@ -166,10 +175,14 @@ public class KeyBoardController : MonoBehaviour
 
     }
 
-
-
-
-
+    public void ResetKeyboard()
+    {
+        foreach(KeyController keyController in keyControllers.Values)
+        {
+            keyController.ClearGaze();
+            keyController.ResetKeyColor();
+        }
+    }
 
 
 }

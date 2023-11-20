@@ -157,7 +157,7 @@ public class KeyController : MonoBehaviour
     public TextMeshProUGUI keyText;
 
     public List<KeyController> keyControllers = new List<KeyController>();
-    public KeyBoardController keyboardController;
+    public KeyboardController keyboardController;
 
     public KeyParams.Keys key;
     
@@ -227,6 +227,10 @@ public class KeyController : MonoBehaviour
         hasGazeThisFrame = false;
     }
 
+    public void ResetKeyColor()
+    {
+        keyImage.color = KeyParams.KeyInactiveColor;
+    }
 
     // callback functions
     public void KeyDwellTimeCallback()
@@ -254,6 +258,9 @@ public class KeyController : MonoBehaviour
                 // reset the color
                 keyImage.color = KeyParams.KeyInactiveColor;
                 // evoke key stroke
+
+                keyboardController.UpdateKeyInput(key);
+
                 Debug.Log(key);
             }
 
@@ -284,6 +291,8 @@ public class KeyController : MonoBehaviour
             // watch the input
             if (Input.GetKeyDown(KeyCode.LeftAlt))
             {
+                // evoke key stroke
+                keyboardController.UpdateKeyInput(key);
                 Debug.Log(key);
 
             }
