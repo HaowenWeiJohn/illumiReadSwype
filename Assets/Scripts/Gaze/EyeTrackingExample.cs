@@ -97,6 +97,7 @@ public class EyeTrackingExample : MonoBehaviour
     private Vector3 direction;
     private Vector3 rayOrigin;
     private RaycastHit hit;
+    RaycastHit[] hits;
     private float distance;
     private StreamWriter writer = null;
     private bool logging = false;
@@ -270,6 +271,19 @@ public class EyeTrackingExample : MonoBehaviour
             }
         }
 
+
+
+        //hits = Physics.RaycastAll(rayOrigin, direction, 100.0F);
+
+        //if (hits.Length > 0)
+        //{
+        //    foreach (RaycastHit hit in hits)
+        //    {
+        //        Debug.Log(hit.collider.gameObject.tag);
+        //    }
+        //}
+
+
         // Raycast to world from VR Camera position towards fixation point
         if (Physics.SphereCast(rayOrigin, gazeRadius, direction, out hit))
         {
@@ -359,10 +373,11 @@ public class EyeTrackingExample : MonoBehaviour
                 //Gaze data frame number
                 varjoGazeData[0] = dataSinceLastUpdate[i].frameNumber;
 
-
+                //Gaze data capture time (nanoseconds)
+                varjoGazeData[1] = dataSinceLastUpdate[i].captureTime;
 
                 //Log time (nanoseconds)
-                varjoGazeData[2] = dataSinceLastUpdate[i].captureTime;
+                varjoGazeData[2] = (DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond);
                 
 
                 //HMD
@@ -428,6 +443,8 @@ public class EyeTrackingExample : MonoBehaviour
                 long timeDifference = VarjoTime.GetVarjoTimestamp() - dataSinceLastUpdate[i].captureTime;
                 double lsl_local_clock = LSL.LSL.local_clock();
                 double timestamp_in_lsl_local_clock = lsl_local_clock - (double)timeDifference / 1000000000.0;
+
+                varjoGazeData[1] = timestamp_in_lsl_local_clock;
                 
                 if(printGazeDataTimestamp)
                     Debug.Log(timestamp_in_lsl_local_clock);

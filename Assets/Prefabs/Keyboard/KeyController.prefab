@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6305688496378990660}
   m_Layer: 0
   m_Name: KeyController
-  m_TagString: Untagged
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55,6 +55,7 @@ MonoBehaviour:
   key: 0
   hasGazeThisFrame: 0
   selected: 0
+  keyDwellTimeCounter: 0
 --- !u!33 &2448184202995501712
 MeshFilter:
   m_ObjectHideFlags: 0
