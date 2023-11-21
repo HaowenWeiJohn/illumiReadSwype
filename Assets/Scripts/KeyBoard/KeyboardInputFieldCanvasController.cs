@@ -26,4 +26,9 @@ public class KeyboardInputFieldCanvasController : MonoBehaviour
         inputField.text += KeyParams.KeysString[key];
     }
 
+    public void ResetInputField()
+    {
+        inputField.text = "";
+    }
+
 }

@@ -49,7 +49,7 @@ public class KeyboardController : MonoBehaviour
 
     //}
 
-
+    public UserInterfaceController userInterfaceController;
     public GameObject keyPrefab;
     public Dictionary<KeyParams.Keys, KeyController> keyControllers = new Dictionary<KeyParams.Keys, KeyController>();
 
@@ -58,7 +58,7 @@ public class KeyboardController : MonoBehaviour
 
     public KeyController gazeKeyController;
 
-    public UserInterfaceController userInterfaceController;
+
 
 
 

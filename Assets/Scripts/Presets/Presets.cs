@@ -43,7 +43,7 @@ public static class Presets
     public static KeyCode NextStateKey = KeyCode.KeypadEnter;
     public static KeyCode InterruptKey = KeyCode.Escape;
 
-    public static KeyCode KeyBoardClickKey = KeyCode.Space;
+    public static KeyCode KeyBoardClickKey = KeyCode.RightAlt;
 
 
 

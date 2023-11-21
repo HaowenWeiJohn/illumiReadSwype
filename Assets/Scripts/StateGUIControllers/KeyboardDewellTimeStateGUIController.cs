@@ -5,6 +5,9 @@ using UnityEngine;
 public class KeyboardDewellTimeStateGUIController : StateGUIController
 {
     // Start is called before the first frame update
+
+    public UserInterfaceController userInterfaceController;
+
     void Start()
     {
         
@@ -15,4 +18,19 @@ public class KeyboardDewellTimeStateGUIController : StateGUIController
     {
         base.Update();
     }
+
+
+    public override void EnableSelf()
+    {
+        base.EnableSelf();
+        userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.DwellTime);
+        userInterfaceController.EnableSelf();
+    }
+
+    public override void DisableSelf()
+    {
+        base.DisableSelf();
+        userInterfaceController.DisableSelf();
+    }
+
 }

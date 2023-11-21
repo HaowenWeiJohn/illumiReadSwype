@@ -7,7 +7,7 @@ public class UserInterfaceController: MonoBehaviour
     // Start is called before the first frame update
 
 
-    GameManager gameManager;
+    public GameManager gameManager;
 
     public KeyboardController keyBoardController;
     public KeyboardInputFieldCanvasController keyboardInputFieldCanvasController;
@@ -41,18 +41,28 @@ public class UserInterfaceController: MonoBehaviour
 
 
 
-    public virtual void EnableSelf()
+    public void EnableSelf()
     {
+        keyBoardController.ResetKeyboard();
+        keyboardInputFieldCanvasController.ResetInputField();
         gameObject.SetActive(true);
     }
 
-    public virtual void DisableSelf()
+    public void DisableSelf()
     {
+        keyBoardController.ResetKeyboard();
+        keyboardInputFieldCanvasController.ResetInputField();
         gameObject.SetActive(false);
     }
 
 
+    public void setKeyboardInteractionMode(Presets.InteractionMode interactionMode)
+    {
+        keyBoardController.interactionMode = interactionMode;
+    }
 
+
+    
 
 
 }
