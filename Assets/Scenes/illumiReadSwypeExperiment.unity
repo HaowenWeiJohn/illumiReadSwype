@@ -285,8 +285,8 @@ Transform:
   m_GameObject: {fileID: 3609042}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.0001}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1796401155}
@@ -328,7 +328,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3609042}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1569,6 +1569,7 @@ MonoBehaviour:
   endStateController: {fileID: 147293803}
   eventMarkerLSLOutletController: {fileID: 750584291}
   varjoGazeDataLSLOutletController: {fileID: 1399761347}
+  varjoGazeOnKeyboardLSLOutletController: {fileID: 1544262545}
 --- !u!4 &306419106
 Transform:
   m_ObjectHideFlags: 0
@@ -3466,12 +3467,13 @@ MonoBehaviour:
   printFramerate: 0
   streamGazeData: 1
   varjoGazeDataLSLOutletController: {fileID: 1399761347}
+  varjoGazeOnKeyboardLSLOutletController: {fileID: 1544262545}
   printGazeDataTimestamp: 0
   gazeHitKeyController: {fileID: 0}
   gazeHitKey: 0
-  keyLocalHitPoint: {x: 0, y: 0, z: 0}
+  keyHitPointLocal: {x: 0, y: 0, z: 0}
   gazeHitKeyboardBackground: 0
-  keyboardBackgroundLocalHitPoint: {x: 0, y: 0, z: 0}
+  keyboardBackgroundHitPointLocal: {x: 0, y: 0, z: 0}
 --- !u!1 &839542666
 GameObject:
   m_ObjectHideFlags: 0
@@ -5544,6 +5546,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1544262544}
+  - component: {fileID: 1544262545}
   m_Layer: 0
   m_Name: VarjoGazeOnKeyboardLSLOutletController
   m_TagString: Untagged
@@ -5566,6 +5569,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 111635540}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1544262545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1544262543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79672986402130749baec44e909658d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1556163758
 GameObject:
   m_ObjectHideFlags: 0

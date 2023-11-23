@@ -74,7 +74,7 @@ public class GameManager : MonoBehaviour
     [Header("Network Controllers")]
     public EventMarkerLSLOutletController eventMarkerLSLOutletController;
     public VarjoGazeDataLSLOutletController varjoGazeDataLSLOutletController;
-
+    public VarjoGazeOnKeyboardLSLOutletController varjoGazeOnKeyboardLSLOutletController;
 
 
     //int experimentStateIndex = 0;

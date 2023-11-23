@@ -37,7 +37,7 @@ public static class Presets
     public static string GazeOnKeyboardLSLOutletStreamName = "VarjoGazeOnKeyboardLSL";
     public static string GazeOnKeyboardLSLOutletStreamType = "GazeOnKeyboard";
     public static string GazeOnKeyboardLSLOutletStreamID = "3";
-    public static int GazeOnKeyboardChannelNum = 3;
+    public static int GazeOnKeyboardChannelNum = 9;
     public static float GazeOnKeyboardNominalSamplingRate = 50;
 
 

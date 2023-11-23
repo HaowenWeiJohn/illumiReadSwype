@@ -78,16 +78,18 @@ public class EyeTrackingExample : MonoBehaviour
     [Header("Lab Streaming Layer (LSL)")]
     public bool streamGazeData = true;
     public VarjoGazeDataLSLOutletController varjoGazeDataLSLOutletController;
+    public VarjoGazeOnKeyboardLSLOutletController varjoGazeOnKeyboardLSLOutletController;
 
+    [Header("Print gaze data timestamp")]
     public bool printGazeDataTimestamp = false;
 
 
     [Header("Keyboard")]
     public KeyController gazeHitKeyController = null;
     public bool gazeHitKey = false;
-    public Vector3 keyLocalHitPoint = Vector3.zero;
+    public Vector3 keyHitPointLocal = Vector3.zero;
     public bool gazeHitKeyboardBackground = false;
-    public Vector3 keyboardBackgroundLocalHitPoint = Vector3.zero;
+    public Vector3 keyboardBackgroundHitPointLocal = Vector3.zero;
 
 
 
@@ -286,9 +288,9 @@ public class EyeTrackingExample : MonoBehaviour
 
         hits = Physics.RaycastAll(rayOrigin, direction, 100.0F);
         gazeHitKey = false;
-        keyLocalHitPoint = Vector3.zero;
+        keyHitPointLocal = Vector3.zero;
         gazeHitKeyboardBackground = false;
-        keyboardBackgroundLocalHitPoint = Vector3.zero;
+        keyboardBackgroundHitPointLocal = Vector3.zero;
 
         if (hits.Length > 0)
         {
@@ -301,6 +303,8 @@ public class EyeTrackingExample : MonoBehaviour
             distance = first_hit.distance;
             gazeTarget.transform.localScale = Vector3.one * distance;
 
+
+
             RotateWithGaze rotateWithGaze = first_hit.collider.gameObject.GetComponent<RotateWithGaze>();
             if (rotateWithGaze != null)
             {
@@ -312,26 +316,35 @@ public class EyeTrackingExample : MonoBehaviour
             gazeHitKeyController = null;
             foreach (RaycastHit hit in hits)
             {
+                Vector3 hitPointLocal = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
+
+                // include scaling
+                hitPointLocal.x = hitPointLocal.x * hit.collider.gameObject.transform.localScale.x;
+                hitPointLocal.y = hitPointLocal.y * hit.collider.gameObject.transform.localScale.y;
+                hitPointLocal.z = hitPointLocal.z * hit.collider.gameObject.transform.localScale.z;
+
 
                 if (hit.collider.gameObject.tag == KeyParams.KeyTag)
                 {
                     gazeHitKeyController = hit.collider.gameObject.GetComponent<KeyController>();
                     gazeHitKeyController.HasGaze();
                     gazeHitKey = true;
-                    keyLocalHitPoint = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
+                    keyHitPointLocal = hitPointLocal;
                     
                 }
                 else if(hit.collider.gameObject.tag == KeyParams.KeyboardBackgroundTag)
                 {
                     // get coordinate of the hit point on the keyboarrd
                     gazeHitKeyboardBackground = true;
-                    keyboardBackgroundLocalHitPoint = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
+                    keyboardBackgroundHitPointLocal = hitPointLocal;
                 }
                 else
                 {
                     // do nothing
                 }
             }
+
+
 
         }
         else
@@ -341,6 +354,14 @@ public class EyeTrackingExample : MonoBehaviour
             gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
             gazeTarget.transform.localScale = Vector3.one * floatingGazeTargetDistance;
         }
+
+        varjoGazeOnKeyboardLSLOutletController.PushVarjoGazeOnKeyboardData(
+            gazeHitKeyboardBackground,
+            keyboardBackgroundHitPointLocal,
+            gazeHitKey,
+            keyHitPointLocal,
+            gazeHitKeyController == null ? -1 : KeyParams.KeysID[gazeHitKeyController.key]
+        );
 
 
         //// Raycast to world from VR Camera position towards fixation point

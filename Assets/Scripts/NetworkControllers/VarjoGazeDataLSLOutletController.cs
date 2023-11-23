@@ -7,7 +7,7 @@ public class VarjoGazeDataLSLOutletController : LSLOutletInterface
     // Start is called before the first frame update
     void Start()
     {
-        initLSLStreamOutlet(
+        InitLSLStreamOutlet(
             Presets.GazeDataLSLOutletStreamName,
             Presets.GazeDataLSLOutletStreamType,
             Presets.GazeDataChannelNum,
