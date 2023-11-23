@@ -141,6 +141,7 @@ public static class KeyParams
     public static float KeyboardDwellActivateTime = 1.0f;
 
 
-
+    public static string KeyTag = "Key";
+    public static string KeyboardBackgroundTag = "KeyboardBackground";
 
 }

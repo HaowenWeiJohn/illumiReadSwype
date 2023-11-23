@@ -81,6 +81,20 @@ public class GameManager : MonoBehaviour
     int experimentBlockIndex = 0;
 
 
+
+    // parameters for frame rate
+    private float deltaTime = 0.0f;
+    private float fps = 0.0f;
+
+    void CalculateFrameRate()
+    {
+        deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        fps = 1.0f / deltaTime;
+        Debug.Log("FPS: " + fps);
+    }
+
+
+
     void Start()
     {
 
@@ -101,7 +115,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //CalculateFrameRate();
         if (currentGameState == Presets.GameState.IdleState) // the previous block has been finished
         {
             // check if there is more blocks to run
@@ -239,8 +253,6 @@ public class GameManager : MonoBehaviour
     //{
 
     //}
-
-
 
 
 

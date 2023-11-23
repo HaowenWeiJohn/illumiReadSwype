@@ -82,6 +82,14 @@ public class EyeTrackingExample : MonoBehaviour
     public bool printGazeDataTimestamp = false;
 
 
+    [Header("Keyboard")]
+    public KeyController gazeHitKeyController = null;
+    public bool gazeHitKey = false;
+    public Vector3 keyLocalHitPoint = Vector3.zero;
+    public bool gazeHitKeyboardBackground = false;
+    public Vector3 keyboardBackgroundLocalHitPoint = Vector3.zero;
+
+
 
     private List<InputDevice> devices = new List<InputDevice>();
     private InputDevice device;
@@ -96,8 +104,11 @@ public class EyeTrackingExample : MonoBehaviour
     private Vector3 fixationPoint;
     private Vector3 direction;
     private Vector3 rayOrigin;
-    private RaycastHit hit;
+    //private RaycastHit hit;
     RaycastHit[] hits;
+    
+
+
     private float distance;
     private StreamWriter writer = null;
     private bool logging = false;
@@ -273,62 +284,55 @@ public class EyeTrackingExample : MonoBehaviour
 
 
 
-        //hits = Physics.RaycastAll(rayOrigin, direction, 100.0F);
+        hits = Physics.RaycastAll(rayOrigin, direction, 100.0F);
+        gazeHitKey = false;
+        keyLocalHitPoint = Vector3.zero;
+        gazeHitKeyboardBackground = false;
+        keyboardBackgroundLocalHitPoint = Vector3.zero;
 
-        //if (hits.Length > 0)
-        //{
-        //    foreach (RaycastHit hit in hits)
-        //    {
-        //        Debug.Log(hit.collider.gameObject.tag);
-        //    }
-        //}
-
-
-        // Raycast to world from VR Camera position towards fixation point
-        if (Physics.SphereCast(rayOrigin, gazeRadius, direction, out hit))
+        if (hits.Length > 0)
         {
-            // Put target on gaze raycast position with offset towards user
-            gazeTarget.transform.position = hit.point - direction * targetOffset;
 
-            // Make gaze target point towards user
+
+            // gaze target
+            RaycastHit first_hit = hits[0];
+            gazeTarget.transform.position = first_hit.point - direction * targetOffset;
             gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
-
-            // Scale gazetarget with distance so it apperas to be always same size
-            distance = hit.distance;
+            distance = first_hit.distance;
             gazeTarget.transform.localScale = Vector3.one * distance;
 
-            // Prefer layers or tags to identify looked objects in your application
-            // This is done here using GetComponent for the sake of clarity as an example
-            RotateWithGaze rotateWithGaze = hit.collider.gameObject.GetComponent<RotateWithGaze>();
+            RotateWithGaze rotateWithGaze = first_hit.collider.gameObject.GetComponent<RotateWithGaze>();
             if (rotateWithGaze != null)
             {
                 rotateWithGaze.RayHit();
             }
 
 
-            // check the hit object type
-            KeyController keyController = hit.collider.gameObject.GetComponent<KeyController>();
-            if (keyController != null)
-            {
-                // hit on key
-                //keyController.setGaze();
-                //Vector3 pointOnKey = keyController.transform.InverseTransformDirection(hit.point);
-                keyController.HasGaze();
-                keyController.keyboardController.SetGazeKey(keyController.key);
-                
-                
-            }
-            else
-            {
-                keyController.keyboardController.ClearGazeKey();
 
+            gazeHitKeyController = null;
+            foreach (RaycastHit hit in hits)
+            {
+
+                if (hit.collider.gameObject.tag == KeyParams.KeyTag)
+                {
+                    gazeHitKeyController = hit.collider.gameObject.GetComponent<KeyController>();
+                    gazeHitKeyController.HasGaze();
+                    gazeHitKey = true;
+                    keyLocalHitPoint = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
+                    
+                }
+                else if(hit.collider.gameObject.tag == KeyParams.KeyboardBackgroundTag)
+                {
+                    // get coordinate of the hit point on the keyboarrd
+                    gazeHitKeyboardBackground = true;
+                    keyboardBackgroundLocalHitPoint = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
+                }
+                else
+                {
+                    // do nothing
+                }
             }
 
-            //// Alternative way to check if you hit object with tag
-            //if (hit.transform.CompareTag("FreeRotating"))
-            //{
-            //    AddForceAtHitPosition();
-            //}
         }
         else
         {
@@ -337,6 +341,61 @@ public class EyeTrackingExample : MonoBehaviour
             gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
             gazeTarget.transform.localScale = Vector3.one * floatingGazeTargetDistance;
         }
+
+
+        //// Raycast to world from VR Camera position towards fixation point
+        //if (Physics.SphereCast(rayOrigin, gazeRadius, direction, out hit))
+        //{
+        //    // Put target on gaze raycast position with offset towards user
+        //    gazeTarget.transform.position = hit.point - direction * targetOffset;
+
+        //    // Make gaze target point towards user
+        //    gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
+
+        //    // Scale gazetarget with distance so it apperas to be always same size
+        //    distance = hit.distance;
+        //    gazeTarget.transform.localScale = Vector3.one * distance;
+
+        //    // Prefer layers or tags to identify looked objects in your application
+        //    // This is done here using GetComponent for the sake of clarity as an example
+        //    RotateWithGaze rotateWithGaze = hit.collider.gameObject.GetComponent<RotateWithGaze>();
+        //    if (rotateWithGaze != null)
+        //    {
+        //        rotateWithGaze.RayHit();
+        //    }
+
+
+        //    // check the hit object type
+        //    KeyController keyController = hit.collider.gameObject.GetComponent<KeyController>();
+        //    if (keyController != null)
+        //    {
+        //        // hit on key
+        //        //keyController.setGaze();
+        //        //Vector3 pointOnKey = keyController.transform.InverseTransformDirection(hit.point);
+        //        keyController.HasGaze();
+        //        keyController.keyboardController.SetGazeKey(keyController.key);
+
+
+        //    }
+        //    else
+        //    {
+        //        keyController.keyboardController.ClearGazeKey(); // there is problem with this line
+
+        //    }
+
+        //    //// Alternative way to check if you hit object with tag
+        //    //if (hit.transform.CompareTag("FreeRotating"))
+        //    //{
+        //    //    AddForceAtHitPosition();
+        //    //}
+        //}
+        //else
+        //{
+        //    // If gaze ray didn't hit anything, the gaze target is shown at fixed distance
+        //    gazeTarget.transform.position = rayOrigin + direction * floatingGazeTargetDistance;
+        //    gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
+        //    gazeTarget.transform.localScale = Vector3.one * floatingGazeTargetDistance;
+        //}
 
         if (Input.GetKeyDown(loggingToggleKey))
         {
@@ -462,15 +521,15 @@ public class EyeTrackingExample : MonoBehaviour
 
     }
 
-    void AddForceAtHitPosition()
-    {
-        //Get Rigidbody form hit object and add force on hit position
-        Rigidbody rb = hit.rigidbody;
-        if (rb != null)
-        {
-            rb.AddForceAtPosition(direction * hitForce, hit.point, ForceMode.Force);
-        }
-    }
+    //void AddForceAtHitPosition()
+    //{
+    //    //Get Rigidbody form hit object and add force on hit position
+    //    Rigidbody rb = hit.rigidbody;
+    //    if (rb != null)
+    //    {
+    //        rb.AddForceAtPosition(direction * hitForce, hit.point, ForceMode.Force);
+    //    }
+    //}
 
     void LogGazeData(VarjoEyeTracking.GazeData data, VarjoEyeTracking.EyeMeasurements eyeMeasurements)
     {
