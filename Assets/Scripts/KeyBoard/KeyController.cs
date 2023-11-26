@@ -289,7 +289,7 @@ public class KeyController : MonoBehaviour
             keyImage.color = KeyParams.KeyActiveColor;
 
             // watch the input
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            if (Input.GetKeyDown(Presets.UserInputButton1))
             {
                 // evoke key stroke
                 keyboardController.UpdateKeyInput(key);
@@ -320,7 +320,23 @@ public class KeyController : MonoBehaviour
 
     public void KeyIllumiReadSwypeCallback()
     {
+        // do nothing
+        if (hasGazeThisFrame)
+        {
+            if (!selected)
+            {
+                // first time one this key
+            }
 
+            selected = true;
+            keyImage.color = KeyParams.KeyActiveColor;
+        }
+        else
+        {
+            selected = false;
+            // set color to regular color
+            keyImage.color = KeyParams.KeyInactiveColor;
+        }
 
 
     }

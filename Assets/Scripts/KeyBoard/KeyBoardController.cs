@@ -157,16 +157,18 @@ public class KeyboardController : MonoBehaviour
     // callback functions
     public void KeyboardDwellTimeCallback()
     {
-
+        // do nothing
     }
 
     public void KeyboardButtonClickCallback()
     {
-
+        // do nothing
     }
 
     public void KeyboardIllumiReadSwypeCallback()
     {
+        
+
 
     }
 

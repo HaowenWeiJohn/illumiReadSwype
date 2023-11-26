@@ -34,10 +34,10 @@ public static class Presets
 
 
 
-    public static string GazeOnKeyboardLSLOutletStreamName = "VarjoGazeOnKeyboardLSL";
+    public static string GazeOnKeyboardLSLOutletStreamName = "illumiReadSwypeUserInputLSL";
     public static string GazeOnKeyboardLSLOutletStreamType = "GazeOnKeyboard";
     public static string GazeOnKeyboardLSLOutletStreamID = "3";
-    public static int GazeOnKeyboardChannelNum = 9;
+    public static int GazeOnKeyboardChannelNum = 11;
     public static float GazeOnKeyboardNominalSamplingRate = 50;
 
 
@@ -50,7 +50,8 @@ public static class Presets
     public static KeyCode NextStateKey = KeyCode.KeypadEnter;
     public static KeyCode InterruptKey = KeyCode.Escape;
 
-    public static KeyCode KeyBoardClickKey = KeyCode.RightAlt;
+    public static KeyCode UserInputButton1 = KeyCode.LeftAlt;
+    public static KeyCode UserInputButton2 = KeyCode.RightAlt;
 
 
 

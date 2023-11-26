@@ -5548,7 +5548,7 @@ GameObject:
   - component: {fileID: 1544262544}
   - component: {fileID: 1544262545}
   m_Layer: 0
-  m_Name: VarjoGazeOnKeyboardLSLOutletController
+  m_Name: illumiReadSwypeUserInputLSLOutletController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

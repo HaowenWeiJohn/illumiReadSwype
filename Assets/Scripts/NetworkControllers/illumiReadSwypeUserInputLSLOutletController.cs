@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VarjoGazeOnKeyboardLSLOutletController : LSLOutletInterface
+public class illumiReadSwypeUserInputLSLOutletController : LSLOutletInterface
 {
     // Start is called before the first frame update
     void Start()
@@ -22,7 +22,7 @@ public class VarjoGazeOnKeyboardLSLOutletController : LSLOutletInterface
         
     }
 
-    public void PushVarjoGazeOnKeyboardData(bool gazeHitKeyboardBackground, Vector3 keyboardBackgroundHitPointLocal, bool gazeHitKey, Vector3 keyHitPointLocal, int keyHitIndex)
+    public void PushVarjoGazeOnKeyboardData(bool gazeHitKeyboardBackground, Vector3 keyboardBackgroundHitPointLocal, bool gazeHitKey, Vector3 keyHitPointLocal, int keyHitIndex, bool UserInputButton1, bool UserInputButton2)
     {
         // varjo gaze data is a 39-dim vector
         float[] varjoGazeOnKeyboardData = CreateEventMarkerArrayFloat();
@@ -35,6 +35,9 @@ public class VarjoGazeOnKeyboardLSLOutletController : LSLOutletInterface
         varjoGazeOnKeyboardData[6] = keyHitPointLocal.y;
         varjoGazeOnKeyboardData[7] = keyHitPointLocal.z;
         varjoGazeOnKeyboardData[8] = (float)keyHitIndex;
+
+        varjoGazeOnKeyboardData[9] = UserInputButton1 ? 1.0f : 0.0f;
+        varjoGazeOnKeyboardData[10] = UserInputButton2 ? 1.0f : 0.0f;
 
         streamOutlet.push_sample(varjoGazeOnKeyboardData);
     }

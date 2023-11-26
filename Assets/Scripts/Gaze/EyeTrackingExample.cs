@@ -78,7 +78,7 @@ public class EyeTrackingExample : MonoBehaviour
     [Header("Lab Streaming Layer (LSL)")]
     public bool streamGazeData = true;
     public VarjoGazeDataLSLOutletController varjoGazeDataLSLOutletController;
-    public VarjoGazeOnKeyboardLSLOutletController varjoGazeOnKeyboardLSLOutletController;
+    public illumiReadSwypeUserInputLSLOutletController varjoGazeOnKeyboardLSLOutletController;
 
     [Header("Print gaze data timestamp")]
     public bool printGazeDataTimestamp = false;
@@ -355,12 +355,31 @@ public class EyeTrackingExample : MonoBehaviour
             gazeTarget.transform.localScale = Vector3.one * floatingGazeTargetDistance;
         }
 
+
+        bool UserInputButton1 = false;
+
+        if (Input.GetKey(Presets.UserInputButton1))
+        {
+            UserInputButton1 = true;
+        }
+
+
+        bool UserInputButton2 = false;
+
+        if (Input.GetKey(Presets.UserInputButton2))
+        {
+            UserInputButton2 = true;
+        }
+
+
         varjoGazeOnKeyboardLSLOutletController.PushVarjoGazeOnKeyboardData(
             gazeHitKeyboardBackground,
             keyboardBackgroundHitPointLocal,
             gazeHitKey,
             keyHitPointLocal,
-            gazeHitKeyController == null ? -1 : KeyParams.KeysID[gazeHitKeyController.key]
+            gazeHitKeyController == null ? -1 : KeyParams.KeysID[gazeHitKeyController.key],
+            UserInputButton1,
+            UserInputButton2
         );
 
 
