@@ -377,7 +377,7 @@ public class EyeTrackingExample : MonoBehaviour
             keyboardBackgroundHitPointLocal,
             gazeHitKey,
             keyHitPointLocal,
-            gazeHitKeyController == null ? -1 : KeyParams.KeysID[gazeHitKeyController.key],
+            gazeHitKeyController == null ? KeyParams.KeysID[KeyParams.Keys.None] : KeyParams.KeysID[gazeHitKeyController.key],
             UserInputButton1,
             UserInputButton2
         );

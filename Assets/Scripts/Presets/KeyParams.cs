@@ -14,6 +14,7 @@ public static class KeyParams
 
     public enum Keys
     {
+        None = 0,
         A = 1,
         B = 2,
         C = 3,
@@ -73,6 +74,7 @@ public static class KeyParams
 
     public static Dictionary<Keys, int> KeysID = new Dictionary<Keys, int>
     {
+        [Keys.None] = 0,
         [Keys.A] = 1,
         [Keys.B] = 2,
         [Keys.C] = 3,
@@ -104,6 +106,7 @@ public static class KeyParams
 
     public static Dictionary<Keys, string> KeysString = new Dictionary<Keys, string>
     {
+        [Keys.None] = "",
         [Keys.A] = "A",
         [Keys.B] = "B",
         [Keys.C] = "C",
