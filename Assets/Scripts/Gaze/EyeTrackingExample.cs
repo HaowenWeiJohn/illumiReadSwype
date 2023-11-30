@@ -332,6 +332,12 @@ public class EyeTrackingExample : MonoBehaviour
                     keyHitPointLocal = hitPointLocal;
                     
                 }
+                else if(hit.collider.gameObject.tag == KeyParams.KeyboardSuggestionStrip)
+                {
+                    SuggestionStripController suggestionStripController = hit.collider.gameObject.GetComponent<SuggestionStripController>();
+                    suggestionStripController.HasGaze();
+
+                }
                 else if(hit.collider.gameObject.tag == KeyParams.KeyboardBackgroundTag)
                 {
                     // get coordinate of the hit point on the keyboarrd

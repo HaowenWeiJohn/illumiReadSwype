@@ -31,4 +31,9 @@ public class KeyboardInputFieldCanvasController : MonoBehaviour
         inputField.text = "";
     }
 
+    public void SetUserInputWithWordList(List<string> wordList)
+    {
+
+    }
+
 }

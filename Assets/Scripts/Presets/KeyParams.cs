@@ -103,6 +103,37 @@ public static class KeyParams
         [Keys.Z] = 26
     };
 
+    public static Dictionary<int, Keys> IDKeys = new Dictionary<int, Keys>
+    {
+        [0] = Keys.None,
+        [1] = Keys.A,
+        [2] = Keys.B,
+        [3] = Keys.C,
+        [4] = Keys.D,
+        [5] = Keys.E,
+        [6] = Keys.F,
+        [7] = Keys.G,
+        [8] = Keys.H,
+        [9] = Keys.I,
+        [10] = Keys.J,
+        [11] = Keys.K,
+        [12] = Keys.L,
+        [13] = Keys.M,
+        [14] = Keys.N,
+        [15] = Keys.O,
+        [16] = Keys.P,
+        [17] = Keys.Q,
+        [18] = Keys.R,
+        [19] = Keys.S,
+        [20] = Keys.T,
+        [21] = Keys.U,
+        [22] = Keys.V,
+        [23] = Keys.W,
+        [24] = Keys.X,
+        [25] = Keys.Y,
+        [26] = Keys.Z
+    };
+
 
     public static Dictionary<Keys, string> KeysString = new Dictionary<Keys, string>
     {
@@ -146,5 +177,6 @@ public static class KeyParams
 
     public static string KeyTag = "Key";
     public static string KeyboardBackgroundTag = "KeyboardBackground";
+    public static string KeyboardSuggestionStrip = "KeyboardSuggestionStrip";
 
 }
