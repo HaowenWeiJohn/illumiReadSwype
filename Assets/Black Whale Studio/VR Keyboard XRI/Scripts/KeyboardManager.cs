@@ -334,5 +334,14 @@ namespace Keyboard
             gameObject.SetActive(false);
             //keyChannel.RaiseKeysStateChangeEvent(false);
         }
+
+        public void SetKeyboardInteractionMode(Presets.InteractionMode mode)
+        {
+            keyChannel.interactionMode = mode;
+            Debug.Log("Keyboard interaction mode set to: " + keyChannel.interactionMode);
+        }
+
+
+
     }
 }

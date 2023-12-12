@@ -25,6 +25,7 @@ public class KeyboardIllumiReadSwypeStateGUIController : StateGUIController
     {
         base.EnableSelf();
         //userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
+        keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.IllumiReadSwype);
         keyboardManager.EnableSelf();
     }
 

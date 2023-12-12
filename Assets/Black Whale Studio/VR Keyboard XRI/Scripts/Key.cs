@@ -24,6 +24,10 @@ namespace Keyboard
         [SerializeField] protected KeyboardManager keyboard;
         protected Button button;
 
+        public bool hasGaze;
+        
+
+
         protected virtual void Awake()
         {
             button = GetComponent<Button>();
@@ -88,6 +92,8 @@ namespace Keyboard
             button.Select();
             button.OnPointerEnter(null);
         }
+
+
 
     }
 }

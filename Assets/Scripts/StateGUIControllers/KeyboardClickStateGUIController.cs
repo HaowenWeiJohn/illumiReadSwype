@@ -24,6 +24,7 @@ public class KeyboardClickStateGUIController : StateGUIController
     {
         base.EnableSelf();
         //userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
+        keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
         keyboardManager.EnableSelf();
     }
 

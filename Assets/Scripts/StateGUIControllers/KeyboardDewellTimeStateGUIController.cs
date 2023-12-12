@@ -26,6 +26,7 @@ public class KeyboardDewellTimeStateGUIController : StateGUIController
     {
         base.EnableSelf();
         //userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
+        keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.DwellTime);
         keyboardManager.EnableSelf();
     }
 
