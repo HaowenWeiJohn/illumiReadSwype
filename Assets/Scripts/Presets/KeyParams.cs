@@ -40,7 +40,12 @@ public static class KeyParams
         W = 23,
         X = 24,
         Y = 25,
-        Z = 26
+        Z = 26,
+
+
+        Apostrophe = 27,
+        Dot = 28,
+
     }
 
     public static List<List<Keys>> CharsOrders = new List<List<Keys>> {
@@ -100,7 +105,10 @@ public static class KeyParams
         [Keys.W] = 23,
         [Keys.X] = 24,
         [Keys.Y] = 25,
-        [Keys.Z] = 26
+        [Keys.Z] = 26,
+
+        [Keys.Apostrophe] = 27,
+        [Keys.Dot] = 28
     };
 
     public static Dictionary<int, Keys> IDKeys = new Dictionary<int, Keys>
@@ -131,7 +139,10 @@ public static class KeyParams
         [23] = Keys.W,
         [24] = Keys.X,
         [25] = Keys.Y,
-        [26] = Keys.Z
+        [26] = Keys.Z,
+
+        [27] = Keys.Apostrophe,
+        [28] = Keys.Dot
     };
 
 
@@ -163,7 +174,10 @@ public static class KeyParams
         [Keys.W] = "W",
         [Keys.X] = "X",
         [Keys.Y] = "Y",
-        [Keys.Z] = "Z"
+        [Keys.Z] = "Z",
+
+        [Keys.Apostrophe] = "'",
+        [Keys.Dot] = "."
     };
 
 

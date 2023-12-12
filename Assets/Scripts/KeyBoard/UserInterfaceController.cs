@@ -30,7 +30,8 @@ public class UserInterfaceController: MonoBehaviour
 
     [Header("Swyping State")]
     public Presets.illumiReadSwypeState illumiReadSwypeState= Presets.illumiReadSwypeState.Idle;
-    
+
+
 
 
     void Start()
@@ -56,6 +57,13 @@ public class UserInterfaceController: MonoBehaviour
             case Presets.InteractionMode.FreeSwitch:
                 KeyboardFreeSwitchCallback();
                 break;
+        }
+
+        // temp clear all the input
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            inputWordList.Clear();
+            keyboardInputFieldCanvasController.SetUserInputWithWordList(inputWordList);
         }
 
 
@@ -110,6 +118,7 @@ public class UserInterfaceController: MonoBehaviour
     public void KeyboardIllumiReadSwypeCallback()
     {
 
+        // Idle State
         if (illumiReadSwypeState == Presets.illumiReadSwypeState.Idle)
         {
             if (Input.GetKeyDown(Presets.UserInputButton2))
@@ -122,9 +131,10 @@ public class UserInterfaceController: MonoBehaviour
                 illumiReadSwypeState = Presets.illumiReadSwypeState.Swyping;
                 Debug.Log("Start Swyping");
             }
-
         }
 
+
+        // Swyping State
         else if (illumiReadSwypeState == Presets.illumiReadSwypeState.Swyping)
         {
             if (Input.GetKeyUp(Presets.UserInputButton2))
@@ -134,6 +144,8 @@ public class UserInterfaceController: MonoBehaviour
             }
         }
 
+
+        // waiting for suggestions state
         else if (illumiReadSwypeState == Presets.illumiReadSwypeState.WaitingForSuggestions)
         {
             keyboardSuggestionStripLSLInletController.PullSuggestionsInfo();
@@ -156,6 +168,7 @@ public class UserInterfaceController: MonoBehaviour
                     // enable the selecting suggestions strip
                     keyboardSuggestionStripController.EnableSuggestionStrips();
 
+
                     illumiReadSwypeState = Presets.illumiReadSwypeState.SelectingSuggestion;
                 }
                 else
@@ -166,12 +179,15 @@ public class UserInterfaceController: MonoBehaviour
 
             }
         }
+
+
+        // selecting suggestion state
         else if (illumiReadSwypeState == Presets.illumiReadSwypeState.SelectingSuggestion)
         {
             // understand if the suggestion is correct
 
 
-            if (Input.GetKeyDown(Presets.UserInputButton1))
+            if (Input.GetKeyDown(Presets.UserInputButton1)) // select the suggestion
             {
                 // get suggestion has gaze, if has gaze we update the input field and go back to idle
                 
@@ -179,9 +195,11 @@ public class UserInterfaceController: MonoBehaviour
                 int suggestionIndex = keyboardSuggestionStripController.GetSuggestionWithGazeIndex();
                 if(suggestionIndex!=0)
                 {
+                    AudioSource.PlayClipAtPoint(keyBoardController.KeyEnterAudioClip, transform.position);
+
                     string word = suggestionsWordList[suggestionIndex];
                     // update the last word in the input field
-                    inputWordList[-1] = word;
+                    inputWordList[inputWordList.Count - 1] = word;
                     // update the input field
                     keyboardInputFieldCanvasController.SetUserInputWithWordList(inputWordList);
                     // diable the suggestion strip
@@ -191,7 +209,7 @@ public class UserInterfaceController: MonoBehaviour
                 }
 
             }
-            if (Input.GetKeyDown(Presets.UserInputButton2))
+            if (Input.GetKeyDown(Presets.UserInputButton2)) // continue swyping
             {
                 // start swyping again
                 suggestionsWordList.Clear();
@@ -284,6 +302,7 @@ public class UserInterfaceController: MonoBehaviour
             nextDataIndex+=1;
 
             int wordLength = (int)suggestionsLVT[nextDataIndex];
+            nextDataIndex+=1;
 
             string word = "";
 
@@ -292,6 +311,7 @@ public class UserInterfaceController: MonoBehaviour
                 int value = (int)suggestionsLVT[nextDataIndex];
                 KeyParams.Keys thisKey = KeyParams.IDKeys[value];
                 word += KeyParams.KeysString[thisKey];
+                nextDataIndex+=1;
             }
             suggestionsList.Add(word);
         }

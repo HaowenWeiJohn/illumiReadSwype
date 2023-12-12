@@ -41,7 +41,7 @@ public static class Presets
     public static float GazeOnKeyboardNominalSamplingRate = 50;
 
 
-    public static string KeyboardSuggestionStripLSLStreamName = "KeyboardSuggestionStripLSL";
+    public static string KeyboardSuggestionStripLSLStreamName = "illumiReadSwypeKeyboardSuggestionStripLSL";
 
 
 
@@ -53,7 +53,9 @@ public static class Presets
     public static KeyCode InterruptKey = KeyCode.Escape;
 
     public static KeyCode UserInputButton1 = KeyCode.LeftAlt; // button click input
+
     public static KeyCode UserInputButton2 = KeyCode.RightAlt; // illumiReadSwype button
+
     public static KeyCode UserInputButton3 = KeyCode.RightControl; // clear swype input
 
 

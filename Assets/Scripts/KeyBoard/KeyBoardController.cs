@@ -59,8 +59,8 @@ public class KeyboardController : MonoBehaviour
     public KeyController gazeKeyController;
 
 
-
-
+    public AudioClip keyHoverAudioClip;
+    public AudioClip KeyEnterAudioClip;
 
 
     void Start()
