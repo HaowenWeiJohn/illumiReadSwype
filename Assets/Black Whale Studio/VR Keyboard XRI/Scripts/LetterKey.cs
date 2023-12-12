@@ -23,6 +23,24 @@ namespace Keyboard
         [SerializeField] private string character;
         private TextMeshProUGUI buttonText;
 
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                InvokeButtonOnSelected();
+            }
+            if (Input.GetKeyDown(KeyCode.S))
+            {
+                InvokeButtonHighlighted();
+            }
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                InvokeButtonNormal();
+            }
+        }
+
+
         protected override void Awake()
         {
             base.Awake();

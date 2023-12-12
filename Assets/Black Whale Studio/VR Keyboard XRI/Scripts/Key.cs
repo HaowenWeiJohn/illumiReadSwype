@@ -67,5 +67,27 @@ namespace Keyboard
         {
             button.interactable = enabled;
         }
+        
+        public void InvokeButtonNormal()
+        {
+            button.OnPointerExit(null);
+        }
+
+        public void InvokeButtonOnClick()
+        {
+            button.onClick.Invoke();
+        }
+
+        public void InvokeButtonOnSelected()
+        {
+            button.Select();
+        }
+
+        public void InvokeButtonHighlighted()
+        {
+            button.Select();
+            button.OnPointerEnter(null);
+        }
+
     }
 }
