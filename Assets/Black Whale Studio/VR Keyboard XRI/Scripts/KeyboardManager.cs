@@ -37,6 +37,12 @@ namespace Keyboard
         [SerializeField] private GameObject lettersKeyboard;
         [SerializeField] private GameObject numbersKeyboard;
         [SerializeField] private GameObject specialCharactersKeyboard;
+        [SerializeField] private GameObject suggestionStripsKeyboard;
+
+        [Header("Suggestion Strips Key")]
+        [SerializeField] private LetterKey suggestionStrip1;
+        [SerializeField] private LetterKey suggestionStrip2;
+        [SerializeField] private LetterKey suggestionStrip3;
 
         [Header("Shift/Caps Lock Button")] 
         [SerializeField] internal bool autoCapsAtStart = true;
@@ -77,6 +83,17 @@ namespace Keyboard
 
         private void Awake()
         {
+            //////////////////////
+            normalColor = KeyParams.KeyNormalColor;
+            highlightedColor = KeyParams.KeyHighlightedColor;
+            pressedColor = KeyParams.KeyPressedColor;
+            selectedColor = KeyParams.KeySelectedColor;
+
+            keyChannel.interactionMode = Presets.InteractionMode.None;
+
+
+            //////////////////////
+
             shiftButtonColors = shiftButton.colors;
             
             CheckTextLength();
@@ -335,11 +352,54 @@ namespace Keyboard
             //keyChannel.RaiseKeysStateChangeEvent(false);
         }
 
+        public void ClearOutputField()
+        {
+            outputField.text = "";
+        }
+
         public void SetKeyboardInteractionMode(Presets.InteractionMode mode)
         {
             keyChannel.interactionMode = mode;
             Debug.Log("Keyboard interaction mode set to: " + keyChannel.interactionMode);
+
+            if (keyChannel.interactionMode== Presets.InteractionMode.ButtonClick)
+            {
+                suggestionStripsKeyboard.SetActive(false);
+            }
+            else if(keyChannel.interactionMode == Presets.InteractionMode.DwellTime)
+            {
+                suggestionStripsKeyboard.SetActive(false);
+            }
+            else if (keyChannel.interactionMode == Presets.InteractionMode.FreeSwitch)
+            {
+                suggestionStripsKeyboard.SetActive(true);
+            }
+            else if (keyChannel.interactionMode == Presets.InteractionMode.IllumiReadSwype)
+            {
+                suggestionStripsKeyboard.SetActive(true);
+            }
+
+
         }
+
+        public void ActivateSuggestionStripKeyboard()
+        {
+
+        }
+
+        public void DeactivateSuggestionStripKeyboard()
+        {
+
+        }
+
+
+        public void ClearSuggestionStripsText()
+        {
+            
+
+        }
+
+        
 
 
 

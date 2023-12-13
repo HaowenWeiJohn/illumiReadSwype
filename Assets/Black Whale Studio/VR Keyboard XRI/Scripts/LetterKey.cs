@@ -23,21 +23,9 @@ namespace Keyboard
         [SerializeField] private string character;
         private TextMeshProUGUI buttonText;
 
-
-        private void Update()
+        protected override void Update()
         {
-            if (Input.GetKeyDown(KeyCode.A))
-            {
-                InvokeButtonOnSelected();
-            }
-            if (Input.GetKeyDown(KeyCode.S))
-            {
-                InvokeButtonHighlighted();
-            }
-            if (Input.GetKeyDown(KeyCode.D))
-            {
-                InvokeButtonNormal();
-            }
+            base.Update();
         }
 
 
@@ -67,5 +55,12 @@ namespace Keyboard
                 buttonText.text = character.ToLower();
             }
         }
+
+        protected override void OnDestroy()
+        {
+            base.OnDestroy();
+        }
+
+
     }
 }

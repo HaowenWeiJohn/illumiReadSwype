@@ -36,5 +36,8 @@ namespace Keyboard
 
         public void RaiseKeysStateChangeEvent(bool enabled) =>
             OnKeysStateChange?.Invoke(enabled);
+
+        //public void RaiseInteractionStateChangedEvent(Presets.InteractionMode interactionMode) =>
+        //    this.interactionMode = interactionMode;
     }
 }

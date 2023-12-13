@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using Varjo.XR;
 using LSL;
-
-
+using Keyboard;
 
 public enum GazeDataSource
 {
@@ -85,7 +84,7 @@ public class EyeTrackingExample : MonoBehaviour
 
 
     [Header("Keyboard")]
-    public KeyController gazeHitKeyController = null;
+    public Key gazeHitKeyController = null;
     public bool gazeHitKey = false;
     public Vector3 keyHitPointLocal = Vector3.zero;
     public bool gazeHitKeyboardBackground = false;
@@ -323,15 +322,22 @@ public class EyeTrackingExample : MonoBehaviour
                 hitPointLocal.y = hitPointLocal.y * hit.collider.gameObject.transform.localScale.y;
                 hitPointLocal.z = hitPointLocal.z * hit.collider.gameObject.transform.localScale.z;
 
-
+                Debug.Log(hit.collider.gameObject.tag);
                 if (hit.collider.gameObject.tag == KeyParams.KeyTag)
                 {
-                    gazeHitKeyController = hit.collider.gameObject.GetComponent<KeyController>();
+                    gazeHitKeyController = hit.collider.gameObject.GetComponent<Key>();
                     gazeHitKeyController.HasGaze();
                     gazeHitKey = true;
                     keyHitPointLocal = hitPointLocal;
-                    
                 }
+                if (hit.collider.gameObject.tag == KeyParams.LetterKeyTag)
+                {
+                    gazeHitKeyController = hit.collider.gameObject.GetComponent<LetterKey>();
+                    gazeHitKeyController.HasGaze();
+                    gazeHitKey = true;
+                    keyHitPointLocal = hitPointLocal;
+                }
+
                 else if(hit.collider.gameObject.tag == KeyParams.KeyboardSuggestionStrip)
                 {
                     SuggestionStripController suggestionStripController = hit.collider.gameObject.GetComponent<SuggestionStripController>();

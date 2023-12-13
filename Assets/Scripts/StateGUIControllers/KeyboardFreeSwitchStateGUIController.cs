@@ -25,6 +25,7 @@ public class KeyboardFreeSwitchStateGUIController : StateGUIController
         base.EnableSelf();
         //userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
         keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.FreeSwitch);
+        keyboardManager.ClearOutputField();
         keyboardManager.EnableSelf();
     }
 

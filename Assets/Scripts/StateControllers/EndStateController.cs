@@ -36,7 +36,6 @@ public class EndStateController : StateController
     {
         endStateGUIController.DisableSelf();
         base.exitState();
-
     }
 
 

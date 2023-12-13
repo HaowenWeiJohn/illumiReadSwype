@@ -293,7 +293,6 @@ public class KeyController : MonoBehaviour
                 // evoke key stroke
                 keyboardController.UpdateKeyInput(key);
                 Debug.Log(key);
-
             }
 
 

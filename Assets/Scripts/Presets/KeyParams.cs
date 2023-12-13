@@ -14,7 +14,7 @@ public static class KeyParams
 
     public enum Keys
     {
-        None = 0,
+        None = 0, // function keys are 0 or None
         A = 1,
         B = 2,
         C = 3,
@@ -186,10 +186,19 @@ public static class KeyParams
     public static Color KeyInactiveColor = Color.white;
     public static Color KeyActiveColor = Color.red;
 
+    public static Color KeyNormalColor = Color.gray;
+    public static Color KeyHighlightedColor = Color.green;
+    public static Color KeySelectedColor = Color.red;
+    public static Color KeyPressedColor = Color.red;
+
+
+
+
     public static float KeyboardDwellActivateTime = 1.0f;
 
 
     public static string KeyTag = "Key";
+    public static string LetterKeyTag = "LetterKey";
     public static string KeyboardBackgroundTag = "KeyboardBackground";
     public static string KeyboardSuggestionStrip = "KeyboardSuggestionStrip";
 
