@@ -23,7 +23,7 @@ namespace Keyboard
     {
         [SerializeField] protected KeyChannel keyChannel;
         [SerializeField] protected KeyboardManager keyboard;
-        protected Button button;
+        [SerializeField]protected Button button;
 
         private BoxCollider boxCollider;
 
@@ -88,6 +88,7 @@ namespace Keyboard
         protected virtual void OnPress()
         {
             keyboard.DeactivateShift();
+            keyChannel.RaiseAnyKeyPressedEvent();
         }
 
         protected virtual void UpdateKey()
@@ -245,6 +246,13 @@ namespace Keyboard
                     // play the audio clip
                     InvokeButtonOnSelected();
                     selected = true;
+                }
+
+                // still allow the user to press the button
+                if (Input.GetKeyDown(Presets.UserInputButton1))
+                {
+                    // evoke key stroke
+                    InvokeButtonOnClick();
                 }
 
 

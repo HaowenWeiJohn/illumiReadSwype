@@ -14,6 +14,7 @@
  */
 
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -40,9 +41,9 @@ namespace Keyboard
         [SerializeField] private GameObject suggestionStripsKeyboard;
 
         [Header("Suggestion Strips Key")]
-        [SerializeField] private LetterKey suggestionStrip1;
-        [SerializeField] private LetterKey suggestionStrip2;
-        [SerializeField] private LetterKey suggestionStrip3;
+        [SerializeField] private SuggestionStripKey suggestionStrip1;
+        [SerializeField] private SuggestionStripKey suggestionStrip2;
+        [SerializeField] private SuggestionStripKey suggestionStrip3;
 
         [Header("Shift/Caps Lock Button")] 
         [SerializeField] internal bool autoCapsAtStart = true;
@@ -131,9 +132,29 @@ namespace Keyboard
             switchNumberSpecialButton.onClick.RemoveListener(SwitchBetweenNumbersAndSpecialCharacters);
         }
 
-        private void OnEnable() => keyChannel.OnKeyPressed += KeyPress;
+        //private void OnEnable() => keyChannel.OnKeyPressed += KeyPress;
+        // change this to regular {} syntax
+        private void OnEnable()
+        {
+            keyChannel.OnKeyPressed += KeyPress;
+            keyChannel.onAnyKeyPressed.AddListener(OnAnyKeyPressed);
+        }
 
-        private void OnDisable() => keyChannel.OnKeyPressed -= KeyPress;
+        //private void OnDisable() => keyChannel.OnKeyPressed -= KeyPress;
+        // change this to regular {} syntax
+        private void OnDisable()
+        {
+            keyChannel.OnKeyPressed -= KeyPress;
+            keyChannel.onAnyKeyPressed.RemoveListener(OnAnyKeyPressed);
+        }
+
+
+        private void OnAnyKeyPressed()
+        {
+            Debug.Log("OnAnyKeyPressed");
+            ClearAndDeactivateSuggestionStrips();
+        }
+
 
         private void KeyPress(string key)
         {
@@ -166,6 +187,16 @@ namespace Keyboard
             }
     
             CheckTextLength();
+        }
+
+        private void SuggestionKeyPress(string key)
+        {
+            // remvoe the fist word in the output field
+            string outputText = outputField.text;
+
+
+            KeyPress(key);
+
         }
 
         private void OnSpacePress()
@@ -393,10 +424,14 @@ namespace Keyboard
         }
 
 
-        public void ClearSuggestionStripsText()
-        {
-            
 
+
+
+        public void ClearAndDeactivateSuggestionStrips()
+        {
+            suggestionStrip1.ClearAndDeactivateSuggestionStrip();
+            suggestionStrip2.ClearAndDeactivateSuggestionStrip();
+            suggestionStrip3.ClearAndDeactivateSuggestionStrip();
         }
 
         

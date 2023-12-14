@@ -8,6 +8,7 @@ TagManager:
   - KeyboardBackground
   - KeyboardSuggestionStrip
   - LetterKey
+  - SuggestionStripKey
   layers:
   - Default
   - TransparentFX

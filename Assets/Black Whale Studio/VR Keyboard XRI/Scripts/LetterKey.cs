@@ -20,8 +20,8 @@ namespace Keyboard
 {
     public class LetterKey : Key
     {
-        [SerializeField] private string character;
-        private TextMeshProUGUI buttonText;
+        [SerializeField] protected string character;
+        protected TextMeshProUGUI buttonText;
 
         protected override void Update()
         {

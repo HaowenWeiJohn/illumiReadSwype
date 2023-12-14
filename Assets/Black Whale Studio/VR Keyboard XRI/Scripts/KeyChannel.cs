@@ -13,6 +13,7 @@
  * For questions or to join our community, please visit our Discord: https://discord.gg/55gtTryfWw
  */
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,10 +26,19 @@ namespace Keyboard
         public UnityAction<Color, Color, Color, Color> OnKeyColorsChanged;
         public UnityAction<bool> OnKeysStateChange;
         public UnityEvent onFirstKeyPress;
+        public UnityEvent onAnyKeyPressed;
         public Presets.InteractionMode interactionMode;
+
+
+        public UnityAction<List<string>> OnSuggestionStripRecevied;
+        //public UnityAction<string> OnSuggestionKeyPressed;
+
 
         public void RaiseKeyPressedEvent(string key) =>
             OnKeyPressed?.Invoke(key);
+
+        public void RaiseAnyKeyPressedEvent() =>
+            onAnyKeyPressed.Invoke();
 
         public void RaiseKeyColorsChangedEvent(Color normalColor, Color highlightedColor, Color pressedColor,
             Color selectedColor) =>
@@ -36,6 +46,13 @@ namespace Keyboard
 
         public void RaiseKeysStateChangeEvent(bool enabled) =>
             OnKeysStateChange?.Invoke(enabled);
+
+
+        public void RaiseSuggestionStripReceviedEvent(List<string> suggestions) =>
+            OnSuggestionStripRecevied?.Invoke(suggestions);
+
+        //public void RaiseSuggestionKeyPressedEvent(string suggestionText) =>
+        //    OnSuggestionKeyPressed?.Invoke(suggestionText);
 
         //public void RaiseInteractionStateChangedEvent(Presets.InteractionMode interactionMode) =>
         //    this.interactionMode = interactionMode;

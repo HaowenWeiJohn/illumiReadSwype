@@ -199,6 +199,8 @@ public static class KeyParams
 
     public static string KeyTag = "Key";
     public static string LetterKeyTag = "LetterKey";
+    public static string SuggestionStripKeyTag = "SuggestionStripKey";
+
     public static string KeyboardBackgroundTag = "KeyboardBackground";
     public static string KeyboardSuggestionStrip = "KeyboardSuggestionStrip";
 
