@@ -47,7 +47,7 @@ public class SuggestionStripKey : Key
     protected override void OnPress()
     {
         base.OnPress();
-        keyChannel.RaiseSuggestionKeyPressedEvent(suggestionText);
+        //keyChannel.RaiseSuggestionKeyPressedEvent(suggestionText);
     }
 
 
