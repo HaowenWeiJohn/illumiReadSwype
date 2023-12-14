@@ -194,7 +194,6 @@ namespace Keyboard
             // remvoe the fist word in the output field
             string outputText = outputField.text;
 
-
             KeyPress(key);
 
         }
