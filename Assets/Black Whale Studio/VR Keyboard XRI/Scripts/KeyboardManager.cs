@@ -77,6 +77,7 @@ namespace Keyboard
 
         private void Awake()
         {
+            // Set the colors of the shift button. It should be capitalized at the start
             shiftButtonColors = shiftButton.colors;
             
             CheckTextLength();
@@ -186,6 +187,8 @@ namespace Keyboard
 
         private void CheckTextLength()
         {
+            // TODO: refactor this method
+
             int currentLength = outputField.text.Length;
 
             // Raise event to enable or disable keys based on the text length
