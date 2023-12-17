@@ -24,10 +24,58 @@ namespace Keyboard
         [SerializeField] protected KeyboardManager keyboard;
         protected Button button;
 
+        public BoxCollider boxCollider;
+
+        [Header("Additional Key Settings")]
+        public bool hasGazeThisFrame;
+        public KeyParams.Keys key;
+        public bool selected = false;
+
+
+
+        [Header("DwellTime Settings")]
+        public float keyDwellTimeCounter = 0;
+
+
+        protected virtual void Update()
+        {
+            switch (keyboard.interactionMode)
+            {
+                case Presets.InteractionMode.DwellTime:
+                    KeyDwellTimeCallback();
+                    break;
+                case Presets.InteractionMode.ButtonClick:
+                    KeyButtonClickCallback();
+                    break;
+                case Presets.InteractionMode.IllumiReadSwype:
+                    KeyIllumiReadSwypeCallback();
+                    break;
+                    //case Presets.InteractionMode.FreeSwitch:
+                    //    KeyFreeSwitchCallback();
+                    //    break;
+
+            }
+
+            ClearGaze();
+
+        }
+
+
+
+
+
         protected virtual void Awake()
         {
+
+            // get box collider
+            boxCollider = GetComponent<BoxCollider>();
+            // set box collider size equal to the button size
+            boxCollider.size = new Vector3(GetComponent<RectTransform>().rect.width, GetComponent<RectTransform>().rect.height, 0.001f);
+
+
             button = GetComponent<Button>();
             button.onClick.AddListener(OnPress);
+
             keyboard.onKeyboardModeChanged.AddListener(UpdateKey);
             keyChannel.onFirstKeyPress.AddListener(UpdateKey);
             keyChannel.OnKeyColorsChanged += ChangeKeyColors; 
@@ -67,5 +115,189 @@ namespace Keyboard
         {
             button.interactable = enabled;
         }
+
+
+        public void HasGaze()
+        {
+            hasGazeThisFrame = true;
+        }
+        
+
+        public void ClearGaze()
+        {
+            hasGazeThisFrame = false;
+        }
+
+
+
+        public void KeyDwellTimeCallback()
+        {
+            if (hasGazeThisFrame)
+            {
+                if (!selected)
+                {
+                    // highlight key
+                    // first time one this key
+                    // play the audio clip
+                    InvokeButtonSelected();
+                    selected = true;
+                }
+
+
+                keyDwellTimeCounter += Time.deltaTime;
+
+
+                Color selectedColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeySelectedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+
+                ChangeKeyColors(
+                    KeyParams.KeyNormalColor,
+                    KeyParams.KeyHighlightedColor,
+                    KeyParams.KeyPressedColor,
+                    selectedColor
+                    );
+
+                if (keyDwellTimeCounter >= KeyParams.KeyboardDwellActivateTime)
+                {
+                    // reset the counter
+                    keyDwellTimeCounter = 0;
+                    // reset the color
+                    InvokeButtonOnClick();
+                    ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeyNormalColor);
+                    // evoke key stroke
+                    Debug.Log(key);
+                }
+
+
+            }
+            else
+            {
+                keyDwellTimeCounter = 0;
+                ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor);
+                InvokeButtonNormal();
+                selected = false;
+            }
+        }
+
+
+
+        public void KeyButtonClickCallback()
+        {
+
+            if (hasGazeThisFrame)
+            {
+                if (!selected)
+                {
+                    // highlight key
+                    // first time one this key
+                    // play the audio clip
+                    InvokeButtonSelected();
+                    selected = true;
+                }
+
+
+                if (Input.GetKeyDown(Presets.UserInputButton1)) // evoke button press 
+                {
+                    // evoke key stroke
+                    InvokeButtonOnClick();
+                }
+            }
+            else
+            {
+                // set color to regular color
+                InvokeButtonNormal();
+                selected = false;
+            }
+        }
+
+
+
+        public void KeyIllumiReadSwypeCallback()
+        {
+
+            if (hasGazeThisFrame)
+            {
+                if (!selected)
+                {
+                    // highlight key
+                    // first time one this key
+                    // play the audio clip
+                    InvokeButtonSelected();
+                    selected = true;
+                }
+                // still allow the user to press the button
+                if (Input.GetKeyDown(Presets.UserInputButton1))
+                {
+                    // evoke key stroke
+                    InvokeButtonOnClick();
+                }
+                if (keyDwellTimeCounter <= KeyParams.KeyboardDwellActivateTime)
+                {
+                    keyDwellTimeCounter += Time.deltaTime;
+
+
+                    Color selectedColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeySelectedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+
+                    ChangeKeyColors(
+                        KeyParams.KeyNormalColor,
+                        KeyParams.KeyHighlightedColor,
+                        KeyParams.KeyPressedColor,
+                        selectedColor
+                        );
+
+
+                }
+                else
+                {
+                    // do nothing, keep it selected
+                }
+
+
+            }
+            else
+            {
+                keyDwellTimeCounter = 0;
+                ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor);
+                InvokeButtonNormal();
+                selected = false;
+            }
+
+        }
+
+
+
+
+
+        public void InvokeButtonOnClick()
+        {
+            button.onClick.Invoke();
+        }
+
+        public void InvokeButtonSelected()
+        {
+            button.Select();
+        }
+
+
+        public void InvokeButtonNormal()
+        {
+            // set regular button
+            button.OnDeselect(null);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
     }
 }

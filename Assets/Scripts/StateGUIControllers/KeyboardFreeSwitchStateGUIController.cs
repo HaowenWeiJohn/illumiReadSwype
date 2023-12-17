@@ -1,12 +1,13 @@
+using Keyboard;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyboardFreeSwitchStateGUIController : StateGUIController
 {
-    public UserInterfaceController userInterfaceController;
 
-    // Start is called before the first frame update
+    public KeyboardManager KeyboardManager;
+
     void Start()
     {
 
@@ -22,13 +23,13 @@ public class KeyboardFreeSwitchStateGUIController : StateGUIController
     public override void EnableSelf()
     {
         base.EnableSelf();
-        userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.FreeSwitch);
-        userInterfaceController.EnableSelf();
+        KeyboardManager.setKeyboardInteractionMode(Presets.InteractionMode.FreeSwitch);
+        KeyboardManager.EnableSelf();
     }
 
     public override void DisableSelf()
     {
         base.DisableSelf();
-        userInterfaceController.DisableSelf();
+        KeyboardManager.DisableSelf();
     }
 }

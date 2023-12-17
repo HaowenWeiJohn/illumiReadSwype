@@ -190,7 +190,19 @@ public static class KeyParams
 
 
     public static string KeyTag = "Key";
+    public static string LetterKeyTag = "LetterKey";
+    public static string SuggestionKeyTag = "SuggestionKey";
+
     public static string KeyboardBackgroundTag = "KeyboardBackground";
     public static string KeyboardSuggestionStrip = "KeyboardSuggestionStrip";
+
+
+    public static Color KeyNormalColor = Color.gray;
+    public static Color KeyHighlightedColor = Color.green;
+    public static Color KeySelectedColor = Color.blue;
+    public static Color KeyPressedColor = Color.green;
+
+
+    //KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor
 
 }

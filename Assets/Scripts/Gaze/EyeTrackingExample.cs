@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using Varjo.XR;
 using LSL;
-
-
+using Keyboard;
 
 public enum GazeDataSource
 {
@@ -85,8 +84,8 @@ public class EyeTrackingExample : MonoBehaviour
 
 
     [Header("Keyboard")]
-    public KeyController gazeHitKeyController = null;
-    public bool gazeHitKey = false;
+    public Key gazeKey = null;
+    public bool gazeHitOnKey = false;
     public Vector3 keyHitPointLocal = Vector3.zero;
     public bool gazeHitKeyboardBackground = false;
     public Vector3 keyboardBackgroundHitPointLocal = Vector3.zero;
@@ -287,7 +286,7 @@ public class EyeTrackingExample : MonoBehaviour
 
 
         hits = Physics.RaycastAll(rayOrigin, direction, 100.0F);
-        gazeHitKey = false;
+        gazeHitOnKey = false;
         keyHitPointLocal = Vector3.zero;
         gazeHitKeyboardBackground = false;
         keyboardBackgroundHitPointLocal = Vector3.zero;
@@ -313,7 +312,7 @@ public class EyeTrackingExample : MonoBehaviour
 
 
 
-            gazeHitKeyController = null;
+            gazeKey = null;
             foreach (RaycastHit hit in hits)
             {
                 Vector3 hitPointLocal = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
@@ -324,30 +323,60 @@ public class EyeTrackingExample : MonoBehaviour
                 hitPointLocal.z = hitPointLocal.z * hit.collider.gameObject.transform.localScale.z;
 
 
+                // three types of keys: Key, Letter Key, Suggestion Key
                 if (hit.collider.gameObject.tag == KeyParams.KeyTag)
                 {
-                    gazeHitKeyController = hit.collider.gameObject.GetComponent<KeyController>();
-                    gazeHitKeyController.HasGaze();
-                    gazeHitKey = true;
+                    // hit a regular function key
+                    gazeKey = hit.collider.gameObject.GetComponent<Key>();
+                    gazeKey.HasGaze();
+                    gazeHitOnKey = true;
                     keyHitPointLocal = hitPointLocal;
-                    
                 }
-                else if(hit.collider.gameObject.tag == KeyParams.KeyboardSuggestionStrip)
+                else if(hit.collider.gameObject.tag == KeyParams.LetterKeyTag)
                 {
-                    SuggestionStripController suggestionStripController = hit.collider.gameObject.GetComponent<SuggestionStripController>();
-                    suggestionStripController.HasGaze();
-
+                    gazeKey = hit.collider.gameObject.GetComponent<LetterKey>();
+                    gazeKey.HasGaze();
+                    gazeHitOnKey = true;
+                    keyHitPointLocal = hitPointLocal;
                 }
-                else if(hit.collider.gameObject.tag == KeyParams.KeyboardBackgroundTag)
+                else if (hit.collider.gameObject.tag == KeyParams.LetterKeyTag)
                 {
-                    // get coordinate of the hit point on the keyboarrd
-                    gazeHitKeyboardBackground = true;
-                    keyboardBackgroundHitPointLocal = hitPointLocal;
+                    gazeKey = hit.collider.gameObject.GetComponent<SuggestionKey>();
+                    gazeKey.HasGaze();
+                    gazeHitOnKey = true;
+                    keyHitPointLocal = hitPointLocal;
                 }
                 else
                 {
                     // do nothing
                 }
+
+
+
+                //if (hit.collider.gameObject.tag == KeyParams.KeyTag)
+                //{
+                //    gazeKey = hit.collider.gameObject.GetComponent<KeyController>();
+                //    gazeKey.HasGaze();
+                //    gazeHitOnKey = true;
+                //    keyHitPointLocal = hitPointLocal;
+
+                //}
+                //else if(hit.collider.gameObject.tag == KeyParams.KeyboardSuggestionStrip)
+                //{
+                //    SuggestionStripController suggestionStripController = hit.collider.gameObject.GetComponent<SuggestionStripController>();
+                //    suggestionStripController.HasGaze();
+
+                //}
+                //else if(hit.collider.gameObject.tag == KeyParams.KeyboardBackgroundTag)
+                //{
+                //    // get coordinate of the hit point on the keyboarrd
+                //    gazeHitKeyboardBackground = true;
+                //    keyboardBackgroundHitPointLocal = hitPointLocal;
+                //}
+                //else
+                //{
+                //    // do nothing
+                //}
             }
 
 
@@ -381,9 +410,9 @@ public class EyeTrackingExample : MonoBehaviour
         varjoGazeOnKeyboardLSLOutletController.PushVarjoGazeOnKeyboardData(
             gazeHitKeyboardBackground,
             keyboardBackgroundHitPointLocal,
-            gazeHitKey,
+            gazeHitOnKey,
             keyHitPointLocal,
-            gazeHitKeyController == null ? KeyParams.KeysID[KeyParams.Keys.None] : KeyParams.KeysID[gazeHitKeyController.key],
+            gazeKey == null ? KeyParams.KeysID[KeyParams.Keys.None] : KeyParams.KeysID[gazeKey.key],
             UserInputButton1,
             UserInputButton2
         );

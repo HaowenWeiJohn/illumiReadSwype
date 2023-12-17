@@ -32,8 +32,9 @@ namespace Keyboard
         [SerializeField] private string switchToLetter = "Letters";
 
         private TextMeshProUGUI switchButtonText;
-        
+
         [Header("Keyboards")]
+        [SerializeField] private GameObject suggestionStrips;
         [SerializeField] private GameObject lettersKeyboard;
         [SerializeField] private GameObject numbersKeyboard;
         [SerializeField] private GameObject specialCharactersKeyboard;
@@ -64,6 +65,11 @@ namespace Keyboard
         [SerializeField] private int maxCharacters = 15;
         [SerializeField] private int minCharacters = 3;
 
+
+        [Header("Interaction Mode")]
+        public Presets.InteractionMode interactionMode;
+
+
         private ColorBlock shiftButtonColors;
         private bool isFirstKeyPress = true;
         private bool keyHasBeenPressed;
@@ -77,6 +83,12 @@ namespace Keyboard
 
         private void Awake()
         {
+            // set color
+            normalColor = KeyParams.KeyNormalColor;
+            highlightedColor = KeyParams.KeyHighlightedColor;
+            pressedColor = KeyParams.KeyPressedColor;
+            selectedColor = KeyParams.KeySelectedColor;
+
             // Set the colors of the shift button. It should be capitalized at the start
             shiftButtonColors = shiftButton.colors;
             
@@ -275,7 +287,7 @@ namespace Keyboard
             onKeyboardModeChanged?.Invoke();
         }
 
-        public void DeactivateShift()
+        public void DeactivateShift() // TODO: also deactivate the switing options
         {
             if (shiftActive && !capsLockActive && keyHasBeenPressed)
             {
@@ -325,5 +337,72 @@ namespace Keyboard
 
             shiftButton.colors = shiftButtonColors;
         }
+
+
+        public void EnableSelf()
+        {
+            gameObject.SetActive(true);
+            //keyChannel.RaiseKeysStateChangeEvent(true);
+        }
+
+        public void DisableSelf()
+        {
+            gameObject.SetActive(false);
+            //keyChannel.RaiseKeysStateChangeEvent(false);
+        }
+
+
+        public void setKeyboardInteractionMode(Presets.InteractionMode mode)
+        {
+            interactionMode = mode;
+
+            // set suggestions strips
+            if(interactionMode == Presets.InteractionMode.None)
+            {
+                DisableSuggestionStrips();
+            }
+            else if (interactionMode == Presets.InteractionMode.ButtonClick)
+            {
+                DisableSuggestionStrips();
+            }
+            else if (interactionMode == Presets.InteractionMode.DwellTime)
+            {
+                DisableSuggestionStrips();
+            }
+            else if (interactionMode == Presets.InteractionMode.IllumiReadSwype)
+            {
+                EnableSuggestionStrips();
+            }
+            else if (interactionMode == Presets.InteractionMode.FreeSwitch)
+            {
+                EnableSuggestionStrips();
+            }
+
+
+        }
+
+
+        public void EnableSuggestionStrips()
+        {
+            suggestionStrips.SetActive(true);
+        }
+
+
+        public void DisableSuggestionStrips()
+        {
+            suggestionStrips.SetActive(false);
+        }
+
+        public void SetSuggestionStripsText()
+        {
+
+        }
+
+        public void ClearSuggestionStripsText()
+        {
+
+        }
+
+
     }
 }
