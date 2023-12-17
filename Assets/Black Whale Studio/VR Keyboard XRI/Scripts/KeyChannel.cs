@@ -21,13 +21,17 @@ namespace Keyboard
 {
     public class KeyChannel : ScriptableObject
     {
-        public UnityAction<string> OnKeyPressed;
+        public UnityAction<string> OnLetterKeyPressed;
+        public UnityAction<string> OnSuggestionKeyPressed;
         public UnityAction<Color, Color, Color, Color> OnKeyColorsChanged;
         public UnityAction<bool> OnKeysStateChange;
         public UnityEvent onFirstKeyPress;
 
-        public void RaiseKeyPressedEvent(string key) =>
-            OnKeyPressed?.Invoke(key);
+        public void RaiseLetterKeyPressedEvent(string key) =>
+            OnLetterKeyPressed?.Invoke(key);
+
+        public void RaiseSuggestionKeyPressedEvent(string suggestionString) =>
+            OnSuggestionKeyPressed?.Invoke(suggestionString);
 
         public void RaiseKeyColorsChangedEvent(Color normalColor, Color highlightedColor, Color pressedColor,
             Color selectedColor) =>

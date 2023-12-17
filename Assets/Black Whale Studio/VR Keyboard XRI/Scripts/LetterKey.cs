@@ -35,7 +35,7 @@ namespace Keyboard
         protected override void OnPress()
         {
             base.OnPress();
-            keyChannel.RaiseKeyPressedEvent(character);
+            keyChannel.RaiseLetterKeyPressedEvent(character);
         }
 
         protected override void UpdateKey()

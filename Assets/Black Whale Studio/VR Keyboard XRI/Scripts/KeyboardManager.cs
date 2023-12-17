@@ -127,9 +127,9 @@ namespace Keyboard
             switchNumberSpecialButton.onClick.RemoveListener(SwitchBetweenNumbersAndSpecialCharacters);
         }
 
-        private void OnEnable() => keyChannel.OnKeyPressed += KeyPress;
+        private void OnEnable() => keyChannel.OnLetterKeyPressed += KeyPress;
 
-        private void OnDisable() => keyChannel.OnKeyPressed -= KeyPress;
+        private void OnDisable() => keyChannel.OnLetterKeyPressed -= KeyPress;
 
         private void KeyPress(string key)
         {
