@@ -22,7 +22,9 @@ namespace Keyboard
         protected override void OnPress()
         {
             base.OnPress();
-            //keyChannel.RaiseKeyPressedEvent(character);
+            keyChannel.RaiseSuggestionKeyPressedEvent(suggestionString);
+
+            //keychannel.raisekeypressedevent(character);
         }
 
         protected override void UpdateKey()
@@ -36,6 +38,13 @@ namespace Keyboard
             //    buttonText.text = character.ToLower();
             //}
         }
+
+
+        public void ChangeSuggestionKeyState(bool state)
+        {
+            ChangeKeyState(state);
+        }
+
 
 
         public void SetSuggestionText(string suggestionString)

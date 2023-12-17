@@ -1,9 +1,14 @@
+using Keyboard;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyboardSuggestionStripLSLInletController : LSLInletInterface
 {
+
+    [Header("KeyChannel")]
+    [SerializeField] private KeyChannel keyChannel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +21,15 @@ public class KeyboardSuggestionStripLSLInletController : LSLInletInterface
     // Update is called once per frame
     void Update()
     {
-        
+        PullSuggestionsInfo();
+        if(frameTimestamp != 0 )
+        {
+            // suggestion info received
+            List<string> suggestionList = new List<string>();
+            suggestionList = DecodeSuggestionsFromLSL(frameDataBuffer);
+            keyChannel.RaiseOnSuggestionsReceived(suggestionList);
+        }
+
     }
 
 

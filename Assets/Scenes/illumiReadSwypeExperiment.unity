@@ -6048,6 +6048,7 @@ MonoBehaviour:
   - 0
   streamActivated: 0
   streamAvailable: 0
+  keyChannel: {fileID: 11400000, guid: 707903675feb07f42bda5f7de5dbe878, type: 2}
 --- !u!1 &586126541
 GameObject:
   m_ObjectHideFlags: 0
@@ -8101,9 +8102,37 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+      propertyPath: SuggestionKey1
+      value: 
+      objectReference: {fileID: 1706664292}
+    - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+      propertyPath: SuggestionKey2
+      value: 
+      objectReference: {fileID: 1902872235}
+    - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+      propertyPath: SuggestionKey3
+      value: 
+      objectReference: {fileID: 1515123262}
+    - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
       propertyPath: suggestionStrips
       value: 
       objectReference: {fileID: 586126541}
+    - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+      propertyPath: suggestionKeys.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+      propertyPath: suggestionKeys.Array.data[0]
+      value: 
+      objectReference: {fileID: 1706664292}
+    - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+      propertyPath: suggestionKeys.Array.data[1]
+      value: 
+      objectReference: {fileID: 1902872235}
+    - target: {fileID: 3484128598961847050, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
+      propertyPath: suggestionKeys.Array.data[2]
+      value: 
+      objectReference: {fileID: 1515123262}
     - target: {fileID: 3484128598961847063, guid: 02be27ab17ab3b14f954f65dc06dd738, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

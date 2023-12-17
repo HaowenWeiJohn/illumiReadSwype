@@ -13,6 +13,7 @@
  * For questions or to join our community, please visit our Discord: https://discord.gg/55gtTryfWw
  */
 
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -45,7 +46,7 @@ namespace Keyboard
         [SerializeField] private Image buttonImage;
         [SerializeField] private Sprite defaultSprite;
         [SerializeField] private Sprite activeSprite;
-        
+ 
         [Header("Switch Number/Special Button")]
         [SerializeField] private Button switchNumberSpecialButton;
         [SerializeField] private string numbersString = "Numbers";
@@ -65,6 +66,13 @@ namespace Keyboard
         [SerializeField] private int maxCharacters = 15;
         [SerializeField] private int minCharacters = 3;
 
+
+        [Header("Suggestion Keys")]
+        [SerializeField] List<SuggestionKey> suggestionKeys = new List<SuggestionKey>();
+
+        //[SerializeField] private SuggestionKey SuggestionKey1;
+        //[SerializeField] private SuggestionKey SuggestionKey2;
+        //[SerializeField] private SuggestionKey SuggestionKey3;
 
         [Header("Interaction Mode")]
         public Presets.InteractionMode interactionMode;
@@ -127,11 +135,22 @@ namespace Keyboard
             switchNumberSpecialButton.onClick.RemoveListener(SwitchBetweenNumbersAndSpecialCharacters);
         }
 
-        private void OnEnable() => keyChannel.OnLetterKeyPressed += KeyPress;
+        private void OnEnable()
+        {
+            keyChannel.OnLetterKeyPressed += LetterKeyPress;
+            keyChannel.OnSuggestionKeyPressed += SuggestionKeyPress;
+            keyChannel.OnSuggestionsReceived += SuggestionsReceived;
 
-        private void OnDisable() => keyChannel.OnLetterKeyPressed -= KeyPress;
+        }
 
-        private void KeyPress(string key)
+        private void OnDisable()
+        {
+            keyChannel.OnLetterKeyPressed -= LetterKeyPress;
+            keyChannel.OnSuggestionKeyPressed -= SuggestionKeyPress;
+            keyChannel.OnSuggestionsReceived -= SuggestionsReceived;
+        }
+
+        private void LetterKeyPress(string key)
         {
             keyHasBeenPressed = true;
             bool wasShiftActive = shiftActive;
@@ -162,6 +181,17 @@ namespace Keyboard
             }
     
             CheckTextLength();
+        }
+
+        private void SuggestionKeyPress(string suggestion)
+        {
+            Debug.Log(suggestion);
+            // remove the last word
+
+            // put in the selected suggestion
+
+            // deactivate all the sugggestion
+
         }
 
         private void OnSpacePress()
@@ -350,6 +380,23 @@ namespace Keyboard
             gameObject.SetActive(false);
             //keyChannel.RaiseKeysStateChangeEvent(false);
         }
+
+
+        public void SuggestionsReceived(List<string> suggestionList)
+        {
+            // activate suggestion strips
+            
+
+        }
+
+
+        public void ActivateSuggesitonStrips()
+        {
+            
+
+
+        }
+
 
 
         public void setKeyboardInteractionMode(Presets.InteractionMode mode)

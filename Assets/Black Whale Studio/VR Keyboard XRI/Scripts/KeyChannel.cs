@@ -13,6 +13,7 @@
  * For questions or to join our community, please visit our Discord: https://discord.gg/55gtTryfWw
  */
 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -25,6 +26,9 @@ namespace Keyboard
         public UnityAction<string> OnSuggestionKeyPressed;
         public UnityAction<Color, Color, Color, Color> OnKeyColorsChanged;
         public UnityAction<bool> OnKeysStateChange;
+
+        public UnityAction<List<string>> OnSuggestionsReceived;
+
         public UnityEvent onFirstKeyPress;
 
         public void RaiseLetterKeyPressedEvent(string key) =>
@@ -39,5 +43,9 @@ namespace Keyboard
 
         public void RaiseKeysStateChangeEvent(bool enabled) =>
             OnKeysStateChange?.Invoke(enabled);
+
+        public void RaiseOnSuggestionsReceived(List<string> suggestions) 
+            => OnSuggestionsReceived?.Invoke(suggestions);
+
     }
 }
