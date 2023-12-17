@@ -15,6 +15,7 @@
 
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -65,6 +66,11 @@ namespace Keyboard
         [SerializeField] private Button enterButton;
         [SerializeField] private int maxCharacters = 15;
         [SerializeField] private int minCharacters = 3;
+
+        private bool suggestionAnchorActivated = false;
+        private int suggestionAnchorStartPosition = 0;
+        private int suggestionAnchorEndPosition = 0;
+
 
 
         [Header("Suggestion Keys")]
@@ -186,11 +192,16 @@ namespace Keyboard
         private void SuggestionKeyPress(string suggestion)
         {
             Debug.Log(suggestion);
+
+            
             // remove the last word
 
             // put in the selected suggestion
 
             // deactivate all the sugggestion
+
+
+            
 
         }
 
@@ -385,16 +396,91 @@ namespace Keyboard
         public void SuggestionsReceived(List<string> suggestionList)
         {
             // activate suggestion strips
-            
+
+            ActivateSuggesitonKeys(); // set interactiable
+            // update suggestion list with 1:-1
+            UpdateSuggestionKeys(suggestionList.GetRange(0, suggestionList.Count));
+
+            string suggestionToInsert = suggestionList[0];
+
+
+            int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
+            int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
+
+
+            outputField.text = outputField.text.Remove(startPos, endPos - startPos);
+
+            // left is not space
+            if (outputField.text[startPos]!=0 && outputField.text.Substring(0, 1)!=" ") // if there is no space and not the first word
+            {
+                // insert a space after the previous word
+                outputField.text = outputField.text.Insert(startPos, " ");
+                startPos += 1;
+            }
+
+
+            //if (startPos!=) // if there is no space and not the first word
+            //{
+            //    // insert a space 
+            //    outputField.text = outputField.text.Insert(startPos, " ");
+            //    startPos += 1;
+            //}
+
+
+            // insert the first suggestion
+            outputField.text = outputField.text.Insert(startPos, suggestionToInsert);
+
+            // set the anchor position and suggestion anchor position
+            suggestionAnchorActivated = true;
+            suggestionAnchorStartPosition = startPos;
+            outputField.selectionAnchorPosition = outputField.selectionFocusPosition = startPos + suggestionToInsert.Length;
+            suggestionAnchorEndPosition = outputField.selectionAnchorPosition;
+
 
         }
 
 
-        public void ActivateSuggesitonStrips()
+        public void ActivateSuggesitonKeys()
+        {
+
+            foreach (SuggestionKey suggestionKey in suggestionKeys)
+            {
+                suggestionKey.ChangeSuggestionKeyState(true);
+            }
+
+        }
+
+
+        public void UpdateSuggestionKeys(List<string> suggestionList)
+        {
+            for (int i = 0; i < suggestionKeys.Count; i++)
+            {
+                suggestionKeys[i].SetSuggestionText(suggestionList[i]);
+            }
+        }
+
+
+        public void DeactivateSuggesitonKeys()
         {
             
+            foreach(SuggestionKey suggestionKey in suggestionKeys)
+            {
+                suggestionKey.ChangeSuggestionKeyState(false);
+                suggestionKey.ClearSuggesitonText();
+            }
+
+        }
+        public void EnableSuggestionStrips()
+        {
+            suggestionStrips.SetActive(true);
+            ActivateSuggesitonKeys();
+        }
 
 
+        public void DisableSuggestionStrips()
+        {
+            suggestionStrips.SetActive(false);
+            DeactivateSuggesitonKeys();
         }
 
 
@@ -428,27 +514,6 @@ namespace Keyboard
 
         }
 
-
-        public void EnableSuggestionStrips()
-        {
-            suggestionStrips.SetActive(true);
-        }
-
-
-        public void DisableSuggestionStrips()
-        {
-            suggestionStrips.SetActive(false);
-        }
-
-        public void SetSuggestionStripsText()
-        {
-
-        }
-
-        public void ClearSuggestionStripsText()
-        {
-
-        }
 
 
     }

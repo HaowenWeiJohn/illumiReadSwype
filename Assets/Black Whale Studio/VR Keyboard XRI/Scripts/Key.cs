@@ -94,6 +94,7 @@ namespace Keyboard
         protected virtual void OnPress()
         {
             keyboard.DeactivateShift();
+            keyboard.DeactivateSuggesitonKeys();
         }
 
         protected virtual void UpdateKey()
