@@ -26,6 +26,7 @@ namespace Keyboard
         public UnityAction<string> OnSuggestionKeyPressed;
         public UnityAction<Color, Color, Color, Color> OnKeyColorsChanged;
         public UnityAction<bool> OnKeysStateChange;
+        public UnityAction<KeyParams.KeyboardState> OnKeyboardStateChange;
 
         public UnityAction<List<string>> OnSuggestionsReceived;
 
@@ -43,6 +44,9 @@ namespace Keyboard
 
         public void RaiseKeysStateChangeEvent(bool enabled) =>
             OnKeysStateChange?.Invoke(enabled);
+
+        public void RaiseKeyboardStateChangeEvent(KeyParams.KeyboardState newKeyboardState) =>
+            OnKeyboardStateChange?.Invoke(newKeyboardState);
 
         public void RaiseOnSuggestionsReceived(List<string> suggestions) 
             => OnSuggestionsReceived?.Invoke(suggestions);

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -204,5 +202,13 @@ public static class KeyParams
 
 
     //KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor
+
+    public enum KeyboardState
+    {
+        TypeState = 1,
+        SwypeState = 2,
+        SelectSuggestionState = 3,
+    }
+
 
 }

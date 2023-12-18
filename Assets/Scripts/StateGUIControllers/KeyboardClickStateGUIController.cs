@@ -6,7 +6,7 @@ using UnityEngine;
 public class KeyboardClickStateGUIController : StateGUIController
 {
 
-    public KeyboardManager KeyboardManager;
+    public KeyboardManager keyboardManager;
 
     void Start()
     {
@@ -23,13 +23,14 @@ public class KeyboardClickStateGUIController : StateGUIController
     public override void EnableSelf()
     {
         base.EnableSelf();
-        KeyboardManager.setKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
-        KeyboardManager.EnableSelf();
+        keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
+        keyboardManager.ClearOutputFieldText();
+        keyboardManager.EnableSelf();
     }
 
     public override void DisableSelf()
     {
         base.DisableSelf();
-        KeyboardManager.DisableSelf();
+        keyboardManager.DisableSelf();
     }
 }

@@ -19,6 +19,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using VarjoExample;
 
 namespace Keyboard
 {
@@ -82,6 +83,7 @@ namespace Keyboard
 
         [Header("Interaction Mode")]
         public Presets.InteractionMode interactionMode;
+        public KeyParams.KeyboardState keyboardState = KeyParams.KeyboardState.TypeState;
 
 
         private ColorBlock shiftButtonColors;
@@ -95,7 +97,7 @@ namespace Keyboard
 
         public UnityEvent onKeyboardModeChanged;
 
-        private void Awake()
+        private void Start() // changed awake to start
         {
             // set color
             normalColor = KeyParams.KeyNormalColor;
@@ -147,6 +149,9 @@ namespace Keyboard
             keyChannel.OnSuggestionKeyPressed += SuggestionKeyPress;
             keyChannel.OnSuggestionsReceived += SuggestionsReceived;
 
+            // keyboard state
+            keyChannel.OnKeyboardStateChange += SetKeyboardState;
+
         }
 
         private void OnDisable()
@@ -154,10 +159,16 @@ namespace Keyboard
             keyChannel.OnLetterKeyPressed -= LetterKeyPress;
             keyChannel.OnSuggestionKeyPressed -= SuggestionKeyPress;
             keyChannel.OnSuggestionsReceived -= SuggestionsReceived;
+
+            // keyboard state
+            keyChannel.OnKeyboardStateChange -= SetKeyboardState;
+
         }
 
         private void LetterKeyPress(string key)
         {
+
+
             keyHasBeenPressed = true;
             bool wasShiftActive = shiftActive;
             DeactivateShift();
@@ -171,6 +182,17 @@ namespace Keyboard
             {
                 textToInsert = key.ToLower();
             }
+
+            // check current state 
+            if (keyboardState == KeyParams.KeyboardState.SelectSuggestionState)
+            {
+                // auto add space
+                textToInsert = " " + textToInsert;
+                // back to regular state
+                keyChannel.RaiseKeyboardStateChangeEvent(KeyParams.KeyboardState.TypeState);
+                DeactivateSuggesitonKeys();
+            }
+
 
             int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
             int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
@@ -193,7 +215,29 @@ namespace Keyboard
         {
             Debug.Log(suggestion);
 
+            if (keyboardState == KeyParams.KeyboardState.SelectSuggestionState)
+            {
+
+                // replace the holding suggestion
+                int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
+                int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
+
+                outputField.text = outputField.text.Remove(suggestionAnchorStartPosition, suggestionAnchorEndPosition - suggestionAnchorStartPosition);
+                outputField.text = outputField.text.Insert(suggestionAnchorStartPosition, suggestion);
+
+                outputField.selectionAnchorPosition = outputField.selectionFocusPosition = suggestionAnchorStartPosition + suggestion.Length;
+
+
+                keyChannel.RaiseKeyboardStateChangeEvent(KeyParams.KeyboardState.TypeState);
+                DeactivateSuggesitonKeys();
+            }
+            else
+            {
+                Debug.Log("Not in Suggestion Selection State, but could select Suggestions. Report Bug");
+            }
+
             
+
             // remove the last word
 
             // put in the selected suggestion
@@ -201,12 +245,20 @@ namespace Keyboard
             // deactivate all the sugggestion
 
 
-            
+
 
         }
 
         private void OnSpacePress()
         {
+
+            if (keyboardState == KeyParams.KeyboardState.SelectSuggestionState)
+            {
+                // auto add space
+                keyChannel.RaiseKeyboardStateChangeEvent(KeyParams.KeyboardState.TypeState);
+                DeactivateSuggesitonKeys();
+            }
+
             int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
             int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
 
@@ -220,6 +272,20 @@ namespace Keyboard
 
         private void OnDeletePress()
         {
+
+            if (keyboardState == KeyParams.KeyboardState.SelectSuggestionState)
+            {
+                // remove the holdingg suggesiton
+                outputField.text = outputField.text.Remove(suggestionAnchorStartPosition, suggestionAnchorEndPosition - suggestionAnchorStartPosition);
+                outputField.selectionAnchorPosition = outputField.selectionFocusPosition = suggestionAnchorStartPosition;
+                // deactivate keyboard suggestions
+                keyChannel.RaiseKeyboardStateChangeEvent(KeyParams.KeyboardState.TypeState);
+                DeactivateSuggesitonKeys();
+            }
+
+
+
+
             if (string.IsNullOrEmpty(outputField.text)) return;
             int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
             int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
@@ -240,29 +306,43 @@ namespace Keyboard
 
         private void CheckTextLength()
         {
-            // TODO: refactor this method
+            //// TODO: refactor this method
 
-            int currentLength = outputField.text.Length;
+            //int currentLength = outputField.text.Length;
 
-            // Raise event to enable or disable keys based on the text length
-            bool keysEnabled = currentLength < maxCharacters;
-            keyChannel.RaiseKeysStateChangeEvent(keysEnabled);
+            //// Raise event to enable or disable keys based on the text length
+            //bool keysEnabled = currentLength < maxCharacters;
+            //keyChannel.RaiseKeysStateChangeEvent(keysEnabled);
 
-            // Disables or enables the enter button based on the text length
-            enterButton.interactable = currentLength >= minCharacters;
+            //// Disables or enables the enter button based on the text length
+            //enterButton.interactable = currentLength >= minCharacters;
 
-            // Always enable the delete button, regardless of the text length
-            deleteButton.interactable = true;
+            //// Always enable the delete button, regardless of the text length
+            //deleteButton.interactable = true;
             
-            // Disable shift/caps lock if maximum text length is reached
-            if (currentLength != maxCharacters) return;
-            DeactivateShift();
-            capsLockActive = false;
-            UpdateShiftButtonAppearance();
+            //// Disable shift/caps lock if maximum text length is reached
+            //if (currentLength != maxCharacters) return;
+            //DeactivateShift();
+            //capsLockActive = false;
+            //UpdateShiftButtonAppearance();
         }
+
+        private void SetKeyboardState(KeyParams.KeyboardState newKeyboardState)
+        {
+            keyboardState = newKeyboardState;
+        }
+        
 
         private void OnSwitchPress()
         {
+
+            // if selecting suggestions
+            if (keyboardState == KeyParams.KeyboardState.SelectSuggestionState)
+            {
+                keyChannel.RaiseKeyboardStateChangeEvent(KeyParams.KeyboardState.TypeState);
+                DeactivateSuggesitonKeys();
+            }
+
             if (lettersKeyboard.activeSelf)
             {
                 lettersKeyboard.SetActive(false);
@@ -395,27 +475,56 @@ namespace Keyboard
 
         public void SuggestionsReceived(List<string> suggestionList)
         {
-            // activate suggestion strips
 
+            // start with lower case
+            for (int i = 0; i < suggestionList.Count; i++)
+            {
+                suggestionList[i] = suggestionList[i].ToLower();
+            }
+
+            // if capital we turn Upper
+            if (capsLockActive)
+            {
+                // turn the suggestion list into Caps
+                // Loop through the list and convert each string to uppercase
+                for (int i = 0; i < suggestionList.Count; i++)
+                {
+                    suggestionList[i] = suggestionList[i].ToUpper();
+                }
+            }
+
+            if (shiftActive)
+            {
+                for (int i = 0; i < suggestionList.Count; i++)
+                {
+                    suggestionList[i] = char.ToUpper(suggestionList[i][0]) + suggestionList[i].Substring(1);
+                }
+            }
+
+
+
+            // activate suggestion strips, suggestion received
             ActivateSuggesitonKeys(); // set interactiable
             // update suggestion list with 1:-1
-            UpdateSuggestionKeys(suggestionList.GetRange(0, suggestionList.Count));
-
+            UpdateSuggestionKeys(suggestionList.GetRange(1, suggestionKeys.Count));
+            
+            // put the first suggestion on the top
             string suggestionToInsert = suggestionList[0];
-
-
             int startPos = Mathf.Min(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
             int endPos = Mathf.Max(outputField.selectionAnchorPosition, outputField.selectionFocusPosition);
 
 
             outputField.text = outputField.text.Remove(startPos, endPos - startPos);
 
-            // left is not space
-            if (outputField.text[startPos]!=0 && outputField.text.Substring(0, 1)!=" ") // if there is no space and not the first word
+            // when index is not 0 and left is not space
+            if (startPos!=0)
             {
+                if(outputField.text.Substring(startPos-1, 1) != " ") 
+                {
                 // insert a space after the previous word
                 outputField.text = outputField.text.Insert(startPos, " ");
                 startPos += 1;
+                }
             }
 
 
@@ -435,6 +544,12 @@ namespace Keyboard
             suggestionAnchorStartPosition = startPos;
             outputField.selectionAnchorPosition = outputField.selectionFocusPosition = startPos + suggestionToInsert.Length;
             suggestionAnchorEndPosition = outputField.selectionAnchorPosition;
+
+
+            // transfer to select suggestion state
+            keyChannel.RaiseKeyboardStateChangeEvent(KeyParams.KeyboardState.SelectSuggestionState);
+            keyHasBeenPressed = true;
+            DeactivateShift();
 
 
         }
@@ -485,7 +600,7 @@ namespace Keyboard
 
 
 
-        public void setKeyboardInteractionMode(Presets.InteractionMode mode)
+        public void SetKeyboardInteractionMode(Presets.InteractionMode mode)
         {
             interactionMode = mode;
 
@@ -505,6 +620,7 @@ namespace Keyboard
             else if (interactionMode == Presets.InteractionMode.IllumiReadSwype)
             {
                 EnableSuggestionStrips();
+                DeactivateSuggesitonKeys();
             }
             else if (interactionMode == Presets.InteractionMode.FreeSwitch)
             {
@@ -512,6 +628,12 @@ namespace Keyboard
             }
 
 
+        }
+
+        public void ClearOutputFieldText()
+        {
+            outputField.text = string.Empty;
+            outputField.selectionAnchorPosition = outputField.selectionFocusPosition = 0;
         }
 
 

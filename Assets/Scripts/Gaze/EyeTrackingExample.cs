@@ -339,7 +339,7 @@ public class EyeTrackingExample : MonoBehaviour
                     gazeHitOnKey = true;
                     keyHitPointLocal = hitPointLocal;
                 }
-                else if (hit.collider.gameObject.tag == KeyParams.LetterKeyTag)
+                else if (hit.collider.gameObject.tag == KeyParams.SuggestionKeyTag)
                 {
                     gazeKey = hit.collider.gameObject.GetComponent<SuggestionKey>();
                     gazeKey.HasGaze();

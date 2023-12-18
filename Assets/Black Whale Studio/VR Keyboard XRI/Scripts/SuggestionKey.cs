@@ -39,6 +39,11 @@ namespace Keyboard
             //}
         }
 
+        //protected void ChangeKeyColors(Color normalColor, Color highlightedColor, Color pressedColor, Color selectedColor)
+        //{
+        //    base.ChangeKeyColors( normalColor,  highlightedColor,  pressedColor,  selectedColor);
+        //}
+
 
         public void ChangeSuggestionKeyState(bool state)
         {
