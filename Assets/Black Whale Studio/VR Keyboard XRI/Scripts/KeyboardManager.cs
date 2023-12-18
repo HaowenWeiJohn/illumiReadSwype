@@ -132,6 +132,8 @@ namespace Keyboard
             if (!autoCapsAtStart) return;
             ActivateShift();
             UpdateShiftButtonAppearance();
+
+            DisableSelf();
         }
 
         private void OnDestroy()

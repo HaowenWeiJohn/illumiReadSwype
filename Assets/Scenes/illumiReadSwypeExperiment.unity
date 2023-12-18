@@ -11660,6 +11660,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Keyboard
       objectReference: {fileID: 0}
+    - target: {fileID: 4849003659797600283, guid: e3fa3f62297492f49945ac92a64939c7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5162412126310152007, guid: e3fa3f62297492f49945ac92a64939c7, type: 3}
       propertyPath: key
       value: 11
