@@ -143,7 +143,7 @@ namespace Keyboard
                     InvokeButtonSelected();
                     selected = true;
                 }
-
+                
 
                 keyDwellTimeCounter += Time.deltaTime;
 
@@ -166,6 +166,11 @@ namespace Keyboard
                     ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeyNormalColor);
                     // evoke key stroke
                     Debug.Log(key);
+                    PlayKeyEnterAudioClip();
+                }
+                else
+                {
+                    PlayKeyHoverAudioClip();
                 }
 
 
@@ -188,11 +193,13 @@ namespace Keyboard
             {
                 if (!selected)
                 {
-                    // highlight key
                     // first time one this key
-                    // play the audio clip
+
+                    // highlight key
                     InvokeButtonSelected();
                     selected = true;
+                    // play the audio clip
+                    PlayKeyHoverAudioClip();
                 }
 
 
@@ -200,6 +207,8 @@ namespace Keyboard
                 {
                     // evoke key stroke
                     InvokeButtonOnClick();
+                    // play audio
+                    PlayKeyEnterAudioClip();
                 }
             }
             else
@@ -221,15 +230,19 @@ namespace Keyboard
                 {
                     // highlight key
                     // first time one this key
-                    // play the audio clip
                     InvokeButtonSelected();
                     selected = true;
+                    // play the audio clip
+                    PlayKeyHoverAudioClip();
+
+
                 }
                 // still allow the user to press the button
                 if (Input.GetKeyDown(Presets.UserInputButton1))
                 {
                     // evoke key stroke
                     InvokeButtonOnClick();
+                    PlayKeyEnterAudioClip();
                 }
                 if (keyDwellTimeCounter <= KeyParams.KeyboardDwellActivateTime)
                 {
@@ -286,6 +299,14 @@ namespace Keyboard
         }
 
 
+        public void PlayKeyHoverAudioClip() {
+            AudioSource.PlayClipAtPoint(keyboard.keyHoverAudioClip, transform.position); 
+        }
+
+        public void PlayKeyEnterAudioClip()
+        {
+            AudioSource.PlayClipAtPoint(keyboard.keyEnterAudioClip, transform.position);
+        }
 
 
 
@@ -298,7 +319,6 @@ namespace Keyboard
 
 
 
-        
 
     }
 }

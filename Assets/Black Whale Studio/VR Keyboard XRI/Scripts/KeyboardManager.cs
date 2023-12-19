@@ -68,6 +68,10 @@ namespace Keyboard
         [SerializeField] private int maxCharacters = 15;
         [SerializeField] private int minCharacters = 3;
 
+        [Header("Audios")]
+        public AudioClip keyHoverAudioClip;
+        public AudioClip keyEnterAudioClip;
+
         private bool suggestionAnchorActivated = false;
         private int suggestionAnchorStartPosition = 0;
         private int suggestionAnchorEndPosition = 0;

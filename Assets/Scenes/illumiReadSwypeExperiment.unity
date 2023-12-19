@@ -180,7 +180,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduction
+  m_text: SwEYEpe
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -420,7 +420,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduction
+  m_text: Welcome to illumiRead SyEYEpe Experiment
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -554,7 +554,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduction
+  m_text: Gaze+Dwell
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1798,7 +1798,14 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduction
+  m_text: In this experiment, initiate the swype session by pressing and holding
+    the AltRight key on the keyboard. During this session, direct your gaze to the
+    keys you wish to select. Throughout the process, both auditory and visual feedback
+    will be provided. As you look at a character, the color of the corresponding
+    key will transition from gray to blue. Additionally, a sound effect will coincide
+    with the visual feedback when a selection is made. To conclude the swype session,
+    simply release the AltRight key. Button click selection is also available by
+    pressing AltLeft.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1932,7 +1939,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduction
+  m_text: In this experiment, you need to maintain your gaze on a character for a
+    duration of 0.5 seconds to trigger a button press. During this process, both
+    auditory and visual feedback will be provided. As your gaze remains on the character,
+    you will observe a color transformation of the button from gray to blue. The
+    duration of the color change corresponds to the increasing time your gaze stays
+    on the character. Additionally, a sound effect will accompany the visual feedback,
+    enhancing the overall user experience.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2713,7 +2726,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduction
+  m_text: Gaze+Click
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5652,7 +5665,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Introduction
+  m_text: "In this experiment, you are required to maintain your gaze on a character
+    and simultaneously press AltLeft on keyboard to trigger a button press. Throughout
+    this process, both auditory and visual feedback will be provided. As your gaze
+    remains on the character, the color of the key will change from gray to blue.
+    Additionally, a sound effect will accompany the visual feedback at the button
+    click, enhancing the overall user experience.\r"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -11688,6 +11706,14 @@ PrefabInstance:
       propertyPath: key
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 9197398528311199591, guid: e3fa3f62297492f49945ac92a64939c7, type: 3}
+      propertyPath: keyEnterAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: b8188d7bb53e0154cade46b17fdef8f4, type: 3}
+    - target: {fileID: 9197398528311199591, guid: e3fa3f62297492f49945ac92a64939c7, type: 3}
+      propertyPath: keyHoverAudioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 76190b77b56f38b47b62d15fe9b33d31, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
