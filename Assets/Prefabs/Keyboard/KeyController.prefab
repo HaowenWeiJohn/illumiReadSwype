@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 6305688496378990660}
   m_Layer: 0
   m_Name: KeyController
-  m_TagString: Untagged
+  m_TagString: Key
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 1}
+  m_LocalScale: {x: 0.08, y: 0.08, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8780402679876370831}
@@ -55,6 +55,7 @@ MonoBehaviour:
   key: 0
   hasGazeThisFrame: 0
   selected: 0
+  keyDwellTimeCounter: 0
 --- !u!33 &2448184202995501712
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -430,7 +431,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -439,7 +440,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1000
+  m_PixelsPerUnitMultiplier: 50
 --- !u!114 &7442997956831784545
 MonoBehaviour:
   m_ObjectHideFlags: 0

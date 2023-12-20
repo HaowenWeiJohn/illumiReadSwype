@@ -34,6 +34,15 @@ public static class Presets
 
 
 
+    public static string GazeOnKeyboardLSLOutletStreamName = "illumiReadSwypeUserInputLSL";
+    public static string GazeOnKeyboardLSLOutletStreamType = "GazeOnKeyboard";
+    public static string GazeOnKeyboardLSLOutletStreamID = "3";
+    public static int GazeOnKeyboardChannelNum = 11;
+    public static float GazeOnKeyboardNominalSamplingRate = 50;
+
+
+    public static string KeyboardSuggestionStripLSLStreamName = "illumiReadSwypeKeyboardSuggestionStripLSL";
+
 
 
 
@@ -43,7 +52,11 @@ public static class Presets
     public static KeyCode NextStateKey = KeyCode.KeypadEnter;
     public static KeyCode InterruptKey = KeyCode.Escape;
 
-    public static KeyCode KeyBoardClickKey = KeyCode.RightAlt;
+    public static KeyCode UserInputButton1 = KeyCode.LeftAlt; // button click input
+
+    public static KeyCode UserInputButton2 = KeyCode.RightAlt; // illumiReadSwype button
+
+    public static KeyCode UserInputButton3 = KeyCode.RightControl; // clear swype input
 
 
 
@@ -128,6 +141,15 @@ public static class Presets
         TestBlock = 5,
         EndBlock = 6,
     }
+
+    public enum illumiReadSwypeState
+    {
+        Idle = 1,
+        Swyping = 2,
+        WaitingForSuggestions = 3,
+        SelectingSuggestion = 4,
+    }
+
 
     public static List<ExperimentState> StartBlock = new List<ExperimentState> {
         ExperimentState.StartState,

@@ -7,7 +7,7 @@ public class EventMarkerLSLOutletController : LSLOutletInterface
     // Start is called before the first frame update
     void Start()
     {
-        initLSLStreamOutlet(
+        InitLSLStreamOutlet(
             Presets.EventMarkerLSLOutletStreamName,
             Presets.EventMarkerLSLOutletStreamType,
             Presets.EventMarkerChannelNum,
@@ -27,7 +27,7 @@ public class EventMarkerLSLOutletController : LSLOutletInterface
 
     public void sendBlockOnEnterMarker(Presets.ExperimentBlock currentExperimentBlock)
     {
-        float[] eventMarkerArray = createEventMarkerArrayFloat();
+        float[] eventMarkerArray = CreateEventMarkerArrayFloat();
         eventMarkerArray[(int)Presets.EventMarkerChannelInfo.BlockChannelIndex] = (float)currentExperimentBlock;
         streamOutlet.push_sample(eventMarkerArray);
 
@@ -36,7 +36,7 @@ public class EventMarkerLSLOutletController : LSLOutletInterface
     public void sendBlockOnExitMarker(Presets.ExperimentBlock currentExperimentBlock)
     {
 
-        float[] eventMarkerArray = createEventMarkerArrayFloat();
+        float[] eventMarkerArray = CreateEventMarkerArrayFloat();
         eventMarkerArray[(int)Presets.EventMarkerChannelInfo.BlockChannelIndex] = (float)currentExperimentBlock * -1.0f;
         streamOutlet.push_sample(eventMarkerArray);
     }
@@ -45,7 +45,7 @@ public class EventMarkerLSLOutletController : LSLOutletInterface
     public void sendStateOnEnterMarker(Presets.ExperimentState currentExperimentState)
     {
 
-        float[] eventMarkerArray = createEventMarkerArrayFloat();
+        float[] eventMarkerArray = CreateEventMarkerArrayFloat();
         eventMarkerArray[(int)Presets.EventMarkerChannelInfo.ExperimentStateChannelIndex] = (float)currentExperimentState;
         streamOutlet.push_sample(eventMarkerArray);
 
@@ -55,7 +55,7 @@ public class EventMarkerLSLOutletController : LSLOutletInterface
     public void sendStateOnExitMarker(Presets.ExperimentState currentExperimentState)
     {
 
-        float[] eventMarkerArray = createEventMarkerArrayFloat();
+        float[] eventMarkerArray = CreateEventMarkerArrayFloat();
         eventMarkerArray[(int)Presets.EventMarkerChannelInfo.ExperimentStateChannelIndex] = (float)currentExperimentState * -1.0f;
         streamOutlet.push_sample(eventMarkerArray);
 
@@ -66,7 +66,7 @@ public class EventMarkerLSLOutletController : LSLOutletInterface
     public void sendUserInputsMarker(Presets.UserInputTypes UserInputs)
     {
 
-        float[] eventMarkerArray = createEventMarkerArrayFloat();
+        float[] eventMarkerArray = CreateEventMarkerArrayFloat();
         eventMarkerArray[(int)Presets.EventMarkerChannelInfo.UserInputsChannelIndex] = (float)UserInputs;
         streamOutlet.push_sample(eventMarkerArray);
     }

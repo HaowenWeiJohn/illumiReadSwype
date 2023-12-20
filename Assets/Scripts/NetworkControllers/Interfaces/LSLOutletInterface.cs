@@ -19,7 +19,7 @@ public class LSLOutletInterface : MonoBehaviour
     }
 
 
-    public void initLSLStreamOutlet(string streamName, string streamType, int channelNum, float nominalSamplingRate, LSL.channel_format_t channelFormat)
+    public void InitLSLStreamOutlet(string streamName, string streamType, int channelNum, float nominalSamplingRate, LSL.channel_format_t channelFormat)
     {
         StreamInfo streamInfo = new StreamInfo(
 
@@ -34,7 +34,7 @@ public class LSLOutletInterface : MonoBehaviour
         streamOutlet = new StreamOutlet(streamInfo);
     }
 
-    public float[] createEventMarkerArrayFloat()
+    public float[] CreateEventMarkerArrayFloat()
     {
         int channel_count = streamOutlet.info().channel_count();
         float[] zerosArray = new float[channel_count];

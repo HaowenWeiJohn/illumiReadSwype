@@ -1,12 +1,13 @@
+using Keyboard;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class KeyboardClickStateGUIController : StateGUIController
 {
-    public UserInterfaceController userInterfaceController;
 
-    // Start is called before the first frame update
+    public KeyboardManager keyboardManager;
+
     void Start()
     {
 
@@ -22,13 +23,14 @@ public class KeyboardClickStateGUIController : StateGUIController
     public override void EnableSelf()
     {
         base.EnableSelf();
-        userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
-        userInterfaceController.EnableSelf();
+        keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.ButtonClick);
+        keyboardManager.ClearOutputFieldText();
+        keyboardManager.EnableSelf();
     }
 
     public override void DisableSelf()
     {
         base.DisableSelf();
-        userInterfaceController.DisableSelf();
+        keyboardManager.DisableSelf();
     }
 }

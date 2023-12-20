@@ -1,3 +1,4 @@
+using Keyboard;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class KeyboardDewellTimeStateGUIController : StateGUIController
 {
     // Start is called before the first frame update
 
-    public UserInterfaceController userInterfaceController;
+    public KeyboardManager keyboardManager;
 
     void Start()
     {
@@ -23,14 +24,15 @@ public class KeyboardDewellTimeStateGUIController : StateGUIController
     public override void EnableSelf()
     {
         base.EnableSelf();
-        userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.DwellTime);
-        userInterfaceController.EnableSelf();
+        keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.DwellTime);
+        keyboardManager.ClearOutputFieldText();
+        keyboardManager.EnableSelf();
     }
 
     public override void DisableSelf()
     {
         base.DisableSelf();
-        userInterfaceController.DisableSelf();
+        keyboardManager.DisableSelf();
     }
 
 }
