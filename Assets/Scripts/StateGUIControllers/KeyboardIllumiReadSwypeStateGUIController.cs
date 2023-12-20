@@ -1,3 +1,4 @@
+using Keyboard;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,8 @@ using UnityEngine;
 public class KeyboardIllumiReadSwypeStateGUIController : StateGUIController
 {
 
-    public UserInterfaceController userInterfaceController;
+    public KeyboardManager keyboardManager;
 
-    // Start is called before the first frame update
     void Start()
     {
 
@@ -23,14 +23,14 @@ public class KeyboardIllumiReadSwypeStateGUIController : StateGUIController
     public override void EnableSelf()
     {
         base.EnableSelf();
-        userInterfaceController.setKeyboardInteractionMode(Presets.InteractionMode.IllumiReadSwype);
-        userInterfaceController.EnableSelf();
+        keyboardManager.SetKeyboardInteractionMode(Presets.InteractionMode.IllumiReadSwype);
+        keyboardManager.ClearOutputFieldText();
+        keyboardManager.EnableSelf();
     }
 
     public override void DisableSelf()
     {
         base.DisableSelf();
-        userInterfaceController.DisableSelf();
+        keyboardManager.DisableSelf();
     }
-
 }

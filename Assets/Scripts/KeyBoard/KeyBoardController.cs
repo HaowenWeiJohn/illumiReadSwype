@@ -59,8 +59,8 @@ public class KeyboardController : MonoBehaviour
     public KeyController gazeKeyController;
 
 
-
-
+    public AudioClip keyHoverAudioClip;
+    public AudioClip KeyEnterAudioClip;
 
 
     void Start()
@@ -157,16 +157,18 @@ public class KeyboardController : MonoBehaviour
     // callback functions
     public void KeyboardDwellTimeCallback()
     {
-
+        // do nothing
     }
 
     public void KeyboardButtonClickCallback()
     {
-
+        // do nothing
     }
 
     public void KeyboardIllumiReadSwypeCallback()
     {
+        
+
 
     }
 

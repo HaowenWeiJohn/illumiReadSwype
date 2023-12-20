@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +12,7 @@ public static class KeyParams
 
     public enum Keys
     {
+        None = 0,
         A = 1,
         B = 2,
         C = 3,
@@ -39,7 +38,12 @@ public static class KeyParams
         W = 23,
         X = 24,
         Y = 25,
-        Z = 26
+        Z = 26,
+
+
+        Apostrophe = 27,
+        Dot = 28,
+
     }
 
     public static List<List<Keys>> CharsOrders = new List<List<Keys>> {
@@ -73,6 +77,7 @@ public static class KeyParams
 
     public static Dictionary<Keys, int> KeysID = new Dictionary<Keys, int>
     {
+        [Keys.None] = 0,
         [Keys.A] = 1,
         [Keys.B] = 2,
         [Keys.C] = 3,
@@ -98,12 +103,50 @@ public static class KeyParams
         [Keys.W] = 23,
         [Keys.X] = 24,
         [Keys.Y] = 25,
-        [Keys.Z] = 26
+        [Keys.Z] = 26,
+
+        [Keys.Apostrophe] = 27,
+        [Keys.Dot] = 28
+    };
+
+    public static Dictionary<int, Keys> IDKeys = new Dictionary<int, Keys>
+    {
+        [0] = Keys.None,
+        [1] = Keys.A,
+        [2] = Keys.B,
+        [3] = Keys.C,
+        [4] = Keys.D,
+        [5] = Keys.E,
+        [6] = Keys.F,
+        [7] = Keys.G,
+        [8] = Keys.H,
+        [9] = Keys.I,
+        [10] = Keys.J,
+        [11] = Keys.K,
+        [12] = Keys.L,
+        [13] = Keys.M,
+        [14] = Keys.N,
+        [15] = Keys.O,
+        [16] = Keys.P,
+        [17] = Keys.Q,
+        [18] = Keys.R,
+        [19] = Keys.S,
+        [20] = Keys.T,
+        [21] = Keys.U,
+        [22] = Keys.V,
+        [23] = Keys.W,
+        [24] = Keys.X,
+        [25] = Keys.Y,
+        [26] = Keys.Z,
+
+        [27] = Keys.Apostrophe,
+        [28] = Keys.Dot
     };
 
 
     public static Dictionary<Keys, string> KeysString = new Dictionary<Keys, string>
     {
+        [Keys.None] = "",
         [Keys.A] = "A",
         [Keys.B] = "B",
         [Keys.C] = "C",
@@ -129,7 +172,10 @@ public static class KeyParams
         [Keys.W] = "W",
         [Keys.X] = "X",
         [Keys.Y] = "Y",
-        [Keys.Z] = "Z"
+        [Keys.Z] = "Z",
+
+        [Keys.Apostrophe] = "'",
+        [Keys.Dot] = "."
     };
 
 
@@ -141,6 +187,28 @@ public static class KeyParams
     public static float KeyboardDwellActivateTime = 1.0f;
 
 
+    public static string KeyTag = "Key";
+    public static string LetterKeyTag = "LetterKey";
+    public static string SuggestionKeyTag = "SuggestionKey";
+
+    public static string KeyboardBackgroundTag = "KeyboardBackground";
+    public static string KeyboardSuggestionStrip = "KeyboardSuggestionStrip";
+
+
+    public static Color KeyNormalColor = Color.gray;
+    public static Color KeyHighlightedColor = Color.green;
+    public static Color KeySelectedColor = Color.blue;
+    public static Color KeyPressedColor = Color.green;
+
+
+    //KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor
+
+    public enum KeyboardState
+    {
+        TypeState = 1,
+        SwypeState = 2,
+        SelectSuggestionState = 3,
+    }
 
 
 }

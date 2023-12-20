@@ -171,7 +171,6 @@ public class KeyController : MonoBehaviour
     public float keyDwellTimeCounter = 0;
 
 
-
     void Start()
     {
 
@@ -289,7 +288,7 @@ public class KeyController : MonoBehaviour
             keyImage.color = KeyParams.KeyActiveColor;
 
             // watch the input
-            if (Input.GetKeyDown(KeyCode.LeftAlt))
+            if (Input.GetKeyDown(Presets.UserInputButton1))
             {
                 // evoke key stroke
                 keyboardController.UpdateKeyInput(key);
@@ -320,6 +319,51 @@ public class KeyController : MonoBehaviour
 
     public void KeyIllumiReadSwypeCallback()
     {
+        //// do nothing
+        //if (hasGazeThisFrame)
+        //{
+        //    if (!selected)
+        //    {
+        //        // first time one this key
+        //    }
+
+        //    selected = true;
+        //    keyImage.color = KeyParams.KeyActiveColor;
+        //}
+        //else
+        //{
+        //    selected = false;
+        //    // set color to regular color
+        //    keyImage.color = KeyParams.KeyInactiveColor;
+        //}
+
+        if (hasGazeThisFrame)
+        {
+            if (!selected)
+            {
+                // first time one this key
+                // play the audio clip
+                AudioSource.PlayClipAtPoint(keyboardController.KeyEnterAudioClip, transform.position);
+            }
+
+
+            if (keyDwellTimeCounter <= KeyParams.KeyboardDwellActivateTime)
+            {
+                keyDwellTimeCounter += Time.deltaTime;
+                keyImage.color = Color.Lerp(KeyParams.KeyInactiveColor, KeyParams.KeyActiveColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+            }
+            else
+            {
+                // do nothing
+            }
+            selected = true;
+        }
+        else
+        {
+            keyDwellTimeCounter = 0;
+            keyImage.color = KeyParams.KeyInactiveColor;
+            selected = false;
+        }
 
 
 
