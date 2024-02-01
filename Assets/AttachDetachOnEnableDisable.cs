@@ -16,24 +16,25 @@ public class AttachDetachOnEnableDisable : MonoBehaviour
     // Start is called before the first frame update
     void OnEnable()
     {
+        // reset the position
+        transform.parent = attachTo;
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
+        Debug.Log("Attached");
         curDelayTime = 0f;
     }
 
-    private void OnDisable()
-    {
-        // This ensures the scale is reset in preparation for the next OnEnable
-        transform.parent = attachTo;
-    }
 
     // Update is called once per frame
     private void Update()
     {
         // Scaling only occurs while curScaleTime is actively below the maximum time
-        if (curDelayTime < curDelayTime)
+        if (curDelayTime < delay)
         {
             curDelayTime += Time.deltaTime;
 
-            if (curDelayTime < curDelayTime)
+            if (curDelayTime < delay)
             {
                 // delaying is progressing
             }
@@ -41,7 +42,9 @@ public class AttachDetachOnEnableDisable : MonoBehaviour
             {
                 // detach the transform
                 transform.parent = null;
+                Debug.Log("detached");
             }
         }
+
     }
 }
