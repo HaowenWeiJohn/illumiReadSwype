@@ -137,7 +137,7 @@ namespace Keyboard
             ActivateShift();
             UpdateShiftButtonAppearance();
 
-            DisableSelf();
+            //DisableSelf();
         }
 
         private void OnDestroy()
