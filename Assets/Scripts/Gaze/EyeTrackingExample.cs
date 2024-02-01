@@ -7,6 +7,7 @@ using UnityEngine.XR;
 using Varjo.XR;
 using LSL;
 using Keyboard;
+using Leap.Unity;
 
 public enum GazeDataSource
 {
@@ -90,6 +91,8 @@ public class EyeTrackingExample : MonoBehaviour
     public bool gazeHitKeyboardBackground = false;
     public Vector3 keyboardBackgroundHitPointLocal = Vector3.zero;
 
+    [Header("Gesture")]
+    [SerializeField] PinchDetector pinchDetector;
 
 
     private List<InputDevice> devices = new List<InputDevice>();
@@ -393,7 +396,7 @@ public class EyeTrackingExample : MonoBehaviour
 
         bool UserInputButton1 = false;
 
-        if (Input.GetKey(Presets.UserInputButton1))
+        if (Input.GetKey(Presets.UserInputButton1) || pinchDetector.DidStartPinch)
         {
             UserInputButton1 = true;
         }
@@ -401,7 +404,7 @@ public class EyeTrackingExample : MonoBehaviour
 
         bool UserInputButton2 = false;
 
-        if (Input.GetKey(Presets.UserInputButton2))
+        if (Input.GetKey(Presets.UserInputButton2) || pinchDetector.IsPinching)
         {
             UserInputButton2 = true;
         }

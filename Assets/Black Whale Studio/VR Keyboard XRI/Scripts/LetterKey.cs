@@ -13,6 +13,7 @@
  * For questions or to join our community, please visit our Discord: https://discord.gg/55gtTryfWw
  */
 
+using Leap.Unity;
 using TMPro;
 using UnityEngine;
 

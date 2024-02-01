@@ -13,6 +13,8 @@
  * For questions or to join our community, please visit our Discord: https://discord.gg/55gtTryfWw
  */
 
+using Leap.Unity;
+using Leap.Unity.Examples;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,6 +22,7 @@ namespace Keyboard
 {
     public class Key : MonoBehaviour
     {
+        [SerializeField] PinchDetector pinchDetector;
         [SerializeField] protected KeyChannel keyChannel;
         [SerializeField] protected KeyboardManager keyboard;
         protected Button button;
@@ -203,7 +206,7 @@ namespace Keyboard
                 }
 
 
-                if (Input.GetKeyDown(Presets.UserInputButton1)) // evoke button press 
+                if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch) // evoke button press 
                 {
                     // evoke key stroke
                     InvokeButtonOnClick();
@@ -238,7 +241,7 @@ namespace Keyboard
 
                 }
                 // still allow the user to press the button
-                if (Input.GetKeyDown(Presets.UserInputButton1))
+                if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch)
                 {
                     // evoke key stroke
                     InvokeButtonOnClick();
