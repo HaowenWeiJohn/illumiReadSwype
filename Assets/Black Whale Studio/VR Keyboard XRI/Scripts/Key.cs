@@ -242,6 +242,7 @@ namespace Keyboard
                 }
                 // still allow the user to press the button
                 if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch)
+                    //if (Input.GetKeyDown(Presets.UserInputButton1))
                 {
                     // evoke key stroke
                     InvokeButtonOnClick();
