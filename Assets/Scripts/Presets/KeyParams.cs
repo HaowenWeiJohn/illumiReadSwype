@@ -196,7 +196,7 @@ public static class KeyParams
 
 
     public static Color KeyNormalColor = Color.gray;
-    public static Color KeyHighlightedColor = Color.green;
+    public static Color KeyHighlightedColor = Color.blue;
     public static Color KeySelectedColor = Color.blue;
     public static Color KeyPressedColor = Color.green;
 

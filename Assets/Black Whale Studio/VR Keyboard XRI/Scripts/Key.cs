@@ -151,13 +151,13 @@ namespace Keyboard
                 keyDwellTimeCounter += Time.deltaTime;
 
 
-                Color selectedColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeySelectedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+                Color highlightColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
 
                 ChangeKeyColors(
-                    KeyParams.KeyNormalColor,
+                    highlightColor,
                     KeyParams.KeyHighlightedColor,
                     KeyParams.KeyPressedColor,
-                    selectedColor
+                    KeyParams.KeySelectedColor
                     );
 
                 if (keyDwellTimeCounter >= KeyParams.KeyboardDwellActivateTime)
@@ -166,7 +166,7 @@ namespace Keyboard
                     keyDwellTimeCounter = 0;
                     // reset the color
                     InvokeButtonOnClick();
-                    ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeyNormalColor);
+                    ResetButtonColor();
                     // evoke key stroke
                     Debug.Log(key);
                     PlayKeyEnterAudioClip();
@@ -181,8 +181,8 @@ namespace Keyboard
             else
             {
                 keyDwellTimeCounter = 0;
-                ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor);
-                InvokeButtonNormal();
+                ResetButtonColor();
+                //InvokeButtonNormal();
                 selected = false;
             }
         }
@@ -199,7 +199,8 @@ namespace Keyboard
                     // first time one this key
 
                     // highlight key
-                    InvokeButtonSelected();
+                    //InvokeButtonSelected();
+                    SetKeyHighlightedColor();
                     selected = true;
                     // play the audio clip
                     PlayKeyHoverAudioClip();
@@ -217,7 +218,8 @@ namespace Keyboard
             else
             {
                 // set color to regular color
-                InvokeButtonNormal();
+                ResetButtonColor();
+                //InvokeButtonNormal();
                 selected = false;
             }
         }
@@ -233,7 +235,8 @@ namespace Keyboard
                 {
                     // highlight key
                     // first time one this key
-                    InvokeButtonSelected();
+                    //InvokeButtonSelected();
+                    ResetButtonColor();
                     selected = true;
                     // play the audio clip
                     PlayKeyHoverAudioClip();
@@ -241,26 +244,41 @@ namespace Keyboard
 
                 }
                 // still allow the user to press the button
-                if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch)
-                    //if (Input.GetKeyDown(Presets.UserInputButton1))
+                if (gameObject.tag != KeyParams.LetterKeyTag)
                 {
-                    // evoke key stroke
-                    InvokeButtonOnClick();
-                    PlayKeyEnterAudioClip();
+                    if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch)
+                    //if (Input.GetKeyDown(Presets.UserInputButton1))
+                    {
+                        // evoke key stroke
+                        InvokeButtonOnClick();
+                        PlayKeyEnterAudioClip();
+                    }
                 }
+
+
+
                 if (keyDwellTimeCounter <= KeyParams.KeyboardDwellActivateTime)
                 {
                     keyDwellTimeCounter += Time.deltaTime;
 
-
-                    Color selectedColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeySelectedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+                    Color highlightColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
 
                     ChangeKeyColors(
-                        KeyParams.KeyNormalColor,
+                        highlightColor,
                         KeyParams.KeyHighlightedColor,
                         KeyParams.KeyPressedColor,
-                        selectedColor
+                        KeyParams.KeySelectedColor
                         );
+
+
+                    //Color selectedColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeySelectedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+
+                    //ChangeKeyColors(
+                    //    KeyParams.KeyNormalColor,
+                    //    KeyParams.KeyHighlightedColor,
+                    //    KeyParams.KeyPressedColor,
+                    //    selectedColor
+                    //    );
 
 
                 }
@@ -274,8 +292,8 @@ namespace Keyboard
             else
             {
                 keyDwellTimeCounter = 0;
-                ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor);
-                InvokeButtonNormal();
+                ResetButtonColor();
+                //InvokeButtonNormal();
                 selected = false;
             }
 
@@ -295,6 +313,15 @@ namespace Keyboard
             button.Select();
         }
 
+        public void SetKeyHighlightedColor()
+        {
+            ChangeKeyColors(KeyParams.KeyHighlightedColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor);
+        }
+
+        public void ResetButtonColor()
+        {
+            ChangeKeyColors(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, KeyParams.KeyPressedColor, KeyParams.KeySelectedColor);
+        }
 
         public void InvokeButtonNormal()
         {
