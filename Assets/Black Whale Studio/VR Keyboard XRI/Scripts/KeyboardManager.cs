@@ -18,6 +18,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using VarjoExample;
 
@@ -138,6 +139,19 @@ namespace Keyboard
             UpdateShiftButtonAppearance();
 
             //DisableSelf();
+            //SetFocusOnInputField();
+        }
+
+        public void Update()
+        {
+            if (Input.GetKeyDown(Presets.ClearInputFieldKey))
+            {
+                ClearOutputFieldText();
+            }
+            SetFocusOnInputField();
+
+
+
         }
 
         private void OnDestroy()
@@ -642,6 +656,28 @@ namespace Keyboard
             outputField.selectionAnchorPosition = outputField.selectionFocusPosition = 0;
         }
 
+
+        //public void ClearOutputField()
+        //{
+        //    // when 
+        //    if (Input.GetKeyDown(KeyCode.Delete))
+        //    {
+        //        ClearOutputFieldText();
+        //    }
+        //}
+
+
+        public void SetFocusOnInputField()
+        {
+            // Set the input field as the currently selected object in the event system
+            //EventSystem.current.SetSelectedGameObject(outputField.gameObject, null);
+
+            // Activate the input field to open the virtual keyboard
+            outputField.ActivateInputField();
+
+            // Optional: Reset the caret position to the end of the text
+            //outputField.caretPosition = outputField.text.Length;
+        }
 
 
     }

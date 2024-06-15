@@ -58,6 +58,8 @@ public static class Presets
 
     public static KeyCode UserInputButton3 = KeyCode.RightControl; // clear swype input
 
+    public static KeyCode ClearInputFieldKey = KeyCode.Delete;
+
 
 
     public enum UserInputTypes
