@@ -85,6 +85,7 @@ public class EyeTrackingExample : MonoBehaviour
 
 
     [Header("Keyboard")]
+    public GameObject keyboard;
     public Key gazeKey = null;
     public bool gazeHitOnKey = false;
     public Vector3 keyHitPointLocal = Vector3.zero;
@@ -124,11 +125,43 @@ public class EyeTrackingExample : MonoBehaviour
     int gazeDataCount = 0;
     float gazeTimer = 0f;
 
+    private StreamWriter GazeWriter = null;
+    private string filePath;
+
     void GetDevice()
     {
         InputDevices.GetDevicesAtXRNode(XRNode.CenterEye, devices);
         device = devices.FirstOrDefault();
     }
+
+    void OpenCSVFile()
+    {
+        GazeWriter = new StreamWriter(filePath, true);
+
+        GazeWriter.WriteLine("Key,KeyID,HitPointLocal,KeyGroundTruthLocal");
+    }
+
+    void WriteToCSV(string key, string keyID, Vector2 hitPointLocal, Vector2 GroudTruthLocal)
+    {
+        if (GazeWriter != null)
+        {
+            string hitPointString = "(" + hitPointLocal.x.ToString() + " " + hitPointLocal.y.ToString() + ")";
+            string GroudTruthString = "(" + GroudTruthLocal.x.ToString() + " " + GroudTruthLocal.y.ToString() + ")";
+            // string line = $"{key},{keyID},{hitPointLocal.ToString()},{GroudTruthLocal.ToString()}";
+            string line = $"{key},{keyID},{hitPointString},{GroudTruthString}";
+            GazeWriter.WriteLine(line);
+        }
+    }
+
+    void CloseCSVFile()
+    {
+        if(GazeWriter != null)
+        {
+            GazeWriter.Close();
+            GazeWriter = null;
+        }
+    }
+
 
     void OnEnable()
     {
@@ -140,6 +173,10 @@ public class EyeTrackingExample : MonoBehaviour
 
     private void Start()
     {
+        // define the file path to store the csv file
+        filePath = Path.Combine(Application.dataPath + "/Logs/GazeLog/", "GazeData.csv");
+        OpenCSVFile();
+
         VarjoEyeTracking.SetGazeOutputFrequency(frequency);
         //Hiding the gazetarget if gaze is not available or if the gaze calibration is not done
         if (VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated())
@@ -200,10 +237,10 @@ public class EyeTrackingExample : MonoBehaviour
         }
 
         // Toggle gaze target visibility
-        if (Input.GetKeyDown(toggleGazeTarget))
-        {
-            gazeTarget.GetComponentInChildren<MeshRenderer>().enabled = !gazeTarget.GetComponentInChildren<MeshRenderer>().enabled;
-        }
+        // if (Input.GetKeyDown(toggleGazeTarget))
+        // {
+        //     gazeTarget.GetComponentInChildren<MeshRenderer>().enabled = !gazeTarget.GetComponentInChildren<MeshRenderer>().enabled;
+        // }
 
         // Get gaze data if gaze is allowed and calibrated
         if (VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated())
@@ -353,6 +390,37 @@ public class EyeTrackingExample : MonoBehaviour
                 {
                     // do nothing
                 }
+
+                // Debug.Log("Key hit point local: " + keyHitPointLocal.ToString());
+                
+                // if(hit.collider.gameObject.tag == KeyParams.KeyTag || hit.collider.gameObject.tag == KeyParams.LetterKeyTag || hit.collider.gameObject.tag == KeyParams.SuggestionKeyTag)
+
+                // only check for the letter keys
+                if(hit.collider.gameObject.GetComponent<LetterKey>() != null)
+                {
+                    Vector3 hitPointKeyboardLocal = keyboard.transform.InverseTransformPoint(hit.point);
+
+                    Vector2 hitPointKeyboardLocal2D = new Vector2(hitPointKeyboardLocal.x, hitPointKeyboardLocal.y);
+
+                    Vector3 KeyLocalOffset = keyboard.transform.InverseTransformPoint(hit.collider.gameObject.transform.position);
+
+                    Vector2 KeyLocalOffset2D = new Vector2(KeyLocalOffset.x, KeyLocalOffset.y);
+
+                    if(gazeKey != null)
+                    {
+                        string key = hit.collider.gameObject.GetComponent<LetterKey>().character;
+                        string keyID = KeyParams.KeysID[gazeKey.key].ToString();
+
+                        WriteToCSV(key,keyID, hitPointKeyboardLocal2D, KeyLocalOffset2D);
+                        // Debug.Log("Key Value: " + gazeKey.key + " Key ID: " + KeyParams.KeysID[gazeKey.key]);
+                        // Debug.Log("Hit point local: " + hitPointKeyboardLocal.ToString());
+                    }
+                }
+
+                
+
+                // Debug.Log("Key Value: "+ gazeKey.key + " Key ID: " + KeyParams.KeysID[gazeKey.key]);
+                // Debug.Log("Hit point local: " + hitPointKeyboardLocal.ToString());
 
 
 
@@ -716,5 +784,6 @@ public class EyeTrackingExample : MonoBehaviour
     void OnApplicationQuit()
     {
         StopLogging();
+        CloseCSVFile();
     }
 }

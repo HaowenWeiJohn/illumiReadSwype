@@ -21,7 +21,7 @@ namespace Keyboard
 {
     public class LetterKey : Key
     {
-        [SerializeField] private string character;
+        [SerializeField] public string character;
         private TextMeshProUGUI buttonText;
 
         protected override void Awake()
