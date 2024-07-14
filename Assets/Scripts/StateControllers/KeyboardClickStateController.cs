@@ -11,6 +11,10 @@ public class KeyboardClickStateController : StateController
 
     public KeyboardClickStateGUIController keyboardClickStateGUIController;
 
+    public GameObject KeyBoard;
+
+    public GameObject PaintCursor;
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +32,8 @@ public class KeyboardClickStateController : StateController
     public override void enterState()
     {
         keyboardClickStateGUIController.EnableSelf();
+        KeyBoard.SetActive(true);
+        PaintCursor.SetActive(true);
         base.enterState();
 
     }
@@ -35,6 +41,8 @@ public class KeyboardClickStateController : StateController
     public override void exitState()
     {
         keyboardClickStateGUIController.DisableSelf();
+        KeyBoard.SetActive(false);
+        PaintCursor.SetActive(false);
         base.exitState();
 
     }

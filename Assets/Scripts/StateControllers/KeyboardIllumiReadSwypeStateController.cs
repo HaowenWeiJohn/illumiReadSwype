@@ -11,6 +11,10 @@ public class KeyboardIllumiReadSwypeStateController : StateController
 
     public KeyboardIllumiReadSwypeStateGUIController keyboardIllumiReadSwypeStateGUIController;
 
+    public GameObject KeyBoard;
+
+    public GameObject PaintCursor;
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +32,8 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public override void enterState()
     {
         keyboardIllumiReadSwypeStateGUIController.EnableSelf();
+        KeyBoard.SetActive(true);
+        PaintCursor.SetActive(true);
         base.enterState();
 
     }
@@ -35,6 +41,8 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public override void exitState()
     {
         keyboardIllumiReadSwypeStateGUIController.DisableSelf();
+        KeyBoard.SetActive(false);
+        PaintCursor.SetActive(false);
         base.exitState();
 
     }
