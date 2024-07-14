@@ -136,19 +136,21 @@ public class EyeTrackingExample : MonoBehaviour
 
     void OpenCSVFile()
     {
-        GazeWriter = new StreamWriter(filePath, true);
+        Directory.CreateDirectory(Path.GetDirectoryName(filePath));
 
-        GazeWriter.WriteLine("Key,KeyID,HitPointLocal,KeyGroundTruthLocal");
+        GazeWriter = new StreamWriter(filePath, false);
+
+        GazeWriter.WriteLine("Key,KeyID,HitPointLocalX,HitPointLocalY,KeyGroundTruthLocalX,KeyGroundTruthLocalY");
     }
 
     void WriteToCSV(string key, string keyID, Vector2 hitPointLocal, Vector2 GroudTruthLocal)
     {
         if (GazeWriter != null)
         {
-            string hitPointString = "(" + hitPointLocal.x.ToString() + " " + hitPointLocal.y.ToString() + ")";
-            string GroudTruthString = "(" + GroudTruthLocal.x.ToString() + " " + GroudTruthLocal.y.ToString() + ")";
-            // string line = $"{key},{keyID},{hitPointLocal.ToString()},{GroudTruthLocal.ToString()}";
-            string line = $"{key},{keyID},{hitPointString},{GroudTruthString}";
+            // string hitPointString = "(" + hitPointLocal.x.ToString() + " " + hitPointLocal.y.ToString() + ")";
+            // string GroudTruthString = "(" + GroudTruthLocal.x.ToString() + " " + GroudTruthLocal.y.ToString() + ")";
+            string line = $"{key},{keyID},{hitPointLocal.x.ToString()},{hitPointLocal.y.ToString()},{GroudTruthLocal.x.ToString()},{GroudTruthLocal.y.ToString()}";
+            // string line = $"{key},{keyID},{hitPointString},{GroudTruthString}";
             GazeWriter.WriteLine(line);
         }
     }

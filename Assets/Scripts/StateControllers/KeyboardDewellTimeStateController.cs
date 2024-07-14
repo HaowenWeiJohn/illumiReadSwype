@@ -11,6 +11,7 @@ public class KeyboardDewellTimeStateController : StateController
 
     public KeyboardDewellTimeStateGUIController keyboardDewellTimeStateGUIController;
 
+    public GameObject KeyBoard;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,7 @@ public class KeyboardDewellTimeStateController : StateController
     public override void enterState()
     {
         keyboardDewellTimeStateGUIController.EnableSelf();
+        KeyBoard.SetActive(true);
         base.enterState();
 
     }
@@ -35,6 +37,7 @@ public class KeyboardDewellTimeStateController : StateController
     public override void exitState()
     {
         keyboardDewellTimeStateGUIController.DisableSelf();
+        KeyBoard.SetActive(false);
         base.exitState();
 
     }

@@ -11,6 +11,10 @@ public class InitStateController : StateController
 
     public InitStateGUIController initStateGUIController;
 
+    public GameObject KeyBoard;
+
+    public GameObject PaintCursor;
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +32,8 @@ public class InitStateController : StateController
     public override void enterState()
     {
         initStateGUIController.EnableSelf();
+        KeyBoard.SetActive(false);
+        PaintCursor.SetActive(false);
         base.enterState();
 
     }

@@ -526,7 +526,10 @@ namespace Keyboard
             // activate suggestion strips, suggestion received
             ActivateSuggesitonKeys(); // set interactiable
             // update suggestion list with 1:-1
-            UpdateSuggestionKeys(suggestionList.GetRange(1, suggestionKeys.Count));
+            Debug.Log("Suggestion keys:"+suggestionList.Count);
+            Debug.Log("Suggestion key value:"+suggestionList[0]);
+            // this is to update the suggestion keys
+            // UpdateSuggestionKeys(suggestionList.GetRange(1, suggestionKeys.Count));
             
             // put the first suggestion on the top
             string suggestionToInsert = suggestionList[0];
