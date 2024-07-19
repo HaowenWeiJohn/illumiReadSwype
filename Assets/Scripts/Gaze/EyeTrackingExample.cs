@@ -92,6 +92,8 @@ public class EyeTrackingExample : MonoBehaviour
     public bool gazeHitKeyboardBackground = false;
     public Vector3 keyboardBackgroundHitPointLocal = Vector3.zero;
 
+    public Vector2 keyBoardHitLocal = Vector2.zero;
+
     [Header("Gesture")]
     [SerializeField] PinchDetector pinchDetector;
 
@@ -175,9 +177,10 @@ public class EyeTrackingExample : MonoBehaviour
 
     private void Start()
     {
-        // define the file path to store the csv file
-        filePath = Path.Combine(Application.dataPath + "/Logs/GazeLog/", "GazeData.csv");
-        OpenCSVFile();
+        // // define the file path to store the csv file
+        // filePath = Path.Combine(Application.dataPath + "/Logs/GazeLog/", "GazeData.csv");
+        // OpenCSVFile();
+
 
         VarjoEyeTracking.SetGazeOutputFrequency(frequency);
         //Hiding the gazetarget if gaze is not available or if the gaze calibration is not done
@@ -331,7 +334,7 @@ public class EyeTrackingExample : MonoBehaviour
         gazeHitOnKey = false;
         keyHitPointLocal = Vector3.zero;
         gazeHitKeyboardBackground = false;
-        keyboardBackgroundHitPointLocal = Vector3.zero;
+        keyboardBackgroundHitPointLocal = Vector3.one;
 
         if (hits.Length > 0)
         {
@@ -410,12 +413,14 @@ public class EyeTrackingExample : MonoBehaviour
 
                     if(gazeKey != null)
                     {
-                        string key = hit.collider.gameObject.GetComponent<LetterKey>().character;
-                        string keyID = KeyParams.KeysID[gazeKey.key].ToString();
+                        // string key = hit.collider.gameObject.GetComponent<LetterKey>().character;
+                        // string keyID = KeyParams.KeysID[gazeKey.key].ToString();
 
-                        WriteToCSV(key,keyID, hitPointKeyboardLocal2D, KeyLocalOffset2D);
-                        // Debug.Log("Key Value: " + gazeKey.key + " Key ID: " + KeyParams.KeysID[gazeKey.key]);
-                        // Debug.Log("Hit point local: " + hitPointKeyboardLocal.ToString());
+                        // WriteToCSV(key,keyID, hitPointKeyboardLocal2D, KeyLocalOffset2D);
+
+                        // keyBoardHitLocal = hitPointKeyboardLocal2D;
+                        keyboardBackgroundHitPointLocal.x = hitPointKeyboardLocal.x;
+                        keyboardBackgroundHitPointLocal.y = hitPointKeyboardLocal.y;
                     }
                 }
 
