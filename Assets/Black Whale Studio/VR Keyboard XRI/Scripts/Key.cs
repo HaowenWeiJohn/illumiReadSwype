@@ -143,8 +143,9 @@ namespace Keyboard
                     // highlight key
                     // first time one this key
                     // play the audio clip
-                    InvokeButtonSelected();
+                    // InvokeButtonSelected();
                     selected = true;
+                    PlayKeyHoverAudioClip();
                 }
                 
 
@@ -173,7 +174,7 @@ namespace Keyboard
                 }
                 else
                 {
-                    PlayKeyHoverAudioClip();
+                    // PlayKeyHoverAudioClip();
                 }
 
 

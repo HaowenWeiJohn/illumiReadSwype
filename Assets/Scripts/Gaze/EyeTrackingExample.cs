@@ -331,6 +331,9 @@ public class EyeTrackingExample : MonoBehaviour
 
 
         hits = Physics.RaycastAll(rayOrigin, direction, 100.0F);
+        // Debug.Log("Hits: " + hits.Length);
+        // Debug.Log("Ray Origin: " + rayOrigin.ToString());
+        // Debug.Log("Direction: " + direction.ToString());
         gazeHitOnKey = false;
         keyHitPointLocal = Vector3.zero;
         gazeHitKeyboardBackground = false;
@@ -467,6 +470,7 @@ public class EyeTrackingExample : MonoBehaviour
             gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
             gazeTarget.transform.localScale = Vector3.one * floatingGazeTargetDistance;
         }
+        
 
 
         bool UserInputButton1 = false;

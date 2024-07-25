@@ -64,7 +64,7 @@ namespace Keyboard
         [SerializeField] private Color selectedColor = Color.blue;
         
         [Header("Output Field Settings")]
-        [SerializeField] private TMP_InputField outputField;
+        [SerializeField] public TMP_InputField outputField;
         [SerializeField] private Button enterButton;
         [SerializeField] private int maxCharacters = 15;
         [SerializeField] private int minCharacters = 3;
@@ -529,7 +529,10 @@ namespace Keyboard
             Debug.Log("Suggestion keys:"+suggestionList.Count);
             Debug.Log("Suggestion key value:"+suggestionList[0]);
             // this is to update the suggestion keys
-            UpdateSuggestionKeys(suggestionList.GetRange(1, suggestionKeys.Count));
+            if((suggestionList.Count -1)> 0)
+            {
+                UpdateSuggestionKeys(suggestionList.GetRange(1, suggestionKeys.Count));
+            }
             
             // put the first suggestion on the top
             string suggestionToInsert = suggestionList[0];
@@ -643,7 +646,7 @@ namespace Keyboard
             else if (interactionMode == Presets.InteractionMode.IllumiReadSwype)
             {
                 EnableSuggestionStrips();
-                DeactivateSuggesitonKeys();
+                // DeactivateSuggesitonKeys();
             }
             else if (interactionMode == Presets.InteractionMode.FreeSwitch)
             {
@@ -656,7 +659,8 @@ namespace Keyboard
         public void ClearOutputFieldText()
         {
             outputField.text = string.Empty;
-            outputField.selectionAnchorPosition = outputField.selectionFocusPosition = 0;
+            outputField.selectionAnchorPosition =0;
+            outputField.selectionFocusPosition = 0;
         }
 
 
@@ -679,7 +683,7 @@ namespace Keyboard
             outputField.ActivateInputField();
 
             // Optional: Reset the caret position to the end of the text
-            //outputField.caretPosition = outputField.text.Length;
+            outputField.caretPosition = outputField.text.Length;
         }
 
 

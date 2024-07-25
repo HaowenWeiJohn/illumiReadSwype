@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.ExceptionServices;
 using UnityEngine;
+using UnityEditor;
 using static Presets;
 
 public class GameManager : MonoBehaviour
@@ -130,6 +131,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 Debug.Log("Experiment End");
+                // end the experiment and exit play mode
+                EditorApplication.isPlaying = false;
             }
 
 

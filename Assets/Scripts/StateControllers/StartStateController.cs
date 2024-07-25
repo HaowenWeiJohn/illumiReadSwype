@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Varjo.XR;
+using Leap.Unity;
 
 public class StartStateController : StateController
 {
@@ -21,7 +23,7 @@ public class StartStateController : StateController
     // Update is called once per frame
     void Update()
     {
-        base.Update();
+        stateShift();
     }
 
 
@@ -37,6 +39,16 @@ public class StartStateController : StateController
         startStateGUIController.DisableSelf();
         base.exitState();
 
+    }
+
+    public override void stateShift()
+    {
+        if(VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated())
+        {
+            // base.stateShift();
+            exitState();
+        }
+        
     }
 
 

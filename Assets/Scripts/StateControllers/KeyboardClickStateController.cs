@@ -15,6 +15,8 @@ public class KeyboardClickStateController : StateController
 
     public GameObject PaintCursor;
 
+    public string targetWord;
+
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +27,8 @@ public class KeyboardClickStateController : StateController
     // Update is called once per frame
     void Update()
     {
-        base.Update();
+        // base.Update();
+        stateShift();
     }
 
 
@@ -45,6 +48,16 @@ public class KeyboardClickStateController : StateController
         PaintCursor.SetActive(false);
         base.exitState();
 
+    }
+
+    public override void stateShift()
+    {
+        string outputText = keyboardClickStateGUIController.keyboardManager.outputField.text;
+        if (outputText==targetWord)
+        {
+            exitState();
+        }
+        base.stateShift();
     }
 
 
