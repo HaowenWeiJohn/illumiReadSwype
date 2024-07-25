@@ -13,6 +13,8 @@ public class KeyboardDewellTimeStateController : StateController
 
     public GameObject KeyBoard;
 
+    public string targetWord;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,7 +24,8 @@ public class KeyboardDewellTimeStateController : StateController
     // Update is called once per frame
     void Update()
     {
-        base.Update();
+        // base.Update();
+        stateShift();
     }
 
 
@@ -40,6 +43,16 @@ public class KeyboardDewellTimeStateController : StateController
         KeyBoard.SetActive(false);
         base.exitState();
 
+    }
+
+    public override void stateShift()
+    {
+        string outputText = keyboardDewellTimeStateGUIController.keyboardManager.outputField.text;
+        if (outputText==targetWord)
+        {
+            exitState();
+        }
+        base.stateShift();
     }
 
 

@@ -85,7 +85,7 @@ public class StateController : MonoBehaviour
         currentState = newState;
     }
 
-    public void stateShift()
+    public virtual void stateShift()
     {
         // check the key press and do state shfit
         if (Input.GetKeyDown(Presets.NextStateKey))
