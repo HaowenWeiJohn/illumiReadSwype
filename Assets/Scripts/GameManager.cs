@@ -4,6 +4,7 @@ using System.Runtime.ExceptionServices;
 using UnityEngine;
 using UnityEditor;
 using static Presets;
+using Varjo.XR;
 
 public class GameManager : MonoBehaviour
 {
@@ -95,9 +96,11 @@ public class GameManager : MonoBehaviour
     }
 
 
-
     void Start()
     {
+        VarjoMixedReality.StartRender();
+        VarjoRendering.SetOpaque(false);
+        Debug.Log("Varjo Mixed Reality is available");   
 
         //expermentProcedure = ExperimentPreset.ConstructExperimentStates();
 
@@ -107,7 +110,7 @@ public class GameManager : MonoBehaviour
         currentGameState = Presets.GameState.IdleState;
         experimentBlocks = ExperimentPreset.ConstructExperimentBlocks(); // list of Enums
 
-
+        
         // use a key to enter the first game block.
 
 
