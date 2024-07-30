@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class KeyboardDewellTimeStateController : StateController
 {
@@ -12,6 +13,8 @@ public class KeyboardDewellTimeStateController : StateController
     public KeyboardDewellTimeStateGUIController keyboardDewellTimeStateGUIController;
 
     public GameObject KeyBoard;
+
+    public TextMeshProUGUI targetWordText;
 
     public string targetWord;
 
@@ -32,6 +35,7 @@ public class KeyboardDewellTimeStateController : StateController
     public override void enterState()
     {
         keyboardDewellTimeStateGUIController.EnableSelf();
+        targetWordText.text = targetWord;
         KeyBoard.SetActive(true);
         base.enterState();
 
@@ -40,6 +44,7 @@ public class KeyboardDewellTimeStateController : StateController
     public override void exitState()
     {
         keyboardDewellTimeStateGUIController.DisableSelf();
+        targetWordText.text = "";
         KeyBoard.SetActive(false);
         base.exitState();
 
