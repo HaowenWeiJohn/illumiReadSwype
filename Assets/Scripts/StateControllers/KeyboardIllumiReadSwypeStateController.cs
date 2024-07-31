@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class KeyboardIllumiReadSwypeStateController : StateController
 {
@@ -12,10 +13,14 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public KeyboardIllumiReadSwypeStateGUIController keyboardIllumiReadSwypeStateGUIController;
 
     public GameObject KeyBoard;
+    public TextMeshProUGUI targetWordText;
+
+    // the list should contain the set of target words
+    public List<string> targetWordList;
+
+    private int currentWordIndex = 0;
 
     public GameObject PaintCursor;
-
-    public string targetWord;
 
 
     // Start is called before the first frame update
@@ -35,6 +40,7 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public override void enterState()
     {
         keyboardIllumiReadSwypeStateGUIController.EnableSelf();
+        targetWordText.text = targetWordList[0];
         KeyBoard.SetActive(true);
         PaintCursor.SetActive(true);
         base.enterState();
@@ -44,6 +50,7 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public override void exitState()
     {
         keyboardIllumiReadSwypeStateGUIController.DisableSelf();
+        targetWordText.text = "";
         KeyBoard.SetActive(false);
         PaintCursor.SetActive(false);
         base.exitState();
@@ -53,11 +60,24 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public override void stateShift()
     {
         string outputText = keyboardIllumiReadSwypeStateGUIController.keyboardManager.outputField.text;
-        if (outputText==targetWord)
+        if(currentWordIndex>=targetWordList.Count)
         {
             exitState();
         }
-        base.stateShift();
+        else if (outputText==targetWordList[currentWordIndex] || Input.GetKeyDown(Presets.NextStateKey))
+        {
+            currentWordIndex += 1;
+            if(currentWordIndex<targetWordList.Count)
+            {
+                targetWordText.text = targetWordList[currentWordIndex];
+            }
+            keyboardIllumiReadSwypeStateGUIController.keyboardManager.ClearOutputFieldText();
+        }
+        
+        if(Input.GetKeyDown(Presets.InterruptKey))
+        {
+            base.currentState = Presets.State.InterruptState;
+        }
     }
 
 

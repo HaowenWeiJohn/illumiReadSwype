@@ -11,7 +11,7 @@ public class StateController : MonoBehaviour
     public GameManager gameManager;
     public Presets.ExperimentState experimentState;
 
-    Presets.State currentState = Presets.State.IdleState;
+    public Presets.State currentState = Presets.State.IdleState;
 
     public EventMarkerLSLOutletController eventMarkerLSLOutletController;
     void Start()

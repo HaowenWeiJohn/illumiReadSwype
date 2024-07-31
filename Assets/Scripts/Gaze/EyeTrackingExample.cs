@@ -17,6 +17,9 @@ public enum GazeDataSource
 
 public class EyeTrackingExample : MonoBehaviour
 {
+    [Header("Game Manager")]
+    public GameManager gameManager;
+
     [Header("Gaze data")]
     public GazeDataSource gazeDataSource = GazeDataSource.InputSubsystem;
 
@@ -205,6 +208,10 @@ public class EyeTrackingExample : MonoBehaviour
 
     void Update()
     {
+        if(gameManager.keyboardDewellTimeStateController.gameObject.activeSelf)
+        {
+            return;
+        }
         if (logging && printFramerate)
         {
             gazeTimer += Time.deltaTime;
