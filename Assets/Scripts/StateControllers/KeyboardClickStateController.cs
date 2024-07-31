@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class KeyboardClickStateController : StateController
 {
@@ -13,9 +14,15 @@ public class KeyboardClickStateController : StateController
 
     public GameObject KeyBoard;
 
-    public GameObject PaintCursor;
+    public TextMeshProUGUI targetWordText;
 
-    public string targetWord;
+    // the list should contain the set of target words
+    public List<string> targetWordList;
+
+    private int currentWordIndex = 0;
+
+
+    public GameObject PaintCursor;
 
 
     // Start is called before the first frame update
@@ -35,6 +42,7 @@ public class KeyboardClickStateController : StateController
     public override void enterState()
     {
         keyboardClickStateGUIController.EnableSelf();
+        targetWordText.text = targetWordList[0];
         KeyBoard.SetActive(true);
         PaintCursor.SetActive(true);
         base.enterState();
@@ -44,6 +52,7 @@ public class KeyboardClickStateController : StateController
     public override void exitState()
     {
         keyboardClickStateGUIController.DisableSelf();
+        targetWordText.text = "";
         KeyBoard.SetActive(false);
         PaintCursor.SetActive(false);
         base.exitState();
@@ -53,12 +62,24 @@ public class KeyboardClickStateController : StateController
     public override void stateShift()
     {
         string outputText = keyboardClickStateGUIController.keyboardManager.outputField.text;
-        if (outputText==targetWord)
+        if(currentWordIndex>=targetWordList.Count)
         {
             exitState();
         }
-        base.stateShift();
+        else if (outputText==targetWordList[currentWordIndex] || Input.GetKeyDown(Presets.NextStateKey))
+        {
+            currentWordIndex += 1;
+            if(currentWordIndex<targetWordList.Count)
+            {
+                targetWordText.text = targetWordList[currentWordIndex];
+            }
+            keyboardClickStateGUIController.keyboardManager.ClearOutputFieldText();
+        }
+        
+        if(Input.GetKeyDown(Presets.InterruptKey))
+        {
+            base.currentState = Presets.State.InterruptState;
+        }
     }
-
 
 }
