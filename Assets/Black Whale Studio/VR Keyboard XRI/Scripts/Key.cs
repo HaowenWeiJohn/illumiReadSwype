@@ -29,6 +29,10 @@ namespace Keyboard
 
         public BoxCollider boxCollider;
 
+        public GlobalSettings globalSettings;
+
+        private bool keyPressed = false;
+
         [Header("Additional Key Settings")]
         public bool hasGazeThisFrame;
         public KeyParams.Keys key;
@@ -38,6 +42,12 @@ namespace Keyboard
 
         [Header("DwellTime Settings")]
         public float keyDwellTimeCounter = 0;
+
+
+        protected virtual void Start()
+        {
+            globalSettings = GameObject.Find("GlobalSettings").GetComponent<GlobalSettings>();
+        }
 
 
         protected virtual void Update()
@@ -63,9 +73,41 @@ namespace Keyboard
 
         }
 
+        protected virtual void OnCollisionEnter(Collision other)
+        {
+            Debug.Log("OnTriggerEnter");
+            if(keyPressed == false )
+            { 
+            
+                ChangeKeyColors(
+                KeyParams.KeyHighlightedColor,
+                KeyParams.KeyHighlightedColor,
+                KeyParams.KeyPressedColor,
+                KeyParams.KeySelectedColor
+                );
 
+                InvokeButtonOnClick();
+                PlayKeyEnterAudioClip();
 
+                keyPressed = true;
+            }
+                
+            
+        }
 
+        protected virtual void OnCollisionExit(Collision other)
+        {
+            Debug.Log("OnTriggerExit");
+            
+            ResetButtonColor();
+
+            keyPressed = false;
+        }
+
+        protected virtual void OnCollisionStay(Collision other)
+        {
+            
+        }
 
         protected virtual void Awake()
         {
@@ -136,56 +178,56 @@ namespace Keyboard
 
         public void KeyDwellTimeCallback()
         {
-            if (hasGazeThisFrame)
-            {
-                if (!selected)
-                {
-                    // highlight key
-                    // first time one this key
-                    // play the audio clip
-                    // InvokeButtonSelected();
-                    selected = true;
-                    PlayKeyHoverAudioClip();
-                }
+            // if (hasGazeThisFrame)
+            // {
+            //     if (!selected)
+            //     {
+            //         // highlight key
+            //         // first time one this key
+            //         // play the audio clip
+            //         // InvokeButtonSelected();
+            //         selected = true;
+            //         PlayKeyHoverAudioClip();
+            //     }
                 
 
-                keyDwellTimeCounter += Time.deltaTime;
+            //     keyDwellTimeCounter += Time.deltaTime;
 
 
-                Color highlightColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+            //     Color highlightColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
 
-                ChangeKeyColors(
-                    highlightColor,
-                    KeyParams.KeyHighlightedColor,
-                    KeyParams.KeyPressedColor,
-                    KeyParams.KeySelectedColor
-                    );
+            //     ChangeKeyColors(
+            //         highlightColor,
+            //         KeyParams.KeyHighlightedColor,
+            //         KeyParams.KeyPressedColor,
+            //         KeyParams.KeySelectedColor
+            //         );
 
-                if (keyDwellTimeCounter >= KeyParams.KeyboardDwellActivateTime)
-                {
-                    // reset the counter
-                    keyDwellTimeCounter = 0;
-                    // reset the color
-                    InvokeButtonOnClick();
-                    ResetButtonColor();
-                    // evoke key stroke
-                    Debug.Log(key);
-                    PlayKeyEnterAudioClip();
-                }
-                else
-                {
-                    // PlayKeyHoverAudioClip();
-                }
+            //     if (keyDwellTimeCounter >= KeyParams.KeyboardDwellActivateTime)
+            //     {
+            //         // reset the counter
+            //         keyDwellTimeCounter = 0;
+            //         // reset the color
+            //         InvokeButtonOnClick();
+            //         ResetButtonColor();
+            //         // evoke key stroke
+            //         Debug.Log(key);
+            //         PlayKeyEnterAudioClip();
+            //     }
+            //     else
+            //     {
+            //         // PlayKeyHoverAudioClip();
+            //     }
 
 
-            }
-            else
-            {
-                keyDwellTimeCounter = 0;
-                ResetButtonColor();
-                //InvokeButtonNormal();
-                selected = false;
-            }
+            // }
+            // else
+            // {
+            //     keyDwellTimeCounter = 0;
+            //     ResetButtonColor();
+            //     //InvokeButtonNormal();
+            //     selected = false;
+            // }
         }
 
 
