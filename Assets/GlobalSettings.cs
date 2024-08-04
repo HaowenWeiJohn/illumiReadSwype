@@ -5,6 +5,9 @@ using Varjo.XR;
 
 public class GlobalSettings : MonoBehaviour
 {
+
+    public int keyNumPressed = 0;
+
     // awake function called before start
     void Awake()
     {
