@@ -43,8 +43,4 @@ public class illumiReadSwypeUserInputLSLOutletController : LSLOutletInterface
     }
     
 
-
-
-
-
 }

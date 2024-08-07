@@ -8,6 +8,7 @@ using Varjo.XR;
 using LSL;
 using Keyboard;
 using Leap.Unity;
+using TMPro;
 
 public enum GazeDataSource
 {
@@ -54,6 +55,9 @@ public class EyeTrackingExample : MonoBehaviour
 
     [Header("Gaze point indicator")]
     public GameObject gazeTarget;
+
+    [Header("Gaze trace particle system")]
+    public ParticleSystem gazeParticle;
 
     [Header("Gaze ray radius")]
     public float gazeRadius = 0.01f;
@@ -204,6 +208,8 @@ public class EyeTrackingExample : MonoBehaviour
         {
             fixationPointTransform.gameObject.SetActive(false);
         }
+
+        gazeParticle.Play();
     }
 
     void Update()
@@ -348,8 +354,7 @@ public class EyeTrackingExample : MonoBehaviour
 
         if (hits.Length > 0)
         {
-
-
+            
             // gaze target
             RaycastHit first_hit = hits[0];
             gazeTarget.transform.position = first_hit.point - direction * targetOffset;
@@ -370,6 +375,8 @@ public class EyeTrackingExample : MonoBehaviour
             gazeKey = null;
             foreach (RaycastHit hit in hits)
             {
+                EmitGazeParticle(hit.point);
+
                 Vector3 hitPointLocal = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
 
                 // include scaling
@@ -403,8 +410,11 @@ public class EyeTrackingExample : MonoBehaviour
                 }
                 else
                 {
-                    // do nothing
+                    // do nothing 
                 }
+
+                // add the gaze particle effect on keyboard 
+
 
                 // Debug.Log("Key hit point local: " + keyHitPointLocal.ToString());
                 
@@ -476,6 +486,8 @@ public class EyeTrackingExample : MonoBehaviour
             gazeTarget.transform.position = rayOrigin + direction * floatingGazeTargetDistance;
             gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
             gazeTarget.transform.localScale = Vector3.one * floatingGazeTargetDistance;
+
+            // gazeParticle.Stop();
         }
         
 
@@ -506,7 +518,7 @@ public class EyeTrackingExample : MonoBehaviour
             UserInputButton2
         );
 
-
+        
         //// Raycast to world from VR Camera position towards fixation point
         //if (Physics.SphereCast(rayOrigin, gazeRadius, direction, out hit))
         //{
@@ -694,6 +706,19 @@ public class EyeTrackingExample : MonoBehaviour
     //        rb.AddForceAtPosition(direction * hitForce, hit.point, ForceMode.Force);
     //    }
     //}
+
+    public void EmitGazeParticle(Vector3 position)
+    {
+        // ParticleSystem.EmitParams emitParams = new ParticleSystem.EmitParams
+        // {
+        //     position = position,
+        //     applyShapeToPosition = true,
+        //     startLifetime = 1.0f
+        // };
+        gazeParticle.transform.position = position;
+        
+        
+    }
 
     void LogGazeData(VarjoEyeTracking.GazeData data, VarjoEyeTracking.EyeMeasurements eyeMeasurements)
     {

@@ -6,7 +6,10 @@ using Varjo.XR;
 public class GlobalSettings : MonoBehaviour
 {
 
-    public int keyNumPressed = 0;
+    public bool keyNumPressed=false;
+    public illumiReadSwypeKeyboardContextLSLOutletController KeyboardContextLSLOutletController;
+
+    public TMPro.TMP_InputField keyboardOutputText;
 
     // awake function called before start
     void Awake()
@@ -22,6 +25,9 @@ public class GlobalSettings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        KeyboardContextLSLOutletController.PushKeyboardContextData(
+            keyboardOutputText.text
+        );
+        Debug.Log("Keyboard Output Text: " + keyboardOutputText.text);
     }
 }

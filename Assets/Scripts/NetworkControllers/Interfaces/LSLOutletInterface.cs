@@ -7,6 +7,9 @@ public class LSLOutletInterface : MonoBehaviour
 {
     // Start is called before the first frame update
     public StreamOutlet streamOutlet;
+
+    // the string StreamOutlet
+    // public StreamOutlet stringStreamOutlet;
     void Start()
     {
         
@@ -40,6 +43,13 @@ public class LSLOutletInterface : MonoBehaviour
         float[] zerosArray = new float[channel_count];
         return zerosArray;
         //return new float[3] { };
+    }
+
+    public string[] CreateEventMarkerArrayString()
+    {
+        int channel_count = streamOutlet.info().channel_count();
+        string[] emptyArray = new string[channel_count];
+        return emptyArray;
     }
 
 }
