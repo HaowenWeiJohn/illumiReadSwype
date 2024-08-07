@@ -31,7 +31,7 @@ namespace Keyboard
 
         public GlobalSettings globalSettings;
 
-        private bool keyPressed = false;
+        private bool handTypeMode = false;
 
         [Header("Additional Key Settings")]
         public bool hasGazeThisFrame;
@@ -56,12 +56,15 @@ namespace Keyboard
             {
                 case Presets.InteractionMode.DwellTime:
                     KeyDwellTimeCallback();
+                    handTypeMode = true;
                     break;
                 case Presets.InteractionMode.ButtonClick:
                     KeyButtonClickCallback();
+                    handTypeMode = false;
                     break;
                 case Presets.InteractionMode.IllumiReadSwype:
                     KeyIllumiReadSwypeCallback();
+                    handTypeMode = false;
                     break;
                     //case Presets.InteractionMode.FreeSwitch:
                     //    KeyFreeSwitchCallback();
@@ -76,7 +79,7 @@ namespace Keyboard
         protected virtual void OnCollisionEnter(Collision other)
         {
             Debug.Log("OnTriggerEnter");
-            if(keyPressed == false )
+            if(handTypeMode == true )
             { 
             
                 ChangeKeyColors(
@@ -88,8 +91,6 @@ namespace Keyboard
 
                 InvokeButtonOnClick();
                 PlayKeyEnterAudioClip();
-
-                keyPressed = true;
             }
                 
             
@@ -98,10 +99,12 @@ namespace Keyboard
         protected virtual void OnCollisionExit(Collision other)
         {
             Debug.Log("OnTriggerExit");
+            if(handTypeMode == true)
+            {
             
             ResetButtonColor();
 
-            keyPressed = false;
+            }
         }
 
         protected virtual void OnCollisionStay(Collision other)

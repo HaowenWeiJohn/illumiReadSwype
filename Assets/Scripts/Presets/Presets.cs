@@ -33,7 +33,7 @@ public static class Presets
     public static float GazeDataNominalSamplingRate = 200;
 
 
-
+    // gaze on keyboard lsl outlet stream
     public static string GazeOnKeyboardLSLOutletStreamName = "illumiReadSwypeUserInputLSL";
     public static string GazeOnKeyboardLSLOutletStreamType = "GazeOnKeyboard";
     public static string GazeOnKeyboardLSLOutletStreamID = "3";
@@ -44,7 +44,13 @@ public static class Presets
     public static string KeyboardSuggestionStripLSLStreamName = "illumiReadSwypeKeyboardSuggestionStripLSL";
 
 
+    // context lsl outlet stream
+    public static string KeyboardContextLSLOutletStreamName = "illumiReadSwypeKeyboardContextLSL";
+    public static string KeyboardContextLSLOutletStreamType = "KeyboardContext";
+    public static string KeyboardContextLSLOutletStreamID = "5";
+    public static int KeyboardContextChannelNum = 1;
 
+    public static float KeyboardContextNominalSamplingRate = 50;
 
     public static string GameManagerName = "GameManager";
 
