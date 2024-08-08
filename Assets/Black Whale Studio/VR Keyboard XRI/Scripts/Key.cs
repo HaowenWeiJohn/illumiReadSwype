@@ -39,7 +39,6 @@ namespace Keyboard
         public bool selected = false;
 
 
-
         [Header("DwellTime Settings")]
         public float keyDwellTimeCounter = 0;
 

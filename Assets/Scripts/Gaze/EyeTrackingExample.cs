@@ -59,6 +59,8 @@ public class EyeTrackingExample : MonoBehaviour
     [Header("Gaze trace particle system")]
     public ParticleSystem gazeParticle;
 
+    public ParticleSystem gazeDot;
+
     [Header("Gaze ray radius")]
     public float gazeRadius = 0.01f;
 
@@ -375,7 +377,19 @@ public class EyeTrackingExample : MonoBehaviour
             gazeKey = null;
             foreach (RaycastHit hit in hits)
             {
-                EmitGazeParticle(hit.point);
+                if(pinchDetector.IsPinching == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                {
+                    gazeDot.Stop();
+                    EmitGazeParticle(hit.point);
+                }
+                else
+                {
+                    gazeDot.Play();
+                    // gazeParticle.Stop();
+                    gazeDot.transform.position = hit.point;
+                }
+                
+                
 
                 Vector3 hitPointLocal = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
 
@@ -477,8 +491,6 @@ public class EyeTrackingExample : MonoBehaviour
                 //}
             }
 
-
-
         }
         else
         {
@@ -487,7 +499,7 @@ public class EyeTrackingExample : MonoBehaviour
             gazeTarget.transform.LookAt(rayOrigin, Vector3.up);
             gazeTarget.transform.localScale = Vector3.one * floatingGazeTargetDistance;
 
-            // gazeParticle.Stop();
+            gazeDot.Stop();
         }
         
 

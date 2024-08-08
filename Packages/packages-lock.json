@@ -8,12 +8,12 @@
         "com.unity.nuget.newtonsoft-json": "2.0.0"
       }
     },
-    "com.labstreaminglayer.lsl4unity": {
-      "version": "https://github.com/labstreaminglayer/LSL4Unity.git",
+    "com.physiolabxr.unityplugin": {
+      "version": "https://github.com/PhysioLabXR/Unity-PhysioLabXR-Package.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "75d54ab160edaf02d2173350bbd91f1afbdb66d8"
+      "hash": "9e5e7c5b13617ad600c5df31ece4142d520634d1"
     },
     "com.unity.ai.navigation": {
       "version": "1.1.4",
