@@ -216,10 +216,6 @@ public class EyeTrackingExample : MonoBehaviour
 
     void Update()
     {
-        if(gameManager.keyboardDewellTimeStateController.gameObject.activeSelf)
-        {
-            return;
-        }
         if (logging && printFramerate)
         {
             gazeTimer += Time.deltaTime;
@@ -254,6 +250,13 @@ public class EyeTrackingExample : MonoBehaviour
         if (Input.GetKeyDown(checkGazeCalibrated))
         {
             Debug.Log("Gaze calibrated: " + VarjoEyeTracking.IsGazeCalibrated());
+        }
+
+        // just return if the keyboard is not in states that requires gaze tracking
+        if(!gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf && !gameManager.KeyboardClickStateController.gameObject.activeSelf)
+        {
+            gazeDot.Stop();
+            return;
         }
 
         // Toggle gaze target visibility
