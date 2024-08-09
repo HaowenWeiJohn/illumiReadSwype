@@ -78,8 +78,9 @@ namespace Keyboard
         protected virtual void OnCollisionEnter(Collision other)
         {
             Debug.Log("OnTriggerEnter");
-            if(handTypeMode == true )
-            { 
+            if(handTypeMode == true && globalSettings.keyPressed == false)
+            {
+                globalSettings.keyPressed = true;
             
                 ChangeKeyColors(
                 KeyParams.KeyHighlightedColor,
@@ -98,17 +99,17 @@ namespace Keyboard
         protected virtual void OnCollisionExit(Collision other)
         {
             Debug.Log("OnTriggerExit");
-            if(handTypeMode == true)
+            if(handTypeMode == true && globalSettings.keyPressed == true)
             {
-            
-            ResetButtonColor();
+                globalSettings.keyPressed = false;
+                ResetButtonColor();
 
             }
         }
 
         protected virtual void OnCollisionStay(Collision other)
         {
-            
+            globalSettings.keyPressed = true;
         }
 
         protected virtual void Awake()
