@@ -251,13 +251,17 @@ namespace Keyboard
                     PlayKeyHoverAudioClip();
                 }
 
+            
 
                 if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch) // evoke button press 
                 {
-                    // evoke key stroke
-                    InvokeButtonOnClick();
-                    // play audio
-                    PlayKeyEnterAudioClip();
+                    if(gameObject.tag != KeyParams.LetterKeyTag)
+                    {
+                        // evoke key stroke
+                        InvokeButtonOnClick();
+                        // play audio
+                        PlayKeyEnterAudioClip();
+                    }
                 }
             }
             else

@@ -17,8 +17,8 @@ public class GlobalSettings : MonoBehaviour
     private IllumiReadSwypeScript.IllumiReadSwypeScriptClient client;
     public string host = "http://localhost:8004";
 
-    public bool keyNumPressed=false;
-    // public illumiReadSwypeKeyboardContextLSLOutletController KeyboardContextLSLOutletController;
+    public bool keyPressed=false;
+
 
     public TMPro.TMP_InputField keyboardOutputText;
 
@@ -41,16 +41,26 @@ public class GlobalSettings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // KeyboardContextLSLOutletController.PushKeyboardContextData(
-        //     keyboardOutputText.text
-        // );
-        // Debug.Log("Keyboard Output Text: " + keyboardOutputText.text);
+        StartCoroutine(CallLongAsyncRPC());
+    }
 
-        // Debug.Log("Calling RPC");
+    private IEnumerator CallLongAsyncRPC()
+    {
         string KeyboardContext = keyboardOutputText.text+" ";
-        var reply = client.ContextRPC(new ContextRPCRequest { Input0 = KeyboardContext });
+        var request = new ContextRPCRequest() { Input0 = KeyboardContext };  // The argument cannot be an empty string
+        var call = client.ContextRPCAsync(request);  // The method name in the client is "<method name in RenaScript>Async"
+        yield return new WaitUntil(() => call.ResponseAsync.IsCompleted);
 
-        // Debug.Log(reply.ToString());
-        // Text.text = $"[{DateTime.Now}] {reply}";
+        if (call.ResponseAsync.IsCompletedSuccessfully)
+        {
+            var response = call.ResponseAsync.Result;
+            // Text.text = $"[{DateTime.Now}] {response}";
+        }
+        else
+        {
+            // Text.text = $"[{DateTime.Now}] Error: {call.ResponseAsync.Exception.Message}";
+        }
+
+
     }
 }

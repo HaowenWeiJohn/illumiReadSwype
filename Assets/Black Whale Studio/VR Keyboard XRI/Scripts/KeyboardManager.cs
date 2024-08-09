@@ -94,8 +94,8 @@ namespace Keyboard
         private ColorBlock shiftButtonColors;
         private bool isFirstKeyPress = true;
         private bool keyHasBeenPressed;
-        private bool shiftActive;
-        private bool capsLockActive;
+        public bool shiftActive;
+        public bool capsLockActive;
         private bool specialCharactersActive;
         private float lastShiftClickTime;
         private float shiftDoubleClickDelay = 0.5f;

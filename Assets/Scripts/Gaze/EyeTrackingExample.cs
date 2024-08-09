@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -9,6 +10,10 @@ using LSL;
 using Keyboard;
 using Leap.Unity;
 using TMPro;
+using Cysharp.Net.Http;
+using Grpc.Core;
+using Grpc.Net.Client;
+using UnityEngine.UI;
 
 public enum GazeDataSource
 {
@@ -92,6 +97,8 @@ public class EyeTrackingExample : MonoBehaviour
     [Header("Print gaze data timestamp")]
     public bool printGazeDataTimestamp = false;
 
+    [Header("KeyboardManager")]
+    public KeyboardManager keyboardManager;
 
     [Header("Keyboard")]
     public GameObject keyboard;
@@ -103,8 +110,22 @@ public class EyeTrackingExample : MonoBehaviour
 
     public Vector2 keyBoardHitLocal = Vector2.zero;
 
+
+
     [Header("Gesture")]
     [SerializeField] PinchDetector pinchDetector;
+
+    [Header("RPC Client Manager")]
+    public string host = "http://localhost:13004";
+
+    private GrpcChannel channel;
+    private YetAnotherHttpHandler handler;
+    private IllumiReadSwypeScript.IllumiReadSwypeScriptClient client;
+
+    private string TapKeyLetter = "";
+
+    private bool pinchHandled = false;
+
 
 
     private List<InputDevice> devices = new List<InputDevice>();
@@ -175,6 +196,56 @@ public class EyeTrackingExample : MonoBehaviour
         }
     }
 
+    // the corountine to receive the response from the server
+    private IEnumerator RPCTapToChar(Vector2 localHitPosition)
+    {
+        float x = localHitPosition.x;
+        float y = localHitPosition.y;
+
+        // Create a new request
+        var request = new Tap2CharRPCRequest(){Input0= x, Input1= y};
+        var call = client.Tap2CharRPCAsync(request);
+        yield return new WaitUntil(() => call.ResponseAsync.IsCompleted);
+
+        if(call.ResponseAsync.IsCompletedSuccessfully)
+        {
+            var response = call.ResponseAsync.Result;
+            // Debug.Log("The Tap to char prediction result" + response);
+            TapKeyLetter =response.Message;
+
+            // if(keyboardManager.shiftActive || keyboardManager.capsLockActive)
+            // {
+            //     TapKeyLetter = TapKeyLetter.ToUpper();
+            // }
+            // else
+            // {
+            //     TapKeyLetter = TapKeyLetter.ToLower();
+            // }
+
+            // invoke the button click event on keyboard
+            // Find a GameObject with a specific name in the scene
+            GameObject targetObject = GameObject.Find(TapKeyLetter);
+            // Debug.Log("The GameObject name is: " + TapKeyLetter);
+
+            if (targetObject != null)
+            {
+                Keyboard.LetterKey letterKey = targetObject.GetComponent<LetterKey>();
+                letterKey.InvokeButtonOnClick();
+                letterKey.PlayKeyEnterAudioClip();
+
+            }
+            else
+            {
+                Debug.LogError("GameObject with the specified name not found!");
+            }
+            
+        }
+        else
+        {
+            Debug.LogError("gRPC call failed: " + call.ResponseAsync.Exception);
+        }
+    }
+
 
     void OnEnable()
     {
@@ -210,6 +281,11 @@ public class EyeTrackingExample : MonoBehaviour
         {
             fixationPointTransform.gameObject.SetActive(false);
         }
+
+        // set up the RPC client
+        handler = new YetAnotherHttpHandler() { Http2Only = true };  // GRPC requires HTTP/2
+        channel = GrpcChannel.ForAddress(host, new GrpcChannelOptions() { HttpHandler = handler, Credentials = ChannelCredentials.Insecure });
+        client = new IllumiReadSwypeScript.IllumiReadSwypeScriptClient(channel);
 
         gazeParticle.Play();
     }
@@ -378,19 +454,32 @@ public class EyeTrackingExample : MonoBehaviour
 
 
             gazeKey = null;
+            
             foreach (RaycastHit hit in hits)
             {
-                if(pinchDetector.IsPinching == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                // particle system effect for gaze
+                if(pinchDetector.DidStartPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
                 {
                     gazeDot.Stop();
+                    gazeParticle.Play();
                     EmitGazeParticle(hit.point);
+                }
+                else if(pinchDetector.IsPinching == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                {
+                    EmitGazeParticle(hit.point);
+                }
+                else if(pinchDetector.DidEndPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                {
+                    gazeDot.Play();
+                    gazeParticle.Stop();
                 }
                 else
                 {
                     gazeDot.Play();
-                    // gazeParticle.Stop();
                     gazeDot.transform.position = hit.point;
                 }
+
+                
                 
                 
 
@@ -430,24 +519,30 @@ public class EyeTrackingExample : MonoBehaviour
                     // do nothing 
                 }
 
-                // add the gaze particle effect on keyboard 
+                Vector3 hitPointKeyboardLocal = keyboard.transform.InverseTransformPoint(hit.point);
 
+                Vector2 hitPointKeyboardLocal2D = new Vector2(hitPointKeyboardLocal.x, hitPointKeyboardLocal.y);
 
-                // Debug.Log("Key hit point local: " + keyHitPointLocal.ToString());
+                Vector3 KeyLocalOffset = keyboard.transform.InverseTransformPoint(hit.collider.gameObject.transform.position);
+
+                Vector2 KeyLocalOffset2D = new Vector2(KeyLocalOffset.x, KeyLocalOffset.y);
+
                 
-                // if(hit.collider.gameObject.tag == KeyParams.KeyTag || hit.collider.gameObject.tag == KeyParams.LetterKeyTag || hit.collider.gameObject.tag == KeyParams.SuggestionKeyTag)
+                // call the fat finger algorithm here
+                if(hit.collider.gameObject.layer == LayerMask.NameToLayer("TapToChar") && gameManager.KeyboardClickStateController.gameObject.activeSelf && pinchDetector.DidStartPinch && !pinchHandled)
+                {
+                    pinchHandled = true;
+                    StartCoroutine(RPCTapToChar(hitPointKeyboardLocal2D));
+                }
+
+                if(pinchDetector.DidEndPinch)
+                {
+                    pinchHandled = false;
+                }
 
                 // only check for the letter keys
                 if(hit.collider.gameObject.GetComponent<LetterKey>() != null)
                 {
-                    Vector3 hitPointKeyboardLocal = keyboard.transform.InverseTransformPoint(hit.point);
-
-                    Vector2 hitPointKeyboardLocal2D = new Vector2(hitPointKeyboardLocal.x, hitPointKeyboardLocal.y);
-
-                    Vector3 KeyLocalOffset = keyboard.transform.InverseTransformPoint(hit.collider.gameObject.transform.position);
-
-                    Vector2 KeyLocalOffset2D = new Vector2(KeyLocalOffset.x, KeyLocalOffset.y);
-
                     if(gazeKey != null)
                     {
                         // string key = hit.collider.gameObject.GetComponent<LetterKey>().character;
