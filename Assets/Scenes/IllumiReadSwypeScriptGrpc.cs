@@ -48,6 +48,10 @@ public static partial class IllumiReadSwypeScript
   static readonly grpc::Marshaller<global::ContextRPCRequest> __Marshaller_ContextRPCRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::ContextRPCRequest.Parser));
   [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
   static readonly grpc::Marshaller<global::ContextRPCResponse> __Marshaller_ContextRPCResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::ContextRPCResponse.Parser));
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Marshaller<global::Tap2CharRPCRequest> __Marshaller_Tap2CharRPCRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Tap2CharRPCRequest.Parser));
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Marshaller<global::Tap2CharRPCResponse> __Marshaller_Tap2CharRPCResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Tap2CharRPCResponse.Parser));
 
   [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
   static readonly grpc::Method<global::ContextRPCRequest, global::ContextRPCResponse> __Method_ContextRPC = new grpc::Method<global::ContextRPCRequest, global::ContextRPCResponse>(
@@ -56,6 +60,14 @@ public static partial class IllumiReadSwypeScript
       "ContextRPC",
       __Marshaller_ContextRPCRequest,
       __Marshaller_ContextRPCResponse);
+
+  [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+  static readonly grpc::Method<global::Tap2CharRPCRequest, global::Tap2CharRPCResponse> __Method_Tap2CharRPC = new grpc::Method<global::Tap2CharRPCRequest, global::Tap2CharRPCResponse>(
+      grpc::MethodType.Unary,
+      __ServiceName,
+      "Tap2CharRPC",
+      __Marshaller_Tap2CharRPCRequest,
+      __Marshaller_Tap2CharRPCResponse);
 
   /// <summary>Service descriptor</summary>
   public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -69,6 +81,12 @@ public static partial class IllumiReadSwypeScript
   {
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     public virtual global::System.Threading.Tasks.Task<global::ContextRPCResponse> ContextRPC(global::ContextRPCRequest request, grpc::ServerCallContext context)
+    {
+      throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+    }
+
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::System.Threading.Tasks.Task<global::Tap2CharRPCResponse> Tap2CharRPC(global::Tap2CharRPCRequest request, grpc::ServerCallContext context)
     {
       throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
     }
@@ -122,6 +140,26 @@ public static partial class IllumiReadSwypeScript
     {
       return CallInvoker.AsyncUnaryCall(__Method_ContextRPC, null, options, request);
     }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::Tap2CharRPCResponse Tap2CharRPC(global::Tap2CharRPCRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return Tap2CharRPC(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual global::Tap2CharRPCResponse Tap2CharRPC(global::Tap2CharRPCRequest request, grpc::CallOptions options)
+    {
+      return CallInvoker.BlockingUnaryCall(__Method_Tap2CharRPC, null, options, request);
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::Tap2CharRPCResponse> Tap2CharRPCAsync(global::Tap2CharRPCRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+    {
+      return Tap2CharRPCAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+    }
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public virtual grpc::AsyncUnaryCall<global::Tap2CharRPCResponse> Tap2CharRPCAsync(global::Tap2CharRPCRequest request, grpc::CallOptions options)
+    {
+      return CallInvoker.AsyncUnaryCall(__Method_Tap2CharRPC, null, options, request);
+    }
     /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     protected override IllumiReadSwypeScriptClient NewInstance(ClientBaseConfiguration configuration)
@@ -136,7 +174,8 @@ public static partial class IllumiReadSwypeScript
   public static grpc::ServerServiceDefinition BindService(IllumiReadSwypeScriptBase serviceImpl)
   {
     return grpc::ServerServiceDefinition.CreateBuilder()
-        .AddMethod(__Method_ContextRPC, serviceImpl.ContextRPC).Build();
+        .AddMethod(__Method_ContextRPC, serviceImpl.ContextRPC)
+        .AddMethod(__Method_Tap2CharRPC, serviceImpl.Tap2CharRPC).Build();
   }
 
   /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
@@ -147,6 +186,7 @@ public static partial class IllumiReadSwypeScript
   public static void BindService(grpc::ServiceBinderBase serviceBinder, IllumiReadSwypeScriptBase serviceImpl)
   {
     serviceBinder.AddMethod(__Method_ContextRPC, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::ContextRPCRequest, global::ContextRPCResponse>(serviceImpl.ContextRPC));
+    serviceBinder.AddMethod(__Method_Tap2CharRPC, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Tap2CharRPCRequest, global::Tap2CharRPCResponse>(serviceImpl.Tap2CharRPC));
   }
 
 }

@@ -13,9 +13,9 @@ public class ExampleClient : MonoBehaviour
     
     private GrpcChannel channel;
     private YetAnotherHttpHandler handler;
-    private IllumiReadSwypeScript.IllumiReadSwypeScriptClient client;
+    private RPCExample.RPCExampleClient client;
 
-    public string host = "http://localhost:8004";
+    public string host = "http://localhost:13004";
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,7 @@ public class ExampleClient : MonoBehaviour
         // Set up the RPC client
         handler = new YetAnotherHttpHandler(){Http2Only = true};  // GRPC requires HTTP/2
         channel = GrpcChannel.ForAddress(host, new GrpcChannelOptions() { HttpHandler = handler, Credentials = ChannelCredentials.Insecure});
-        client = new IllumiReadSwypeScript.IllumiReadSwypeScriptClient(channel);
+        client = new RPCExample.RPCExampleClient(channel);
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class ExampleClient : MonoBehaviour
     public void OnCallRPC()
     {
         Debug.Log("Calling RPC");
-        var reply = client.ContextRPC(new ContextRPCRequest { Input0 = "Unity" });
+        var reply = client.ExampleOneArgOneReturn(new ExampleOneArgOneReturnRequest { Input0 = "Unity" });
         
         Debug.Log(reply.ToString());
         Text.text = $"[{DateTime.Now}] {reply}";
