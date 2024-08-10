@@ -10,13 +10,14 @@ public static class ExperimentPreset
     {
         List<Presets.ExperimentBlock> ExperimentBlock = new List<Presets.ExperimentBlock> {
 
-            Presets.ExperimentBlock.InitBlock,
-            Presets.ExperimentBlock.StartBlock,
-            Presets.ExperimentBlock.IntroductionBlock,
-            Presets.ExperimentBlock.PracticeBlock,
-            Presets.ExperimentBlock.TrainBlock,
-            Presets.ExperimentBlock.TestBlock,
-            Presets.ExperimentBlock.EndBlock
+            // Presets.ExperimentBlock.InitBlock,
+            // Presets.ExperimentBlock.StartBlock,
+            // Presets.ExperimentBlock.IntroductionBlock,
+            // Presets.ExperimentBlock.PracticeBlock,
+            // Presets.ExperimentBlock.TrainBlock,
+            // Presets.ExperimentBlock.TestBlock,
+            // Presets.ExperimentBlock.EndBlock
+            Presets.ExperimentBlock.PracticeBlock
         
         };
 
@@ -63,11 +64,20 @@ public static class ExperimentPreset
     {
         List<Presets.ExperimentState> ExperimentStates = new List<Presets.ExperimentState>
         {
+            Presets.ExperimentState.InitState,
+            Presets.ExperimentState.CalibrationState,
+            Presets.ExperimentState.StartState,
+            Presets.ExperimentState.IntroductionInstructionState,
 
             Presets.ExperimentState.KeyboardDewellTimeIntroductionState,
             Presets.ExperimentState.KeyboardDewellTimeState,
             Presets.ExperimentState.KeyboardClickIntroductionState,
-            Presets.ExperimentState.KeyboardClickState
+            Presets.ExperimentState.KeyboardClickState,
+            Presets.ExperimentState.KeyboardIllumiReadSwypeIntroductionState,
+            Presets.ExperimentState.KeyboardIllumiReadSwypeState,
+            Presets.ExperimentState.KeyboardFreeSwitchInstructionState,
+            Presets.ExperimentState.KeyboardFreeSwitchState,
+            Presets.ExperimentState.EndState
 
         };
         return ExperimentStates;

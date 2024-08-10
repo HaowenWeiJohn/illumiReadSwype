@@ -29,7 +29,10 @@ namespace Keyboard
 
         public BoxCollider boxCollider;
 
-        public GlobalSettings globalSettings;
+        private HandTapDetector HandTapDetector;
+
+        private GazeClickDetector gazeClickDetector;
+        
 
         private bool handTypeMode = false;
 
@@ -45,7 +48,8 @@ namespace Keyboard
 
         protected virtual void Start()
         {
-            globalSettings = GameObject.Find("GlobalSettings").GetComponent<GlobalSettings>();
+            HandTapDetector = GameObject.Find("GlobalSettings").GetComponent<HandTapDetector>();
+            gazeClickDetector = GameObject.Find("GlobalSettings").GetComponent<GazeClickDetector>();
         }
 
 
@@ -78,9 +82,11 @@ namespace Keyboard
         protected virtual void OnCollisionEnter(Collision other)
         {
             Debug.Log("OnTriggerEnter");
-            if(handTypeMode == true && globalSettings.keyPressed == false)
+            if(handTypeMode == true && HandTapDetector.keyPressed == false)
             {
-                globalSettings.keyPressed = true;
+                HandTapDetector.keyPressed = true;
+                HandTapDetector.keyValue = this.gameObject.name;
+                
             
                 ChangeKeyColors(
                 KeyParams.KeyHighlightedColor,
@@ -99,9 +105,9 @@ namespace Keyboard
         protected virtual void OnCollisionExit(Collision other)
         {
             Debug.Log("OnTriggerExit");
-            if(handTypeMode == true && globalSettings.keyPressed == true)
+            if(handTypeMode == true && HandTapDetector.keyPressed == true)
             {
-                globalSettings.keyPressed = false;
+                HandTapDetector.keyPressed = false;
                 ResetButtonColor();
 
             }
@@ -109,7 +115,7 @@ namespace Keyboard
 
         protected virtual void OnCollisionStay(Collision other)
         {
-            globalSettings.keyPressed = true;
+            HandTapDetector.keyPressed = true;
         }
 
         protected virtual void Awake()
@@ -258,6 +264,8 @@ namespace Keyboard
                 {
                     if(gameObject.tag != KeyParams.LetterKeyTag)
                     {
+                        gazeClickDetector.keyPressed = true;
+                        gazeClickDetector.keyValue = this.gameObject.name;
                         // evoke key stroke
                         InvokeButtonOnClick();
                         // play audio

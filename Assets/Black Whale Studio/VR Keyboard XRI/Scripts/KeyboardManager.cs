@@ -102,6 +102,8 @@ namespace Keyboard
 
         public UnityEvent onKeyboardModeChanged;
 
+        private SwypeDetector swypeDetector;
+
         private void Start() // changed awake to start
         {
             // set color
@@ -140,6 +142,8 @@ namespace Keyboard
 
             //DisableSelf();
             //SetFocusOnInputField();
+
+            swypeDetector = GameObject.Find("GlobalSettings").GetComponent<SwypeDetector>();
         }
 
         public void Update()
@@ -597,6 +601,22 @@ namespace Keyboard
             for (int i = 0; i < suggestionKeys.Count; i++)
             {
                 suggestionKeys[i].SetSuggestionText(suggestionList[i]);
+                if(i == 0)
+                {
+                    swypeDetector.candidate1 = suggestionList[i];
+                }
+                else if(i == 1)
+                {
+                    swypeDetector.candidate2 = suggestionList[i];
+                }
+                else if(i == 2)
+                {
+                    swypeDetector.candidate3 = suggestionList[i];
+                }
+                else if(i == 3)
+                {
+                    swypeDetector.candidate4 = suggestionList[i];
+                }
             }
         }
 
@@ -609,6 +629,10 @@ namespace Keyboard
                 suggestionKey.ChangeSuggestionKeyState(false);
                 suggestionKey.ClearSuggesitonText();
             }
+            swypeDetector.candidate1 = "";
+            swypeDetector.candidate2 = "";
+            swypeDetector.candidate3 = "";
+            swypeDetector.candidate4 = "";
 
         }
         public void EnableSuggestionStrips()

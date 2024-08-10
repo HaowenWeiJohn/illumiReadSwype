@@ -25,20 +25,24 @@ public class KeyboardDewellTimeStateController : StateController
     public TextMeshProUGUI targetWordText;
 
 
-    // the list should contain the set of target words
-    public List<string> targetWordList;
-
-    private int currentWordIndex = 0;
-
     private Vector3 keyboardLocalPosition;
 
     private Vector3 keyboardLocalRotation;
+
+    public ExperimentManager experimentManager;
+
+    private int StateEndIndex =0;
+
+    private int currentWordIndex = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         keyboardLocalPosition = KeyBoard.transform.localPosition;
         keyboardLocalRotation = KeyBoard.transform.localEulerAngles;
+
+        // experimentManager = GameObject.Find("ExperimentManager").GetComponent<ExperimentManager>();
+        StateEndIndex = experimentManager.HandTapTrialCount;
     }
 
     // Update is called once per frame
@@ -75,7 +79,7 @@ public class KeyboardDewellTimeStateController : StateController
         keyboardDewellTimeStateGUIController.EnableSelf();
         simpleFacingCameraCallbacks.enabled = false;
         palmUIPivot.SetActive(true);
-        targetWordText.text = targetWordList[0];
+        targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
         KeyBoard.SetActive(true);
         leftHandModel.SetActive(true);
         rightHandModel.SetActive(true);
@@ -101,16 +105,17 @@ public class KeyboardDewellTimeStateController : StateController
     public override void stateShift()
     {
         string outputText = keyboardDewellTimeStateGUIController.keyboardManager.outputField.text;
-        if(currentWordIndex>=targetWordList.Count)
+        if(currentWordIndex>=StateEndIndex)
         {
             exitState();
         }
-        else if (outputText==targetWordList[currentWordIndex] || Input.GetKeyDown(Presets.NextStateKey))
+        else if (outputText==experimentManager.targetwords[experimentManager.configuration] || Input.GetKeyDown(Presets.NextStateKey))
         {
+            experimentManager.configuration += 1;
             currentWordIndex += 1;
-            if(currentWordIndex<targetWordList.Count)
+            if(currentWordIndex<StateEndIndex)
             {
-                targetWordText.text = targetWordList[currentWordIndex];
+                targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
             }
             keyboardDewellTimeStateGUIController.keyboardManager.ClearOutputFieldText();
         }

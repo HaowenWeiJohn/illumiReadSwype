@@ -124,10 +124,6 @@ public class EyeTrackingExample : MonoBehaviour
 
     private string TapKeyLetter = "";
 
-    private bool pinchHandled = false;
-
-
-
     private List<InputDevice> devices = new List<InputDevice>();
     private InputDevice device;
     private Eyes eyes;
@@ -159,6 +155,11 @@ public class EyeTrackingExample : MonoBehaviour
 
     private StreamWriter GazeWriter = null;
     private string filePath;
+
+//  gaze click and swype detector
+    private GazeClickDetector gazeClickDetector;
+
+    private SwypeDetector swypeDetector;
 
     void GetDevice()
     {
@@ -230,6 +231,7 @@ public class EyeTrackingExample : MonoBehaviour
             if (targetObject != null)
             {
                 Keyboard.LetterKey letterKey = targetObject.GetComponent<LetterKey>();
+                gazeClickDetector.keyValue = letterKey.character;
                 letterKey.InvokeButtonOnClick();
                 letterKey.PlayKeyEnterAudioClip();
 
@@ -288,10 +290,17 @@ public class EyeTrackingExample : MonoBehaviour
         client = new IllumiReadSwypeScript.IllumiReadSwypeScriptClient(channel);
 
         gazeParticle.Play();
+
+        gazeClickDetector = GameObject.Find("GlobalSettings").GetComponent<GazeClickDetector>();
+        swypeDetector = GameObject.Find("GlobalSettings").GetComponent<SwypeDetector>();
     }
 
     void Update()
     {
+        // set the state of the action detectors
+        // gazeClickDetector.keyPressed = false;
+        // swypeDetector.keyPressed = false;
+
         if (logging && printFramerate)
         {
             gazeTimer += Time.deltaTime;
@@ -457,31 +466,6 @@ public class EyeTrackingExample : MonoBehaviour
             
             foreach (RaycastHit hit in hits)
             {
-                // particle system effect for gaze
-                if(pinchDetector.DidStartPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
-                {
-                    gazeDot.Stop();
-                    gazeParticle.Play();
-                    EmitGazeParticle(hit.point);
-                }
-                else if(pinchDetector.IsPinching == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
-                {
-                    EmitGazeParticle(hit.point);
-                }
-                else if(pinchDetector.DidEndPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
-                {
-                    gazeDot.Play();
-                    gazeParticle.Stop();
-                }
-                else
-                {
-                    gazeDot.Play();
-                    gazeDot.transform.position = hit.point;
-                }
-
-                
-                
-                
 
                 Vector3 hitPointLocal = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
 
@@ -527,18 +511,48 @@ public class EyeTrackingExample : MonoBehaviour
 
                 Vector2 KeyLocalOffset2D = new Vector2(KeyLocalOffset.x, KeyLocalOffset.y);
 
-                
+                // only the keyPress state is important
+                gazeClickDetector.tapPosition = hitPointKeyboardLocal2D;
+                swypeDetector.tapPosition = hitPointKeyboardLocal2D;
+
                 // call the fat finger algorithm here
-                if(hit.collider.gameObject.layer == LayerMask.NameToLayer("TapToChar") && gameManager.KeyboardClickStateController.gameObject.activeSelf && pinchDetector.DidStartPinch && !pinchHandled)
+                if(hit.collider.gameObject.layer == LayerMask.NameToLayer("TapToChar") && gameManager.KeyboardClickStateController.gameObject.activeSelf && pinchDetector.DidStartPinch && gazeClickDetector.keyPressed == false)
                 {
-                    pinchHandled = true;
+                    gazeClickDetector.keyPressed = true;
                     StartCoroutine(RPCTapToChar(hitPointKeyboardLocal2D));
                 }
 
-                if(pinchDetector.DidEndPinch)
+                if(pinchDetector.DidEndPinch && gameManager.KeyboardClickStateController.gameObject.activeSelf)
                 {
-                    pinchHandled = false;
+                    gazeClickDetector.keyPressed = false;
                 }
+
+                // particle system effect for gaze
+                if(pinchDetector.DidStartPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                {
+                    gazeDot.Stop();
+                    gazeParticle.Play();
+                    EmitGazeParticle(hit.point);
+                    swypeDetector.keyPressed = true;
+                }
+                else if(pinchDetector.IsPinching == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                {
+                    EmitGazeParticle(hit.point);
+                    swypeDetector.keyPressed = true;
+                }
+                else if(pinchDetector.DidEndPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                {
+                    gazeDot.Play();
+                    gazeParticle.Stop();
+                    swypeDetector.keyPressed = false;
+                }
+                else
+                {
+                    gazeDot.Play();
+                    gazeDot.transform.position = hit.point;
+                    swypeDetector.keyPressed = false;
+                }
+
 
                 // only check for the letter keys
                 if(hit.collider.gameObject.GetComponent<LetterKey>() != null)
