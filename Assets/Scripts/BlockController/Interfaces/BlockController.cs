@@ -12,9 +12,16 @@ public class BlockController : MonoBehaviour
     public Presets.BlockState blockState;
 
     int experimentStateIndex = 0;
-    void Start()
+
+    private ExperimentManager experimentManager;
+
+    private int blockConfiguration;
+    void Awake()
     {
-        
+        // get a random number from 0-5
+        blockConfiguration = Random.Range(0, 6);
+        Debug.Log("Block Configuration: " + blockConfiguration);
+        experimentManager = GameObject.Find("ExperimentManager").GetComponent<ExperimentManager>();
     }
 
     // Update is called once per frame
@@ -23,7 +30,111 @@ public class BlockController : MonoBehaviour
         if(gameManager.currentState.getCurrentState() == Presets.State.EndingState)
         {
             gameManager.currentState.setCurrentState(Presets.State.IdleState);
-            experimentStateIndex += 1;
+            
+            // introduction instruction state ends
+            if(experimentStateIndex == 3)
+            {
+                switch(blockConfiguration)
+                {
+                    case 0:
+                        experimentStateIndex = 4;
+                        break;
+                    case 1:
+                        experimentStateIndex = 4;
+                        break;
+                    case 2:
+                        experimentStateIndex = 6;
+                        break;
+                    case 3:
+                        experimentStateIndex = 6;
+                        break;
+                    case 4:
+                        experimentStateIndex = 8;
+                        break;
+                    case 5:
+                        experimentStateIndex = 8;
+                        break;
+                }
+            }
+            // end of hand type state
+            else if(experimentStateIndex == 5)
+            {
+                switch(blockConfiguration)
+                {
+                    case 0:
+                        experimentStateIndex = 6;
+                        break;
+                    case 1:
+                        experimentStateIndex = 8;
+                        break;
+                    case 2:
+                        experimentStateIndex = 8;
+                        break;
+                    case 3:
+                        experimentStateIndex = 12;
+                        break;
+                    case 4:
+                        experimentStateIndex = 6;
+                        break;
+                    case 5:
+                        experimentStateIndex = 12;
+                        break;
+                }
+            }
+            else if(experimentStateIndex == 7)
+            {
+                switch(blockConfiguration)
+                {
+                    case 0:
+                        experimentStateIndex = 8;
+                        break;
+                    case 1:
+                        experimentStateIndex = 12;
+                        break;
+                    case 2:
+                        experimentStateIndex = 4;
+                        break;
+                    case 3:
+                        experimentStateIndex = 8;
+                        break;
+                    case 4:
+                        experimentStateIndex = 12;
+                        break;
+                    case 5:
+                        experimentStateIndex = 4;
+                        break;
+                }
+            }
+            else if(experimentStateIndex == 9)
+            {
+                switch(blockConfiguration)
+                {
+                    case 0:
+                        experimentStateIndex = 10;
+                        break;
+                    case 1:
+                        experimentStateIndex = 6;
+                        break;
+                    case 2:
+                        experimentStateIndex = 10;
+                        break;
+                    case 3:
+                        experimentStateIndex = 4;
+                        break;
+                    case 4:
+                        experimentStateIndex = 4;
+                        break;
+                    case 5:
+                        experimentStateIndex = 6;
+                        break;
+                }
+            }
+            else
+            {
+                experimentStateIndex += 1;
+            }
+
+            Debug.Log("Experiment State Index: " + experimentStateIndex);
 
             if (experimentStateIndex < experimentStates.Count)
             {

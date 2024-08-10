@@ -15,10 +15,11 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public GameObject KeyBoard;
     public TextMeshProUGUI targetWordText;
 
-    // the list should contain the set of target words
-    public List<string> targetWordList;
+    private int StateEndIndex =0;
 
     private int currentWordIndex = 0;
+
+    public ExperimentManager experimentManager;
 
     public GameObject PaintCursor;
 
@@ -26,7 +27,8 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     // Start is called before the first frame update
     void Start()
     {
-
+        // experimentManager = GameObject.Find("ExperimentManager").GetComponent<ExperimentManager>();
+        StateEndIndex = experimentManager.SweyepeTrialCount;
     }
 
     // Update is called once per frame
@@ -40,7 +42,7 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public override void enterState()
     {
         keyboardIllumiReadSwypeStateGUIController.EnableSelf();
-        targetWordText.text = targetWordList[0];
+        targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
         KeyBoard.SetActive(true);
         PaintCursor.SetActive(true);
         base.enterState();
@@ -60,16 +62,17 @@ public class KeyboardIllumiReadSwypeStateController : StateController
     public override void stateShift()
     {
         string outputText = keyboardIllumiReadSwypeStateGUIController.keyboardManager.outputField.text;
-        if(currentWordIndex>=targetWordList.Count)
+        if(currentWordIndex>=StateEndIndex)
         {
             exitState();
         }
-        else if (outputText==targetWordList[currentWordIndex] || Input.GetKeyDown(Presets.NextStateKey))
+        else if (outputText==experimentManager.targetwords[experimentManager.configuration] || Input.GetKeyDown(Presets.NextStateKey))
         {
+            experimentManager.configuration += 1;
             currentWordIndex += 1;
-            if(currentWordIndex<targetWordList.Count)
+            if(currentWordIndex<StateEndIndex)
             {
-                targetWordText.text = targetWordList[currentWordIndex];
+                targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
             }
             keyboardIllumiReadSwypeStateGUIController.keyboardManager.ClearOutputFieldText();
         }

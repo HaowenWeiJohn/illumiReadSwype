@@ -8,19 +8,13 @@ using Varjo.XR;
 
 public class GameManager : MonoBehaviour
 {
-
+    [Header("Game Information")]
     public Presets.GameState currentGameState;
 
     public StateController currentState;
     public BlockController currentBlock;
     //public List<Presets.ExperimentState> expermentProcedure = new List<Presets.ExperimentState>();
     public List<Presets.ExperimentBlock> experimentBlocks;
-
-
-    /// <summary>
-    ///  avaliable states
-    /// </summary>
-    /// 
 
     //[Header("Network Experiment State")]
     //public UserInputController userInputController;
@@ -88,6 +82,9 @@ public class GameManager : MonoBehaviour
     private float deltaTime = 0.0f;
     private float fps = 0.0f;
 
+    // experiment manager record the experiment information
+    private ExperimentManager experimentManager;
+
     void CalculateFrameRate()
     {
         deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
@@ -113,6 +110,7 @@ public class GameManager : MonoBehaviour
         
         // use a key to enter the first game block.
 
+        experimentManager = GameObject.Find("ExperimentManager").GetComponent<ExperimentManager>();
 
     }
 
@@ -123,6 +121,7 @@ public class GameManager : MonoBehaviour
         if (currentGameState == Presets.GameState.IdleState) // the previous block has been finished
         {
             // check if there is more blocks to run
+            // shuffle the blocks
 
             if (experimentBlockIndex < experimentBlocks.Count)
             {
@@ -135,6 +134,8 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("Experiment End");
                 // end the experiment and exit play mode
+                experimentManager.writeClearDataCollectors();
+
                 EditorApplication.isPlaying = false;
             }
 

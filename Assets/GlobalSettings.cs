@@ -17,8 +17,6 @@ public class GlobalSettings : MonoBehaviour
     private IllumiReadSwypeScript.IllumiReadSwypeScriptClient client;
     public string host = "http://localhost:8004";
 
-    public bool keyPressed=false;
-
 
     public TMPro.TMP_InputField keyboardOutputText;
 
