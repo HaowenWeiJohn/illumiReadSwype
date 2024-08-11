@@ -35,6 +35,10 @@ public class KeyboardDewellTimeStateController : StateController
 
     private int currentWordIndex = 0;
 
+    public AudioSource audioSource;
+
+    public AudioClip correctInputClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -109,9 +113,16 @@ public class KeyboardDewellTimeStateController : StateController
         {
             exitState();
         }
-        else if (outputText==experimentManager.targetwords[experimentManager.configuration] || Input.GetKeyDown(Presets.NextStateKey))
+        else if (outputText.ToLower()==experimentManager.targetwords[experimentManager.configuration].ToLower() )
         {
-            experimentManager.configuration += 1;
+            StartCoroutine(ConfirmCorrectInput());
+        }
+        else if (Input.GetKeyDown(Presets.NextStateKey))
+        {
+            if(experimentManager.configuration <= experimentManager.targetwords.Count-1)
+            {
+                experimentManager.configuration += 1;
+            }
             currentWordIndex += 1;
             if(currentWordIndex<StateEndIndex)
             {
@@ -124,6 +135,34 @@ public class KeyboardDewellTimeStateController : StateController
         {
             base.currentState = Presets.State.InterruptState;
         }
+    }
+
+    private IEnumerator ConfirmCorrectInput()
+    {
+        // Change text color to green
+        keyboardDewellTimeStateGUIController.keyboardManager.outputField.text = "<color=green>" + keyboardDewellTimeStateGUIController.keyboardManager.outputField.text + "</color>";
+        
+        // Play the correct input audio clip
+        if (audioSource != null && correctInputClip != null)
+        {
+            audioSource.PlayOneShot(correctInputClip);
+        }
+
+        // Wait for 1 second
+        yield return new WaitForSeconds(1f);
+
+        if(experimentManager.configuration <= experimentManager.targetwords.Count-1)
+        {
+            experimentManager.configuration += 1;
+        }
+        currentWordIndex += 1;
+        if(currentWordIndex<StateEndIndex)
+        {
+            targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
+        }
+
+        // Clear the output field text (or reset it if needed)
+        keyboardDewellTimeStateGUIController.keyboardManager.ClearOutputFieldText();
     }
 
 
