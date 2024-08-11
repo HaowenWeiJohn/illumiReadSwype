@@ -182,7 +182,19 @@ public class ActionInfoCollector : MonoBehaviour
     {
         Debug.Log("writing for "+ this.gameObject.name);
         string fileName = FileDescriptor;
-        string fileLocation = fileLocationPreset + participantID + "/StudyTrials/"+ experimentManager.testMode + "/";
+        string ModeName = experimentManager.gameMode.ToString();
+        bool isPractice = experimentManager.isPractice;
+        if(isPractice)
+        {
+            ModeName = ModeName + "Practice";
+        }
+        else
+        {
+            ModeName = ModeName + "Experiment";
+        }
+
+
+        string fileLocation = fileLocationPreset + participantID + "/Trials/"+ ModeName + "/";
         Debug.Log(actionInfoItems.Count);
 
         bool exists = System.IO.Directory.Exists(fileLocation);

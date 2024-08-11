@@ -110,13 +110,13 @@ public class BlockController : MonoBehaviour
                 switch(blockConfiguration)
                 {
                     case 0:
-                        experimentStateIndex = 10;
+                        experimentStateIndex = 12;
                         break;
                     case 1:
                         experimentStateIndex = 6;
                         break;
                     case 2:
-                        experimentStateIndex = 10;
+                        experimentStateIndex = 12;
                         break;
                     case 3:
                         experimentStateIndex = 4;

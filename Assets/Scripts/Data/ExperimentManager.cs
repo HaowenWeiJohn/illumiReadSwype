@@ -10,10 +10,21 @@ public class ExperimentManager : MonoBehaviour
     public string participantID;
 
     // the test modes are: Easy, Hard, Practice
-    public string testMode;
+    // public string testMode;
 
-    [Header("Is Easy Mode?")]
-    public bool isEasyMode;
+    
+
+    public enum GameMode
+    {
+        Easy,
+        Hard
+    }
+
+    [Header("Game Mode Information")]
+    public GameMode gameMode;
+
+    public bool isPractice = false;
+    
 
     [Header("Data Collectors")]
     public List<DataCollector> alwaysOnDCs = new List<DataCollector>();
@@ -37,13 +48,21 @@ public class ExperimentManager : MonoBehaviour
     // public variable for the current text configuration
     public int configuration;
 
-    [Header("Trial count for different modes")]
-    public int HandTapTrialCount = 5;
+    [Header("Trial count for experiment")]
+    public int ExperimentTrialCount = 15;
 
-    public int GazePinchTrialCount = 5;
+    [Header("Trial count for practice")]
+    public int PracticeTrialCount = 3;
 
-    public int SweyepeTrialCount = 5;
 
+    [Header("Study Techniques Trial Count (do not change)")]
+    public int HandTapTrialCount = 0;
+
+    public int GazePinchTrialCount = 0;
+
+    public int SweyepeTrialCount = 0;
+
+    
 
     void Awake()
     {
@@ -51,21 +70,61 @@ public class ExperimentManager : MonoBehaviour
 
         // shuffle the word lists
 
-        easyWords = easyWords.OrderBy(word => Guid.NewGuid()).ToList();
-        hardWords = hardWords.OrderBy(word => Guid.NewGuid()).ToList();
+        // easyWords = easyWords.OrderBy(word => Guid.NewGuid()).ToList();
+        // hardWords = hardWords.OrderBy(word => Guid.NewGuid()).ToList();
 
-        if(isEasyMode)
+        if(isPractice == false)
         {
-            targetwords = easyWords;
+            HandTapTrialCount = ExperimentTrialCount;
+            GazePinchTrialCount = ExperimentTrialCount;
+            SweyepeTrialCount = ExperimentTrialCount;
+
+            if(gameMode == GameMode.Easy)
+            {
+                targetwords = easyWords;
+            }
+            else if(gameMode == GameMode.Hard)
+            {
+                targetwords = hardWords;
+            }
+
+            targetwords = targetwords.OrderBy(word => Guid.NewGuid()).ToList();
+
+            if(targetwords.Count <(HandTapTrialCount+GazePinchTrialCount+SweyepeTrialCount))
+            {
+                Debug.LogError("Not enough words in the test target word list");
+            }
         }
         else
+        // when in practice mode 
         {
-            targetwords = hardWords;
-        }
+            HandTapTrialCount = PracticeTrialCount;
+            GazePinchTrialCount = PracticeTrialCount;
+            SweyepeTrialCount = PracticeTrialCount;
 
-        if(targetwords.Count <(HandTapTrialCount+GazePinchTrialCount+SweyepeTrialCount))
-        {
-            Debug.LogError("Not enough words in the target word list");
+            if(gameMode == GameMode.Easy)
+            {
+                targetwords = new List<string>();
+                for (int i = 0; i < 3; i++)
+                {
+                    easyPracticeWords = easyPracticeWords.OrderBy(word => Guid.NewGuid()).ToList();
+                    targetwords.AddRange(easyPracticeWords);
+                }
+            }
+            else if(gameMode == GameMode.Hard)
+            {
+                targetwords = new List<string>();
+                for (int i = 0; i < 3; i++)
+                {
+                    hardPracticeWords = hardPracticeWords.OrderBy(word => Guid.NewGuid()).ToList();
+                    targetwords.AddRange(hardPracticeWords);
+                }
+            }
+
+            if(targetwords.Count < PracticeTrialCount * 3)
+            {
+                Debug.LogError("Not enough words in the practice target word list");
+            }
         }
         
     }
