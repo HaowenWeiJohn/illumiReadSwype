@@ -47,6 +47,8 @@ namespace Keyboard
         [Header("DwellTime Settings")]
         public float keyDwellTimeCounter = 0;
 
+        private float keyPressStayCounter = 0;
+
 
         protected virtual void Start()
         {
@@ -86,6 +88,7 @@ namespace Keyboard
             Debug.Log("OnTriggerEnter");
             if(handTypeMode == true && HandTapDetector.keyPressed == false)
             {
+                keyPressStayCounter= 0;
                 HandTapDetector.keyPressed = true;
                 HandTapDetector.keyValue = this.gameObject.name;
                 
@@ -189,6 +192,13 @@ namespace Keyboard
 
         public void KeyDwellTimeCallback()
         {
+            keyPressStayCounter += Time.deltaTime;
+            if(keyPressStayCounter >= 0.5f)
+            {
+                keyPressStayCounter = 0;
+                // HandTapDetector.keyPressed = false;
+                ResetButtonColor();
+            }
             // if (hasGazeThisFrame)
             // {
             //     if (!selected)
