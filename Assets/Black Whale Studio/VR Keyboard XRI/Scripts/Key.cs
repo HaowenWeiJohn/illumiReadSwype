@@ -32,6 +32,8 @@ namespace Keyboard
         private HandTapDetector HandTapDetector;
 
         private GazeClickDetector gazeClickDetector;
+
+        private SwypeDetector swypeDetector;
         
 
         private bool handTypeMode = false;
@@ -49,7 +51,7 @@ namespace Keyboard
         protected virtual void Start()
         {
             HandTapDetector = GameObject.Find("GlobalSettings").GetComponent<HandTapDetector>();
-            gazeClickDetector = GameObject.Find("GlobalSettings").GetComponent<GazeClickDetector>();
+            gazeClickDetector = GameObject.Find("GlobalSettings").GetComponent<GazeClickDetector>();        
         }
 
 

@@ -161,6 +161,12 @@ public class EyeTrackingExample : MonoBehaviour
 
     private SwypeDetector swypeDetector;
 
+    private List<GameObject> gazeKeyTargets = new List<GameObject>();
+
+    public bool isSwyping = false;
+
+    private bool pinchHandled = false;
+
     void GetDevice()
     {
         InputDevices.GetDevicesAtXRNode(XRNode.CenterEye, devices);
@@ -231,7 +237,10 @@ public class EyeTrackingExample : MonoBehaviour
             if (targetObject != null)
             {
                 Keyboard.LetterKey letterKey = targetObject.GetComponent<LetterKey>();
+                // set the key value for data collector
                 gazeClickDetector.keyValue = letterKey.character;
+                swypeDetector.keyValue = letterKey.character;
+                
                 letterKey.InvokeButtonOnClick();
                 letterKey.PlayKeyEnterAudioClip();
 
@@ -466,7 +475,6 @@ public class EyeTrackingExample : MonoBehaviour
             
             foreach (RaycastHit hit in hits)
             {
-
                 Vector3 hitPointLocal = hit.collider.gameObject.transform.InverseTransformPoint(hit.point);
 
                 // include scaling
@@ -527,31 +535,117 @@ public class EyeTrackingExample : MonoBehaviour
                     gazeClickDetector.keyPressed = false;
                 }
 
-                // particle system effect for gaze
-                if(pinchDetector.DidStartPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
-                {
+                bool swypeState = gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf;
+
+                if(pinchDetector.DidStartPinch == true && swypeState)
+                {   
+                    // the bool controls the swype state and LSL receiver
+                    isSwyping = false;
+                    // if(hit.collider.gameObject.layer == LayerMask.NameToLayer("TapToChar"))
+                    // {
+                    //     pinchHandled = false;
+                    // }
+                    // else
+                    // {
+                    //     pinchHandled = true;
+                    // }
+                    pinchHandled = false;
+
                     gazeDot.Stop();
+                    // clear the gaze key targets
+                    gazeKeyTargets = new List<GameObject>();
+                    // gazeDot.Play();
                     gazeParticle.Play();
+                    // gazeParticle.Stop();
                     EmitGazeParticle(hit.point);
-                    swypeDetector.keyPressed = true;
+                    swypeDetector.keyPressed = false;
+                    swypeDetector.keyPinched = false;
+
+                    
                 }
-                else if(pinchDetector.IsPinching == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                else if (pinchDetector.IsPinching == true &&swypeState)
                 {
+                    
+                    // add the hit collider object to the list if not in
+                    if(hit.collider.gameObject.tag == KeyParams.LetterKeyTag && gazeKeyTargets.Contains(hit.collider.gameObject) == false)
+                    {
+                        gazeKeyTargets.Add(hit.collider.gameObject);
+                    }
+
+                    if(gazeKeyTargets.Count>1 && isSwyping == false)
+                    {
+                        isSwyping = true;
+                        swypeDetector.keyPressed = true;
+                        swypeDetector.keyPinched = false;
+                    }
+                    else if(gazeKeyTargets.Count>1 && isSwyping == true)
+                    {
+                        swypeDetector.keyPressed = true;
+                        swypeDetector.keyPinched = false;
+                    }
+                    else if(gazeKeyTargets.Count<=1)
+                    {
+                        swypeDetector.keyPressed = false;
+                        swypeDetector.keyPinched = false;
+                    }
+
                     EmitGazeParticle(hit.point);
-                    swypeDetector.keyPressed = true;
                 }
-                else if(pinchDetector.DidEndPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                else if(pinchDetector.DidEndPinch == true && swypeState)
                 {
                     gazeDot.Play();
                     gazeParticle.Stop();
-                    swypeDetector.keyPressed = false;
+                    // swypeDetector.keyPressed = false;
+
+                    if(isSwyping == false && pinchHandled == false && hit.collider.gameObject.layer == LayerMask.NameToLayer("TapToChar"))
+                    {
+                        swypeDetector.keyPressed = false;
+                        swypeDetector.keyPinched = true;
+                        StartCoroutine(RPCTapToChar(hitPointKeyboardLocal2D));
+                        pinchHandled = true;
+                    }
+                    else if(isSwyping == true)
+                    {
+                        swypeDetector.keyPressed = false;
+                        swypeDetector.keyPinched = false;
+
+                    }
+
                 }
                 else
                 {
                     gazeDot.Play();
                     gazeDot.transform.position = hit.point;
                     swypeDetector.keyPressed = false;
+                    swypeDetector.keyPinched = false;
                 }
+
+
+                // particle system effect for gaze
+                // if(pinchDetector.DidStartPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf && gazeKeyTargets.Count <=1)
+                // {
+                //     gazeDot.Stop();
+                //     gazeParticle.Play();
+                //     EmitGazeParticle(hit.point);
+                //     swypeDetector.keyPressed = true;
+                // }
+                // else if(pinchDetector.IsPinching == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf )
+                // {
+                //     EmitGazeParticle(hit.point);
+                //     swypeDetector.keyPressed = true;
+                // }
+                // else if(pinchDetector.DidEndPinch == true && gameManager.keyboardIllumiReadSwypeStateController.gameObject.activeSelf)
+                // {
+                //     gazeDot.Play();
+                //     gazeParticle.Stop();
+                //     swypeDetector.keyPressed = false;
+                // }
+                // else
+                // {
+                //     gazeDot.Play();
+                //     gazeDot.transform.position = hit.point;
+                //     swypeDetector.keyPressed = false;
+                // }
 
 
                 // only check for the letter keys
