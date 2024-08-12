@@ -110,10 +110,15 @@ public class EyeTrackingExample : MonoBehaviour
 
     public Vector2 keyBoardHitLocal = Vector2.zero;
 
+    
+
 
 
     [Header("Gesture")]
     [SerializeField] PinchDetector pinchDetector;
+
+    public GameObject PaintCursor1;
+    public GameObject PaintCursor2;
 
     [Header("RPC Client Manager")]
     public string host = "http://localhost:13004";
@@ -240,7 +245,7 @@ public class EyeTrackingExample : MonoBehaviour
                 // set the key value for data collector
                 gazeClickDetector.keyValue = letterKey.character;
                 swypeDetector.keyValue = letterKey.character;
-                
+
                 letterKey.InvokeButtonOnClick();
                 letterKey.PlayKeyEnterAudioClip();
 
@@ -565,6 +570,8 @@ public class EyeTrackingExample : MonoBehaviour
                 }
                 else if (pinchDetector.IsPinching == true &&swypeState)
                 {
+                    PaintCursor1.GetComponent<MeshRenderer>().material.color = Color.cyan;
+                    PaintCursor2.GetComponent<MeshRenderer>().material.color = Color.cyan;
                     
                     // add the hit collider object to the list if not in
                     if(hit.collider.gameObject.tag == KeyParams.LetterKeyTag && gazeKeyTargets.Contains(hit.collider.gameObject) == false)
@@ -593,6 +600,9 @@ public class EyeTrackingExample : MonoBehaviour
                 }
                 else if(pinchDetector.DidEndPinch == true && swypeState)
                 {
+                    PaintCursor1.GetComponent<MeshRenderer>().material.color = Color.white;
+                    PaintCursor2.GetComponent<MeshRenderer>().material.color = Color.white;
+                    
                     gazeDot.Play();
                     gazeParticle.Stop();
                     // swypeDetector.keyPressed = false;
