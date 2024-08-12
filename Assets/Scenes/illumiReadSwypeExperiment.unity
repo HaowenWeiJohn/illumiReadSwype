@@ -14603,6 +14603,8 @@ MonoBehaviour:
   keyboardBackgroundHitPointLocal: {x: 0, y: 0, z: 0}
   keyBoardHitLocal: {x: 0, y: 0}
   pinchDetector: {fileID: 1798887741}
+  PaintCursor1: {fileID: 965859953}
+  PaintCursor2: {fileID: 1519034945}
   host: http://localhost:13004
   isSwyping: 0
 --- !u!1 &779143652
