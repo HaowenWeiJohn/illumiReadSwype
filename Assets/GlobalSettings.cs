@@ -28,7 +28,7 @@ public class GlobalSettings : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        VarjoMixedReality.StartRender();
+        // VarjoMixedReality.StartRender();
 
         // Set up the RPC client
         handler = new YetAnotherHttpHandler(){Http2Only = true};  // GRPC requires HTTP/2

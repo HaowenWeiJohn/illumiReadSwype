@@ -102,6 +102,8 @@ namespace Keyboard
 
         public UnityEvent onKeyboardModeChanged;
 
+        public EyeTrackingExample eyeTrackingExample;
+
         private SwypeDetector swypeDetector;
 
         private void Start() // changed awake to start
@@ -499,7 +501,12 @@ namespace Keyboard
 
         public void SuggestionsReceived(List<string> suggestionList)
         {
-
+            // if is not swyping state, return
+            if(eyeTrackingExample.isSwyping == false)
+            {
+                return;
+            }
+            
             // start with lower case
             for (int i = 0; i < suggestionList.Count; i++)
             {

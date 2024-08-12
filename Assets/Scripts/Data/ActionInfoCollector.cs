@@ -87,9 +87,33 @@ public class ActionInfoCollector : MonoBehaviour
         {
             conditionType = "Sweyepe";
         }
-        else
+        else if( gameManager.initStateController.gameObject.activeSelf)
         {
-            conditionType = "Unknown";
+            conditionType = "InitState";
+        }
+        else if (gameManager.endStateController.gameObject.activeSelf)
+        {
+            conditionType = "EndState";
+        }
+        else if(gameManager.calibrationStateController.gameObject.activeSelf)
+        {
+            conditionType = "WellComeState";
+        }
+        else if (gameManager.introductionInstructionStateController.gameObject.activeSelf)
+        {
+            conditionType = "TrialIntroState";
+        }
+        else if (gameManager.startStateController.gameObject.activeSelf)
+        {
+            conditionType = "EyeCalibrationState";
+        }
+        else if(gameManager.initStateController.gameObject.activeSelf)
+        {
+            conditionType = "InitState";
+        }
+        else 
+        {
+            conditionType = "TechniqueIntroStates";
         }
 
         actionInfoItem.conditionType = conditionType;
@@ -145,6 +169,13 @@ public class ActionInfoCollector : MonoBehaviour
             {
                 actionInfoItem.eventType = "Sweyepe";
                 actionInfoItem.keyboardValue = "";
+                actionInfoItem.xKeyHitLocal = swypeDetector.tapPosition.x;
+                actionInfoItem.yKeyHitLocal = swypeDetector.tapPosition.y;
+            }
+            else if (swypeDetector.keyPinched)
+            {
+                actionInfoItem.eventType = "GazePinch";
+                actionInfoItem.keyboardValue = swypeDetector.keyValue;
                 actionInfoItem.xKeyHitLocal = swypeDetector.tapPosition.x;
                 actionInfoItem.yKeyHitLocal = swypeDetector.tapPosition.y;
             }

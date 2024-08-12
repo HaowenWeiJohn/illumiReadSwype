@@ -52,13 +52,26 @@ public class KeyboardDewellTimeStateController : StateController
     // Update is called once per frame
     void Update()
     {
+        stateShift();
+    }
+
+
+    public override void enterState()
+    {
+        keyboardDewellTimeStateGUIController.EnableSelf();
+        simpleFacingCameraCallbacks.enabled = false;
+        palmUIPivot.SetActive(true);
+        targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
+        KeyBoard.SetActive(true);
+        // leftHandModel.SetActive(true);
+        // rightHandModel.SetActive(true);
 
         Vector3 cameraPosition = Camera.main.transform.position;
         Vector3 forwardDirection = Camera.main.transform.forward;
         
         // Calculate the desired position with the height offset
         Vector3 desiredPosition = cameraPosition + forwardDirection * 0.5f;
-        desiredPosition.y -= 0.05f;
+        desiredPosition.y -= 0.1f;
 
         // Set the KeyBoard's position
         KeyBoard.transform.position = desiredPosition;
@@ -74,19 +87,6 @@ public class KeyboardDewellTimeStateController : StateController
         // Optionally, ensure the KeyBoard is only rotating around the Y-axis (vertical)
         KeyBoard.transform.rotation = Quaternion.Euler(KeyBoard.transform.rotation.eulerAngles.x, KeyBoard.transform.rotation.eulerAngles.y, 0);
 
-        stateShift();
-    }
-
-
-    public override void enterState()
-    {
-        keyboardDewellTimeStateGUIController.EnableSelf();
-        simpleFacingCameraCallbacks.enabled = false;
-        palmUIPivot.SetActive(true);
-        targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
-        KeyBoard.SetActive(true);
-        leftHandModel.SetActive(true);
-        rightHandModel.SetActive(true);
         base.enterState();
 
     }
@@ -98,8 +98,8 @@ public class KeyboardDewellTimeStateController : StateController
         palmUIPivot.SetActive(false);
         targetWordText.text = "";
         KeyBoard.SetActive(false);
-        leftHandModel.SetActive(false);
-        rightHandModel.SetActive(false);
+        // leftHandModel.SetActive(true);
+        // rightHandModel.SetActive(true);
         KeyBoard.transform.localPosition = keyboardLocalPosition;
         KeyBoard.transform.localEulerAngles = keyboardLocalRotation;
         base.exitState();

@@ -6,6 +6,10 @@ public class SwypeDetector : MonoBehaviour
 {
     public bool keyPressed=false;
 
+    public bool keyPinched = false;
+
+    public string keyValue = "";
+
     public bool suggestionPressed = false;
 
     public GameObject keyboard;
