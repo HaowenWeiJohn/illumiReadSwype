@@ -140,7 +140,7 @@ public class DataCollector : MonoBehaviour
             ModeName = ModeName + "Experiment";
         }
 
-        string fileLocation = fileLocationPreset + participantID + "/Trials/" + ModeName + "/";
+        string fileLocation = fileLocationPreset + participantID + "/"+ experimentManager.trial.ToString()+"/" + ModeName + "/";
         Debug.Log(dataItems.Count);
 
         bool exists = System.IO.Directory.Exists(fileLocation);

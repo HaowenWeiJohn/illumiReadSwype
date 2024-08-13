@@ -17,6 +17,7 @@ using Leap.Unity;
 using Leap.Unity.Examples;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 namespace Keyboard
 {
@@ -275,7 +276,7 @@ namespace Keyboard
 
                 if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch) // evoke button press 
                 {
-                    if(gameObject.tag != KeyParams.LetterKeyTag)
+                    if(gameObject.tag != KeyParams.LetterKeyTag || !Regex.IsMatch(this.gameObject.name, "^[a-zA-Z]*$"))
                     {
                         gazeClickDetector.keyPressed = true;
                         gazeClickDetector.keyValue = this.gameObject.name;
@@ -329,7 +330,7 @@ namespace Keyboard
 
                 }
                 // still allow the user to press the button
-                if (gameObject.tag != KeyParams.LetterKeyTag)
+                if (gameObject.tag != KeyParams.LetterKeyTag || !Regex.IsMatch(this.gameObject.name, "^[a-zA-Z]*$"))
                 {
                     if (Input.GetKeyDown(Presets.UserInputButton1) || pinchDetector.DidStartPinch)
                     //if (Input.GetKeyDown(Presets.UserInputButton1))

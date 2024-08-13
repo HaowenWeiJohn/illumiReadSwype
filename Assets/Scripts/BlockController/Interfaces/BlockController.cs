@@ -18,10 +18,19 @@ public class BlockController : MonoBehaviour
     private int blockConfiguration;
     void Awake()
     {
-        // get a random number from 0-5
-        blockConfiguration = Random.Range(0, 6);
-        Debug.Log("Block Configuration: " + blockConfiguration);
+        
         experimentManager = GameObject.Find("ExperimentManager").GetComponent<ExperimentManager>();
+        if(experimentManager.isPractice == false)
+        {
+            // get a random number from 0-5
+            blockConfiguration = Random.Range(0, 6);
+        }
+        else
+        {   
+            // do not change configuration for practice trials
+            blockConfiguration = 0;
+        }
+        Debug.Log("Block Configuration: " + blockConfiguration);
     }
 
     // Update is called once per frame
