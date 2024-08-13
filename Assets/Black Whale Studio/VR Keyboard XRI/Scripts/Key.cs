@@ -54,6 +54,7 @@ namespace Keyboard
         {
             HandTapDetector = GameObject.Find("GlobalSettings").GetComponent<HandTapDetector>();
             gazeClickDetector = GameObject.Find("GlobalSettings").GetComponent<GazeClickDetector>();        
+            swypeDetector = GameObject.Find("GlobalSettings").GetComponent<SwypeDetector>();
         }
 
 
@@ -311,6 +312,20 @@ namespace Keyboard
                     // play the audio clip
                     PlayKeyHoverAudioClip();
 
+                    if(swypeDetector.cyanKeyColor)
+                    {
+                        ChangeKeyColors(
+                            Color.cyan,
+                            Color.cyan,
+                            KeyParams.KeyPressedColor,
+                            KeyParams.KeySelectedColor
+                            );
+                    }
+                    else
+                    {
+                        SetKeyHighlightedColor();
+                    }
+
 
                 }
                 // still allow the user to press the button
@@ -327,41 +342,50 @@ namespace Keyboard
 
 
 
-                if (keyDwellTimeCounter <= KeyParams.KeyboardDwellActivateTime)
-                {
-                    keyDwellTimeCounter += Time.deltaTime;
+                // if (keyDwellTimeCounter <= KeyParams.KeyboardDwellActivateTime)
+                // {
+                //     keyDwellTimeCounter += Time.deltaTime;
 
-                    Color highlightColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+                //     Color highlightColor;
 
-                    ChangeKeyColors(
-                        highlightColor,
-                        KeyParams.KeyHighlightedColor,
-                        KeyParams.KeyPressedColor,
-                        KeyParams.KeySelectedColor
-                        );
+                //     if(swypeDetector.cyanKeyColor)
+                //     {
+                //         highlightColor = Color.Lerp(KeyParams.KeyNormalColor, Color.cyan, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+                //     }
+                //     else
+                //     {
+                //         highlightColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeyHighlightedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+                //     }
+
+                //     ChangeKeyColors(
+                //         highlightColor,
+                //         KeyParams.KeyHighlightedColor,
+                //         KeyParams.KeyPressedColor,
+                //         KeyParams.KeySelectedColor
+                //         );
 
 
-                    //Color selectedColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeySelectedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
+                //     //Color selectedColor = Color.Lerp(KeyParams.KeyNormalColor, KeyParams.KeySelectedColor, keyDwellTimeCounter / KeyParams.KeyboardDwellActivateTime);
 
-                    //ChangeKeyColors(
-                    //    KeyParams.KeyNormalColor,
-                    //    KeyParams.KeyHighlightedColor,
-                    //    KeyParams.KeyPressedColor,
-                    //    selectedColor
-                    //    );
+                //     //ChangeKeyColors(
+                //     //    KeyParams.KeyNormalColor,
+                //     //    KeyParams.KeyHighlightedColor,
+                //     //    KeyParams.KeyPressedColor,
+                //     //    selectedColor
+                //     //    );
 
 
-                }
-                else
-                {
-                    // do nothing, keep it selected
-                }
+                // }
+                // else
+                // {
+                //     // do nothing, keep it selected
+                // }
 
 
             }
             else
             {
-                keyDwellTimeCounter = 0;
+                // keyDwellTimeCounter = 0;
                 ResetButtonColor();
                 //InvokeButtonNormal();
                 selected = false;
