@@ -25,4 +25,6 @@ public class SwypeDetector : MonoBehaviour
 
     public string candidate4;
 
+    public bool cyanKeyColor = false;
+
 }

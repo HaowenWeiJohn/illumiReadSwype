@@ -117,9 +117,6 @@ public class EyeTrackingExample : MonoBehaviour
     [Header("Gesture")]
     [SerializeField] PinchDetector pinchDetector;
 
-    public GameObject PaintCursor1;
-    public GameObject PaintCursor2;
-
     [Header("RPC Client Manager")]
     public string host = "http://localhost:13004";
 
@@ -544,6 +541,9 @@ public class EyeTrackingExample : MonoBehaviour
 
                 if(pinchDetector.DidStartPinch == true && swypeState)
                 {   
+                    // PaintCursor1.GetComponent<MeshRenderer>().material.color = Color.cyan;
+                    // PaintCursor2.GetComponent<MeshRenderer>().material.color = Color.cyan;
+                    // swypeDetector.cyanKeyColor = true;
                     // the bool controls the swype state and LSL receiver
                     isSwyping = false;
                     // if(hit.collider.gameObject.layer == LayerMask.NameToLayer("TapToChar"))
@@ -570,9 +570,6 @@ public class EyeTrackingExample : MonoBehaviour
                 }
                 else if (pinchDetector.IsPinching == true &&swypeState)
                 {
-                    PaintCursor1.GetComponent<MeshRenderer>().material.color = Color.cyan;
-                    PaintCursor2.GetComponent<MeshRenderer>().material.color = Color.cyan;
-                    
                     // add the hit collider object to the list if not in
                     if(hit.collider.gameObject.tag == KeyParams.LetterKeyTag && gazeKeyTargets.Contains(hit.collider.gameObject) == false)
                     {
@@ -600,9 +597,6 @@ public class EyeTrackingExample : MonoBehaviour
                 }
                 else if(pinchDetector.DidEndPinch == true && swypeState)
                 {
-                    PaintCursor1.GetComponent<MeshRenderer>().material.color = Color.white;
-                    PaintCursor2.GetComponent<MeshRenderer>().material.color = Color.white;
-                    
                     gazeDot.Play();
                     gazeParticle.Stop();
                     // swypeDetector.keyPressed = false;
