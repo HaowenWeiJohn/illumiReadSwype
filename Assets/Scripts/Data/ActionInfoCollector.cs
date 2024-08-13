@@ -225,7 +225,7 @@ public class ActionInfoCollector : MonoBehaviour
         }
 
 
-        string fileLocation = fileLocationPreset + participantID + "/Trials/"+ ModeName + "/";
+        string fileLocation = fileLocationPreset + participantID + "/"+ experimentManager.trial.ToString()+"/"+ ModeName + "/";
         Debug.Log(actionInfoItems.Count);
 
         bool exists = System.IO.Directory.Exists(fileLocation);

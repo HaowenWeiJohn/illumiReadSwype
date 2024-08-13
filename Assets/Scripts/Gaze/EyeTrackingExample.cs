@@ -249,7 +249,9 @@ public class EyeTrackingExample : MonoBehaviour
             }
             else
             {
-                Debug.LogError("GameObject with the specified name not found!");
+                // do nothing, leave the key to key call back
+                
+                // Debug.LogError("GameObject with the specified name not found!");
             }
             
         }

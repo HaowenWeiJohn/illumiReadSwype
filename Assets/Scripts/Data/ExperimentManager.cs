@@ -1,13 +1,28 @@
 using System;
+using System.IO;
+using System.Data;
 using System.Linq;
+using System.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ExcelDataReader;
 
 public class ExperimentManager : MonoBehaviour
 {
+    public enum Trials
+    {
+        One=1,
+        Two=2,
+        Three=3,
+        Four=4,
+        Five=5
+    }
+
     [Header("Participant Information")]
     public string participantID;
+
+    public Trials trial;
 
     // the test modes are: Easy, Hard, Practice
     // public string testMode;
@@ -40,12 +55,14 @@ public class ExperimentManager : MonoBehaviour
     [Header("Easy word list")]
     public List<string> easyPracticeWords = new List<string>();
 
-    public List<string> easyWords = new List<string>();
+    private List<string> easyWords = new List<string>();
 
     [Header("Hard word list")]
     public List<string> hardPracticeWords = new List<string>();
-    public List<string> hardWords = new List<string>();
+    private List<string> hardWords = new List<string>();
     // public variable for the current text configuration
+
+    [Header("Sentence Index Configuration")]
     public int configuration;
 
     [Header("Trial count for experiment")]
@@ -62,11 +79,57 @@ public class ExperimentManager : MonoBehaviour
 
     public int SweyepeTrialCount = 0;
 
+
+    public string GetFileName()
+    {
+        switch(trial)
+        {
+            case Trials.One:
+                return "session1-short-longe-sentences.xlsx";
+            case Trials.Two:
+                return "session2-short-longe-sentences.xlsx";
+            case Trials.Three:
+                return "session3-short-longe-sentences.xlsx";
+            case Trials.Four:
+                return "session4-short-longe-sentences.xlsx";
+            case Trials.Five:
+                return "session5-short-longe-sentences.xlsx";
+            default:
+                return "";
+        }
+    }
+
     
 
     void Awake()
     {
         acquireDataCollectors();
+
+        string fileName = GetFileName();
+        string relativePath = "ExcelPath/"+fileName;
+        string fullPath = Path.Combine(Application.dataPath, relativePath);
+
+        FileStream stream = File.Open(fullPath, FileMode.Open, FileAccess.Read);
+
+        System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+        easyWords = new List<string>();
+        hardWords = new List<string>();
+
+        // create reader for the Excel file
+        using (var reader = ExcelReaderFactory.CreateReader(stream))
+        {
+            DataSet result = reader.AsDataSet();
+
+            DataTable table = result.Tables[0];
+
+            foreach (DataRow row in table.Rows)
+            {
+                easyWords.Add(row[0].ToString());
+
+                hardWords.Add(row[1].ToString());
+            }
+        }
 
         // shuffle the word lists
 
