@@ -24,6 +24,8 @@ public class KeyboardDewellTimeStateController : StateController
 
     public TextMeshProUGUI targetWordText;
 
+    public TextMeshProUGUI trialNumberText;
+
 
     private Vector3 keyboardLocalPosition;
 
@@ -38,6 +40,12 @@ public class KeyboardDewellTimeStateController : StateController
     public AudioSource audioSource;
 
     public AudioClip correctInputClip;
+
+    public RectTransform inputGUI;
+    public RectTransform targetGUI;
+
+    public GameObject leftPaintCursor;
+    public GameObject rightPaintCursor;
 
     // Start is called before the first frame update
     void Start()
@@ -61,17 +69,24 @@ public class KeyboardDewellTimeStateController : StateController
         keyboardDewellTimeStateGUIController.EnableSelf();
         simpleFacingCameraCallbacks.enabled = false;
         palmUIPivot.SetActive(true);
-        targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
+        targetWordText.text = experimentManager.targetSentences[experimentManager.configuration];
+        trialNumberText.text = "Trial: " + (experimentManager.configuration+1).ToString();
         KeyBoard.SetActive(true);
+        leftPaintCursor.SetActive(false);
+        rightPaintCursor.SetActive(false);
         // leftHandModel.SetActive(true);
         // rightHandModel.SetActive(true);
 
         Vector3 cameraPosition = Camera.main.transform.position;
         Vector3 forwardDirection = Camera.main.transform.forward;
+
+        targetGUI.localPosition = new Vector3(targetGUI.localPosition.x, targetGUI.localPosition.y-0.4f, targetGUI.localPosition.z);
+        inputGUI.localPosition = new Vector3(inputGUI.localPosition.x, inputGUI.localPosition.y-0.4f, inputGUI.localPosition.z);
+        
         
         // Calculate the desired position with the height offset
-        Vector3 desiredPosition = cameraPosition + forwardDirection * 0.5f;
-        desiredPosition.y -= 0.1f;
+        Vector3 desiredPosition = cameraPosition + forwardDirection * 0.7f;
+        desiredPosition.y -= 0.03f;
 
         // Set the KeyBoard's position
         KeyBoard.transform.position = desiredPosition;
@@ -81,7 +96,7 @@ public class KeyboardDewellTimeStateController : StateController
         lookDirection.y = 0; // Keep the rotation only around the Y-axis
 
         // Calculate the rotation to face the camera with an upward tilt
-        Quaternion targetRotation = Quaternion.LookRotation(lookDirection) * Quaternion.Euler(15f, 180, 0);
+        Quaternion targetRotation = Quaternion.LookRotation(lookDirection) * Quaternion.Euler(10f, 180, 0);
         KeyBoard.transform.rotation = targetRotation;
 
         // Optionally, ensure the KeyBoard is only rotating around the Y-axis (vertical)
@@ -93,10 +108,14 @@ public class KeyboardDewellTimeStateController : StateController
 
     public override void exitState()
     {
+        targetGUI.localPosition = new Vector3(targetGUI.localPosition.x, targetGUI.localPosition.y+0.4f, targetGUI.localPosition.z);
+        inputGUI.localPosition = new Vector3(inputGUI.localPosition.x, inputGUI.localPosition.y+0.4f, inputGUI.localPosition.z);
+
         keyboardDewellTimeStateGUIController.DisableSelf();
         simpleFacingCameraCallbacks.enabled = true;
         palmUIPivot.SetActive(false);
         targetWordText.text = "";
+        trialNumberText.text = "";
         KeyBoard.SetActive(false);
         // leftHandModel.SetActive(true);
         // rightHandModel.SetActive(true);
@@ -113,20 +132,21 @@ public class KeyboardDewellTimeStateController : StateController
         {
             exitState();
         }
-        else if (outputText.ToLower()==experimentManager.targetwords[experimentManager.configuration].ToLower() )
+        else if (outputText.ToLower()==experimentManager.targetSentences[experimentManager.configuration].ToLower() )
         {
             StartCoroutine(ConfirmCorrectInput());
         }
         else if (Input.GetKeyDown(Presets.NextStateKey))
         {
-            if(experimentManager.configuration <= experimentManager.targetwords.Count-1)
+            if(experimentManager.configuration <= experimentManager.targetSentences.Count-1)
             {
                 experimentManager.configuration += 1;
             }
             currentWordIndex += 1;
             if(currentWordIndex<StateEndIndex)
             {
-                targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
+                targetWordText.text = experimentManager.targetSentences[experimentManager.configuration];
+                trialNumberText.text = "Trial: " + (experimentManager.configuration+1).ToString();
             }
             keyboardDewellTimeStateGUIController.keyboardManager.ClearOutputFieldText();
         }
@@ -151,14 +171,16 @@ public class KeyboardDewellTimeStateController : StateController
         // Wait for 1 second
         yield return new WaitForSeconds(1f);
 
-        if(experimentManager.configuration <= experimentManager.targetwords.Count-1)
+        if(experimentManager.configuration <= experimentManager.targetSentences.Count-1)
         {
             experimentManager.configuration += 1;
         }
         currentWordIndex += 1;
+        
         if(currentWordIndex<StateEndIndex)
         {
-            targetWordText.text = experimentManager.targetwords[experimentManager.configuration];
+            targetWordText.text = experimentManager.targetSentences[experimentManager.configuration];
+            trialNumberText.text = "Trial: " + (experimentManager.configuration+1).ToString();
         }
 
         // Clear the output field text (or reset it if needed)

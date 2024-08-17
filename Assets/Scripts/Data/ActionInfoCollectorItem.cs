@@ -24,6 +24,7 @@ public class ActionInfoCollectorItem
         conditionType = "";
         currentText = "";
         targetText = "";
+        eyeTrackingStatus = "";
 
     }
 
@@ -56,6 +57,8 @@ public class ActionInfoCollectorItem
     public string currentText;
 
     public string targetText;
+
+    public string eyeTrackingStatus;
 
     
 }

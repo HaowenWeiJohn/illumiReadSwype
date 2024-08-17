@@ -542,7 +542,7 @@ namespace Keyboard
             // this is to update the suggestion keys
             if((suggestionList.Count -1)> 0)
             {
-                UpdateSuggestionKeys(suggestionList.GetRange(1, suggestionKeys.Count));
+                UpdateSuggestionKeys(suggestionList.GetRange(1, suggestionList.Count-1));
             }
             
             // put the first suggestion on the top
@@ -605,7 +605,7 @@ namespace Keyboard
 
         public void UpdateSuggestionKeys(List<string> suggestionList)
         {
-            for (int i = 0; i < suggestionKeys.Count; i++)
+            for (int i = 0; i < suggestionList.Count; i++)
             {
                 suggestionKeys[i].SetSuggestionText(suggestionList[i]);
                 if(i == 0)
@@ -616,7 +616,7 @@ namespace Keyboard
                 {
                     swypeDetector.candidate2 = suggestionList[i];
                 }
-                else if(i == 2)
+                else if(i == 2) 
                 {
                     swypeDetector.candidate3 = suggestionList[i];
                 }

@@ -19,10 +19,18 @@ public class ExperimentManager : MonoBehaviour
         Five=5
     }
 
+    public enum Chiral
+    {
+        Left,
+        Right
+    }
+
     [Header("Participant Information")]
     public string participantID;
 
     public Trials trial;
+
+    public Chiral chiral;
 
     // the test modes are: Easy, Hard, Practice
     // public string testMode;
@@ -39,27 +47,21 @@ public class ExperimentManager : MonoBehaviour
     public GameMode gameMode;
 
     public bool isPractice = false;
+
+    public bool recordData = true;
     
 
-    [Header("Data Collectors")]
-    public List<DataCollector> alwaysOnDCs = new List<DataCollector>();
+    [Header("Target Sentences list")]
+    public List<string> targetSentences = new List<string>();
 
-    [Header("Action Info collectors")]
-    public List<ActionInfoCollector> actionInfoDCs = new List<ActionInfoCollector>();
+    [Header("Easy Sentences list")]
+    public List<string> easyPracticeSentences = new List<string>();
 
-    public List<List<DataCollector>> trialSpecificDCs = new List<List<DataCollector>>();
+    private List<string> easySentences = new List<string>();
 
-    [Header("Target word list")]
-    public List<string> targetwords = new List<string>();
-
-    [Header("Easy word list")]
-    public List<string> easyPracticeWords = new List<string>();
-
-    private List<string> easyWords = new List<string>();
-
-    [Header("Hard word list")]
-    public List<string> hardPracticeWords = new List<string>();
-    private List<string> hardWords = new List<string>();
+    [Header("Hard Sentences list")]
+    public List<string> hardPracticeSentences = new List<string>();
+    private List<string> hardSentences = new List<string>();
     // public variable for the current text configuration
 
     [Header("Sentence Index Configuration")]
@@ -78,6 +80,15 @@ public class ExperimentManager : MonoBehaviour
     public int GazePinchTrialCount = 0;
 
     public int SweyepeTrialCount = 0;
+
+
+    [Header("Data Collectors")]
+    public List<DataCollector> alwaysOnDCs = new List<DataCollector>();
+
+    [Header("Action Info collectors")]
+    public List<ActionInfoCollector> actionInfoDCs = new List<ActionInfoCollector>();
+
+    public List<List<DataCollector>> trialSpecificDCs = new List<List<DataCollector>>();
 
 
     public string GetFileName()
@@ -113,8 +124,8 @@ public class ExperimentManager : MonoBehaviour
 
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
 
-        easyWords = new List<string>();
-        hardWords = new List<string>();
+        easySentences = new List<string>();
+        hardSentences = new List<string>();
 
         // create reader for the Excel file
         using (var reader = ExcelReaderFactory.CreateReader(stream))
@@ -125,16 +136,16 @@ public class ExperimentManager : MonoBehaviour
 
             foreach (DataRow row in table.Rows)
             {
-                easyWords.Add(row[0].ToString());
+                easySentences.Add(row[0].ToString());
 
-                hardWords.Add(row[1].ToString());
+                hardSentences.Add(row[1].ToString());
             }
         }
 
         // shuffle the word lists
 
-        // easyWords = easyWords.OrderBy(word => Guid.NewGuid()).ToList();
-        // hardWords = hardWords.OrderBy(word => Guid.NewGuid()).ToList();
+        // easySentences = easySentences.OrderBy(word => Guid.NewGuid()).ToList();
+        // hardSentences = hardSentences.OrderBy(word => Guid.NewGuid()).ToList();
 
         if(isPractice == false)
         {
@@ -144,16 +155,16 @@ public class ExperimentManager : MonoBehaviour
 
             if(gameMode == GameMode.Easy)
             {
-                targetwords = easyWords;
+                targetSentences = easySentences;
             }
             else if(gameMode == GameMode.Hard)
             {
-                targetwords = hardWords;
+                targetSentences = hardSentences;
             }
 
-            targetwords = targetwords.OrderBy(word => Guid.NewGuid()).ToList();
+            targetSentences = targetSentences.OrderBy(word => Guid.NewGuid()).ToList();
 
-            if(targetwords.Count <(HandTapTrialCount+GazePinchTrialCount+SweyepeTrialCount))
+            if(targetSentences.Count <(HandTapTrialCount+GazePinchTrialCount+SweyepeTrialCount))
             {
                 Debug.LogError("Not enough words in the test target word list");
             }
@@ -167,24 +178,24 @@ public class ExperimentManager : MonoBehaviour
 
             if(gameMode == GameMode.Easy)
             {
-                targetwords = new List<string>();
+                targetSentences = new List<string>();
                 for (int i = 0; i < 3; i++)
                 {
-                    easyPracticeWords = easyPracticeWords.OrderBy(word => Guid.NewGuid()).ToList();
-                    targetwords.AddRange(easyPracticeWords);
+                    easyPracticeSentences = easyPracticeSentences.OrderBy(word => Guid.NewGuid()).ToList();
+                    targetSentences.AddRange(easyPracticeSentences);
                 }
             }
             else if(gameMode == GameMode.Hard)
             {
-                targetwords = new List<string>();
+                targetSentences = new List<string>();
                 for (int i = 0; i < 3; i++)
                 {
-                    hardPracticeWords = hardPracticeWords.OrderBy(word => Guid.NewGuid()).ToList();
-                    targetwords.AddRange(hardPracticeWords);
+                    hardPracticeSentences = hardPracticeSentences.OrderBy(word => Guid.NewGuid()).ToList();
+                    targetSentences.AddRange(hardPracticeSentences);
                 }
             }
 
-            if(targetwords.Count < PracticeTrialCount * 3)
+            if(targetSentences.Count < PracticeTrialCount * 3)
             {
                 Debug.LogError("Not enough words in the practice target word list");
             }
@@ -192,10 +203,14 @@ public class ExperimentManager : MonoBehaviour
         
     }
 
-    // void OnApplicationQuit()
-    // {
-    //     writeClearDataCollectors();
-    // }
+    void OnApplicationQuit()
+    {
+        if(recordData)
+        {
+            writeClearDataCollectors();
+        }
+        // writeClearDataCollectors();
+    }
 
 
 

@@ -272,9 +272,7 @@ public class EyeTrackingExample : MonoBehaviour
 
     private void Start()
     {
-        // // define the file path to store the csv file
-        // filePath = Path.Combine(Application.dataPath + "/Logs/GazeLog/", "GazeData.csv");
-        // OpenCSVFile();
+        
 
 
         VarjoEyeTracking.SetGazeOutputFrequency(frequency);
@@ -445,8 +443,11 @@ public class EyeTrackingExample : MonoBehaviour
         }
 
 
+        // racycase to all the layer except the hands layer
+        int layerToExclude = LayerMask.NameToLayer("TrackedHands");
+        int layerMask = ~((1 << layerToExclude)|(1<<10));
 
-        hits = Physics.RaycastAll(rayOrigin, direction, 100.0F);
+        hits = Physics.RaycastAll(rayOrigin, direction, 100.0F, layerMask);
         // Debug.Log("Hits: " + hits.Length);
         // Debug.Log("Ray Origin: " + rayOrigin.ToString());
         // Debug.Log("Direction: " + direction.ToString());
@@ -457,7 +458,6 @@ public class EyeTrackingExample : MonoBehaviour
 
         if (hits.Length > 0)
         {
-            
             // gaze target
             RaycastHit first_hit = hits[0];
             gazeTarget.transform.position = first_hit.point - direction * targetOffset;
@@ -543,19 +543,9 @@ public class EyeTrackingExample : MonoBehaviour
 
                 if(pinchDetector.DidStartPinch == true && swypeState)
                 {   
-                    // PaintCursor1.GetComponent<MeshRenderer>().material.color = Color.cyan;
-                    // PaintCursor2.GetComponent<MeshRenderer>().material.color = Color.cyan;
-                    // swypeDetector.cyanKeyColor = true;
                     // the bool controls the swype state and LSL receiver
                     isSwyping = false;
-                    // if(hit.collider.gameObject.layer == LayerMask.NameToLayer("TapToChar"))
-                    // {
-                    //     pinchHandled = false;
-                    // }
-                    // else
-                    // {
-                    //     pinchHandled = true;
-                    // }
+                    
                     pinchHandled = false;
 
                     gazeDot.Stop();
@@ -622,6 +612,7 @@ public class EyeTrackingExample : MonoBehaviour
                 {
                     gazeDot.Play();
                     gazeDot.transform.position = hit.point;
+                    Debug.Log("The hit point layer is " + hit.collider.gameObject.layer);
                     swypeDetector.keyPressed = false;
                     swypeDetector.keyPinched = false;
                 }
@@ -1051,6 +1042,6 @@ public class EyeTrackingExample : MonoBehaviour
     void OnApplicationQuit()
     {
         StopLogging();
-        CloseCSVFile();
+        // CloseCSVFile();
     }
 }

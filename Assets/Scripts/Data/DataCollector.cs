@@ -11,6 +11,8 @@ public class DataCollector : MonoBehaviour
     public List<DataCollectorItem> dataItems;
     public Transform transformToTrack;
 
+    public RectTransform keyboardTransformToTrack;
+
     string fileLocationPreset = "C:/Users/Season/Documents/SwEYEpe/Assets/Data/";
     // C:\Users\Season\Documents\SwEYEpe\Assets\Scripts\Data\DataCollector.cs
 
@@ -66,60 +68,122 @@ public class DataCollector : MonoBehaviour
 
         configuration = experimentManager.configuration;
 
-        // add to the data collector item
-        if(transformToTrack.gameObject.activeSelf)
+        if(transformToTrack != null)
         {
-            DataCollectorItem dataItem = new DataCollectorItem();
+            // add to the data collector item
+            if(transformToTrack.gameObject.activeSelf)
+            {
+                DataCollectorItem dataItem = new DataCollectorItem();
 
-            // LSL absolute time
-            dataItem.absoluteTime = LSL.LSL.local_clock();
+                // LSL absolute time
+                dataItem.absoluteTime = LSL.LSL.local_clock();
 
-            dataItem.trialTime = Time.time - trialStartTime;
-            dataItem.deltaTime = Time.deltaTime;
+                dataItem.trialTime = Time.time - trialStartTime;
+                dataItem.deltaTime = Time.deltaTime;
 
-            dataItem.trialIndex = configuration;
+                dataItem.trialIndex = configuration;
 
-            dataItem.xPos = transformToTrack.position.x;
-            dataItem.yPos = transformToTrack.position.y;
-            dataItem.zPos = transformToTrack.position.z;
+                dataItem.xPos = transformToTrack.position.x;
+                dataItem.yPos = transformToTrack.position.y;
+                dataItem.zPos = transformToTrack.position.z;
 
-            dataItem.xRot = transformToTrack.rotation.x;
-            dataItem.yRot = transformToTrack.rotation.y;
-            dataItem.zRot = transformToTrack.rotation.z;
+                dataItem.xRot = transformToTrack.rotation.x;
+                dataItem.yRot = transformToTrack.rotation.y;
+                dataItem.zRot = transformToTrack.rotation.z;
 
-            dataItem.conditionType = conditionType;
+                dataItem.conditionType = conditionType;
 
-            dataItem.currentText = currentText.text;
-            dataItem.targetText = experimentManager.targetwords[configuration];
-            
-            dataItems.Add(dataItem);
+                dataItem.currentText = currentText.text;
+                dataItem.targetText = experimentManager.targetSentences[configuration];
+                
+                dataItems.Add(dataItem);
+            }
+            else
+            {
+                DataCollectorItem dataItem = new DataCollectorItem();
+
+                // LSL absolute time
+                dataItem.absoluteTime = LSL.LSL.local_clock();
+
+                dataItem.trialTime = Time.time - trialStartTime;
+                dataItem.deltaTime = Time.deltaTime;
+
+                dataItem.trialIndex = configuration;
+
+                dataItem.xPos = float.NegativeInfinity;
+                dataItem.yPos = float.NegativeInfinity;
+                dataItem.zPos = float.NegativeInfinity;
+
+                dataItem.xRot = float.NegativeInfinity;
+                dataItem.yRot = float.NegativeInfinity;
+                dataItem.zRot = float.NegativeInfinity;
+
+                dataItem.conditionType = conditionType;
+
+                dataItem.currentText = currentText.text;
+                dataItem.targetText = experimentManager.targetSentences[configuration];
+
+                dataItems.Add(dataItem);
+            }
         }
-        else
+
+        else if (keyboardTransformToTrack != null)
         {
-            DataCollectorItem dataItem = new DataCollectorItem();
+            // add to the data collector item
+            if(keyboardTransformToTrack.gameObject.activeSelf)
+            {
+                DataCollectorItem dataItem = new DataCollectorItem();
 
-            // LSL absolute time
-            dataItem.absoluteTime = LSL.LSL.local_clock();
+                // LSL absolute time
+                dataItem.absoluteTime = LSL.LSL.local_clock();
 
-            dataItem.trialTime = Time.time - trialStartTime;
-            dataItem.deltaTime = Time.deltaTime;
+                dataItem.trialTime = Time.time - trialStartTime;
+                dataItem.deltaTime = Time.deltaTime;
 
-            dataItem.trialIndex = configuration;
+                dataItem.trialIndex = configuration;
 
-            dataItem.xPos = float.NegativeInfinity;
-            dataItem.yPos = float.NegativeInfinity;
-            dataItem.zPos = float.NegativeInfinity;
+                dataItem.xPos = keyboardTransformToTrack.position.x;
+                dataItem.yPos = keyboardTransformToTrack.position.y;
+                dataItem.zPos = keyboardTransformToTrack.position.z;
 
-            dataItem.xRot = float.NegativeInfinity;
-            dataItem.yRot = float.NegativeInfinity;
-            dataItem.zRot = float.NegativeInfinity;
+                dataItem.xRot = keyboardTransformToTrack.rotation.x;
+                dataItem.yRot = keyboardTransformToTrack.rotation.y;
+                dataItem.zRot = keyboardTransformToTrack.rotation.z;
 
-            dataItem.conditionType = conditionType;
+                dataItem.conditionType = conditionType;
 
-            dataItem.currentText = currentText.text;
-            dataItem.targetText = experimentManager.targetwords[configuration];
+                dataItem.currentText = currentText.text;
+                dataItem.targetText = experimentManager.targetSentences[configuration];
+                
+                dataItems.Add(dataItem);
+            }
+            else
+            {
+                DataCollectorItem dataItem = new DataCollectorItem();
 
-            dataItems.Add(dataItem);
+                // LSL absolute time
+                dataItem.absoluteTime = LSL.LSL.local_clock();
+
+                dataItem.trialTime = Time.time - trialStartTime;
+                dataItem.deltaTime = Time.deltaTime;
+
+                dataItem.trialIndex = configuration;
+
+                dataItem.xPos = float.NegativeInfinity;
+                dataItem.yPos = float.NegativeInfinity;
+                dataItem.zPos = float.NegativeInfinity;
+
+                dataItem.xRot = float.NegativeInfinity;
+                dataItem.yRot = float.NegativeInfinity;
+                dataItem.zRot = float.NegativeInfinity;
+
+                dataItem.conditionType = conditionType;
+
+                dataItem.currentText = currentText.text;
+                dataItem.targetText = experimentManager.targetSentences[configuration];
+
+                dataItems.Add(dataItem);
+            }
         }
 
         

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using LSL;
-
+using Varjo.XR;
 public class ActionInfoCollector : MonoBehaviour
 {
 
@@ -72,7 +72,7 @@ public class ActionInfoCollector : MonoBehaviour
 
         actionInfoItem.trialIndex = configuration;
         actionInfoItem.currentText = currentText.text;
-        actionInfoItem.targetText = experimentManager.targetwords[configuration];
+        actionInfoItem.targetText = experimentManager.targetSentences[configuration];
 
         // check the condition type:
         if(gameManager.keyboardDewellTimeStateController.gameObject.activeSelf)
@@ -140,6 +140,7 @@ public class ActionInfoCollector : MonoBehaviour
             actionInfoItem.candidate2 = "";
             actionInfoItem.candidate3 = "";
             actionInfoItem.candidate4 = "";
+            // actionInfoItem.eyeTrackingStatus = "NotAvailable/Recalibrating";
         }
         else if(conditionType == "GazePinch")
         {
@@ -191,6 +192,8 @@ public class ActionInfoCollector : MonoBehaviour
             actionInfoItem.candidate2 = swypeDetector.candidate2;
             actionInfoItem.candidate3 = swypeDetector.candidate3;
             actionInfoItem.candidate4 = swypeDetector.candidate4;
+
+        
         }
         else
         {
@@ -203,7 +206,17 @@ public class ActionInfoCollector : MonoBehaviour
             actionInfoItem.candidate1 = "";
             actionInfoItem.candidate2 = "";
             actionInfoItem.candidate3 = "";
+            actionInfoItem.candidate4 = "";
 
+        }
+
+        if(VarjoEyeTracking.IsGazeAllowed() && VarjoEyeTracking.IsGazeCalibrated())
+        {
+            actionInfoItem.eyeTrackingStatus = "Available";
+        }
+        else
+        {
+            actionInfoItem.eyeTrackingStatus = "NotAvailable/Recalibrating";
         }
 
         actionInfoItems.Add(actionInfoItem);
@@ -242,10 +255,10 @@ public class ActionInfoCollector : MonoBehaviour
 
         System.IO.StreamWriter file = new System.IO.StreamWriter(fileLocation + fileName + ".csv");
 
-        file.WriteLine("absoluteTime,trialTime,deltaTime,trialIndex,eventType,keyboardValue,xKeyHitLocal,yKeyHitLocal,candidate1,candidate2,candidate3,conditionType,currentText,targetText");
+        file.WriteLine("absoluteTime,trialTime,deltaTime,trialIndex,eventType,keyboardValue,xKeyHitLocal,yKeyHitLocal,candidate1,candidate2,candidate3,conditionType,currentText,targetText,eyeTrackingStatus");
         foreach(ActionInfoCollectorItem dataItem in actionInfoItems)
         {
-            file.WriteLine(dataItem.absoluteTime + "," + dataItem.trialTime + "," + dataItem.deltaTime + "," + dataItem.trialIndex + "," + dataItem.eventType + "," + dataItem.keyboardValue + "," + dataItem.xKeyHitLocal + "," + dataItem.yKeyHitLocal + "," + dataItem.candidate1 + "," + dataItem.candidate2 + "," + dataItem.candidate3 + "," + dataItem.conditionType + "," + dataItem.currentText + "," + dataItem.targetText);
+            file.WriteLine(dataItem.absoluteTime + "," + dataItem.trialTime + "," + dataItem.deltaTime + "," + dataItem.trialIndex + "," + dataItem.eventType + "," + dataItem.keyboardValue + "," + dataItem.xKeyHitLocal + "," + dataItem.yKeyHitLocal + "," + dataItem.candidate1 + "," + dataItem.candidate2 + "," + dataItem.candidate3 + "," + dataItem.conditionType + "," + dataItem.currentText + "," + dataItem.targetText+ "," + dataItem.eyeTrackingStatus);
             file.Flush();
         }
 

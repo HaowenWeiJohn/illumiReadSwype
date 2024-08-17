@@ -13,7 +13,9 @@ public class InitStateController : StateController
 
     public GameObject KeyBoard;
 
-    public GameObject PaintCursor;
+    public GameObject LeftPaintCursor;
+
+    public GameObject RightPaintCursor;
 
 
     // Start is called before the first frame update
@@ -33,7 +35,9 @@ public class InitStateController : StateController
     {
         initStateGUIController.EnableSelf();
         KeyBoard.SetActive(false);
-        PaintCursor.SetActive(false);
+        // PaintCursor.SetActive(false);
+        LeftPaintCursor.SetActive(false);
+        RightPaintCursor.SetActive(false);
         base.enterState();
 
     }
