@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ public class CVEPManager : MonoBehaviour
     public float waitBetweenSequences = 2f;  // Time to wait between sequences
     public int numberOfTrainingEpochs = 1;   // Number of training epochs
 
-    public int LetterIndex = -1;
+    private int LetterIndex = -1;
 
     [Header("M-Sequence Settings")]
     // [Tooltip("The exponent value n for the length of the m-sequence (length = 2^n - 1).")]
@@ -26,36 +27,111 @@ public class CVEPManager : MonoBehaviour
     private int[] mSequence; // Original m-sequence
     private int[][] laggedSequences; // Array to store the lagged sequences
 
+    [Header("Keyboard Settings")]
+
     public GameObject KeyBoard;
     public RectTransform targetGUI;
     public RectTransform inputGUI;
+
+    private bool isRunning = false;
+
+    private string filePath;
+
     // Start is called before the first frame update
     void Start()
     {
+
+        filePath = Path.Combine(Application.dataPath, "MSequences", FileName+".txt");
+
+
         ResetKeyBoard();
         if(LoadFile)
         {
-
+            LoadLaggedSequencesFromFile(filePath);
         }
         else
         {
             GenerateMSequence(n);
             CreateLaggedSequences();
+            SaveLaggedSequencesToFile(filePath);
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(Presets.NextStateKey))
+        if(Input.GetKeyDown(Presets.NextStateKey) && !isRunning)
         {
             LetterIndex++;
-            ResetKeyBoard();
+            // ResetKeyBoard();
             StartCoroutine(FlashTrainingSequences());
             eventMarkerLSLOutletController.sendUserInputsMarker(LetterIndex);
             
         }
+
+        if(Input.GetKeyDown(Presets.InterruptKey))
+        {
+            ResetKeyBoard();
+        }
         
+    }
+
+    // Save lagged sequences to a file
+    private void SaveLaggedSequencesToFile(string path)
+    {
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            using (StreamWriter writer = new StreamWriter(path))
+            {
+                foreach (int[] sequence in laggedSequences)
+                {
+                    string line = string.Join(",", sequence);
+                    writer.WriteLine(line);
+                }
+            }
+
+            Debug.Log("Lagged sequences saved successfully at: " + path);
+        }
+        catch (IOException e)
+        {
+            Debug.LogError("Error saving lagged sequences: " + e.Message);
+        }
+    }
+
+    // Load lagged sequences from a file
+    private void LoadLaggedSequencesFromFile(string path)
+    {
+        if (File.Exists(path))
+        {
+            try
+            {
+                string[] lines = File.ReadAllLines(path);
+                laggedSequences = new int[lines.Length][];
+
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string[] values = lines[i].Split(',');
+                    laggedSequences[i] = new int[values.Length];
+
+                    for (int j = 0; j < values.Length; j++)
+                    {
+                        laggedSequences[i][j] = int.Parse(values[j]);
+                    }
+                }
+
+                Debug.Log("Lagged sequences loaded successfully from: " + path);
+            }
+            catch (IOException e)
+            {
+                Debug.LogError("Error loading lagged sequences: " + e.Message);
+            }
+        }
+        else
+        {
+            Debug.LogError("File not found: " + path);
+        }
     }
 
 
@@ -184,12 +260,13 @@ public class CVEPManager : MonoBehaviour
 
     IEnumerator FlashTrainingSequences()
     {
+        isRunning = true;
         
         for (int epoch = 0; epoch < numberOfTrainingEpochs; epoch++)
         {
             float startTime = Time.time;  // Timer for the total duration of the training epoch
 
-            for (int sequenceIndex = 0; sequenceIndex < mSequence.Length; sequenceIndex++)
+            for (int sequenceIndex = 0; sequenceIndex < laggedSequences[0].Length; sequenceIndex++)
             {
                 if(Time.time - startTime > flashDuration)
                 {
@@ -262,6 +339,8 @@ public class CVEPManager : MonoBehaviour
 
 
         }
+
+        isRunning = false;
 
     }
 }
