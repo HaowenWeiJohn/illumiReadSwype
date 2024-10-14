@@ -65,7 +65,7 @@ public class CVEPManager : MonoBehaviour
             LetterIndex++;
             // ResetKeyBoard();
             StartCoroutine(FlashTrainingSequences());
-            eventMarkerLSLOutletController.sendUserInputsMarker(LetterIndex);
+            
             
         }
 
@@ -261,6 +261,7 @@ public class CVEPManager : MonoBehaviour
     IEnumerator FlashTrainingSequences()
     {
         isRunning = true;
+        eventMarkerLSLOutletController.sendUserInputsMarker(LetterIndex);
         
         for (int epoch = 0; epoch < numberOfTrainingEpochs; epoch++)
         {
@@ -334,6 +335,8 @@ public class CVEPManager : MonoBehaviour
                     // GameObject.Find(charLetter.ToString()).GetComponent<Button>().colors.normalColor = laggedSequences[charIndex][sequenceIndex] == 1 ? new Color(147f/255f, 147f/255f, 147f/255f) : Color.green;
                 }
             }
+
+            eventMarkerLSLOutletController.sendUserInputsMarker(-LetterIndex);
 
             yield return new WaitForSeconds(waitBetweenSequences);
 
